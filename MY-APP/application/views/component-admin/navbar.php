@@ -10,7 +10,15 @@
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <?php echo $this->session->userdata('logged_in')['username']; ?>
+          <?php
+            if(isset($this->session->userdata('logged_in')['username'])){
+              echo $this->session->userdata('logged_in')['username']; ?>
+           <?php }
+              else{
+                redirect(base_url('login'));
+              }
+           ?>
+
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?php echo base_url('logout'); ?>">logout</a>
@@ -30,11 +38,30 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?php echo base_url('brand/create'); ?>">Add brand</a>
-          <a class="dropdown-item" href="<?php echo base_url('brand/list'); ?>">Lisst brand</a>
+          <a class="dropdown-item" href="<?php echo base_url('brand/list'); ?>">List brand</a>
         </div>
       </li>
 
 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Category
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<?php echo base_url('category/create'); ?>">Add Category</a>
+          <a class="dropdown-item" href="<?php echo base_url('category/list'); ?>">List Category</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Products
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<?php echo base_url('product/create'); ?>">Add Product</a>
+          <a class="dropdown-item" href="<?php echo base_url('product/list'); ?>">List Product</a>
+        </div>
+      </li>
 
     </ul>
     <!-- <form class="form-inline my-2 my-lg-0">

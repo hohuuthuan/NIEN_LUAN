@@ -14,7 +14,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			$this->load->view("dashboard/indexDashboard");
-            // echo "Trang thống kê";
 			$this->load->view("component-admin/footer");
 		}
 

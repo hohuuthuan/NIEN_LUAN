@@ -10,9 +10,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index()
 		{
-			$this->load->view("component/header");
+			$this->load->view("loginAdmin/header");
 			$this->load->view("login/indexLogin");
-			$this->load->view("component/footer");
+			$this->load->view("loginAdmin/footer");
 		}
 
 		public function loginUser(){
