@@ -15,6 +15,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Slug</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Price</th>
                     <th scope="col">Brand</th>
                     <th scope="col">Category</th>                   
                     <th scope="col">Quantity</th>
@@ -31,11 +32,11 @@
                     foreach($product as $key => $pro){
                 ?>
                 <tr>
-                    <?php echo count($product); ?>
                     <th scope="row"><?php echo $key ?></th>
                     <td><?php echo $pro->title?></td>
                     <td><?php echo $pro->slug?></td>
                     <td><?php echo $pro->description?></td>
+                    <td><?php echo number_format($pro->price,0, ',','.') ?>vnd</td>
                     <td><?php echo $pro->tenthuonghieu?></td>
                     <td><?php echo $pro->tendanhmuc?></td>
                     <td><?php echo $pro->quantity?></td>

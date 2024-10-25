@@ -9,13 +9,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Home | E-Shopper</title>
-    <link href="frontend/css/bootstrap.min.css" rel="stylesheet">
-    <link href="frontend/css/font-awesome.min.css" rel="stylesheet">
-    <link href="frontend/css/prettyPhoto.css" rel="stylesheet">
-    <link href="frontend/css/price-range.css" rel="stylesheet">
-    <link href="frontend/css/animate.css" rel="stylesheet">
-	<link href="frontend/css/main.css" rel="stylesheet">
-	<link href="frontend/css/responsive.css" rel="stylesheet">
+    <link href="<?php echo base_url('frontend/css/bootstrap.min.css')?>" rel="stylesheet">
+    <link href="<?php echo base_url('frontend/css/font-awesome.min.css')?>" rel="stylesheet">
+    <link href="<?php echo base_url('frontend/css/prettyPhoto.css')?>" rel="stylesheet">
+    <link href="<?php echo base_url('frontend/css/price-range.css')?>" rel="stylesheet">
+    <link href="<?php echo base_url('frontend/css/animate.css')?>" rel="stylesheet">
+	<link href="<?php echo base_url('frontend/css/main.css')?>" rel="stylesheet">
+	<link href="<?php echo base_url('frontend/css/responsive.css')?>" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
@@ -60,31 +60,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+							<a href="<?php echo base_url('/')?>"><img src="images/home/logo.png" alt="" /></a>
 						</div>
-						<div class="btn-group pull-right">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									USA
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canada</a></li>
-									<li><a href="#">UK</a></li>
-								</ul>
-							</div>
-							
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									DOLLAR
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canadian Dollar</a></li>
-									<li><a href="#">Pound</a></li>
-								</ul>
-							</div>
-						</div>
+
 					</div>
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
@@ -92,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="<?php echo base_url('gio-hang')?>"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
@@ -118,11 +96,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<li><a href="index.html" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
+										<?php 
+											foreach ($category as $key => $cate) {
+										?>
+                                        	<li><a href="<?php echo base_url('danh-muc/'.$cate->id)?>"><?php echo $cate->title?></a></li>
+										<?php } ?>
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>

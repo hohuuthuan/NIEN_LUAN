@@ -30,7 +30,12 @@
                 <input name="description" value="<?php echo $product->description ?>" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
                 <?php echo '<span class="text text-danger">'.form_error('description').'</span>' ?>
             </div>
-
+            
+            <div class="form-group">
+                <label>Price</label>
+                <input name="price" value="<?php echo $product->price ?>" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
+                <?php echo '<span class="text text-danger">'.form_error('price').'</span>' ?>
+            </div>
 
             <div class="form-group">
                 <div class="form-group">

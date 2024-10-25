@@ -32,6 +32,11 @@
                 <?php echo '<span class="text text-danger">'.form_error('description').'</span>' ?>
             </div>
             <div class="form-group">
+                <label>Price</label>
+                <input name="price" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
+                <?php echo '<span class="text text-danger">'.form_error('price').'</span>' ?>
+            </div>
+            <div class="form-group">
                 <label>Image</label>
                 <input name="image" type="file" class="form-control-file" id="exampleInputPassword1" placeholder="">
                 <small class="text text-danger"><?php if(isset($error)) echo $error ?></small>

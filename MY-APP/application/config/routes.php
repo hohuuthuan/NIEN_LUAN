@@ -6,6 +6,20 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 
+// Page
+$route['danh-muc/(:any)']['GET'] = 'indexController/category/$1';
+$route['thuong-hieu/(:any)']['GET'] = 'indexController/brand/$1';
+$route['san-pham/(:any)']['GET'] = 'indexController/product/$1';
+$route['gio-hang']['GET'] = 'indexController/cart';
+$route['add-to-cart']['POST'] = 'indexController/add_to_cart';
+$route['delete-to-cart']['GET'] = 'indexController/delete_to_cart';
+$route['delete-item/(:any)']['GET'] = 'indexController/delete_item/$1';
+$route['dang-nhap']['GET'] = 'indexController/login';
+
+
+
+
+
 // login
 $route['login']['GET'] = 'loginController/index';
 $route['login-user']['POST'] = 'loginController/loginUser';

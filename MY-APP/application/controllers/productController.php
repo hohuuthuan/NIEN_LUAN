@@ -39,6 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function storeProduct(){
 			$this->form_validation->set_rules('title', 'Title', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);
+			$this->form_validation->set_rules('price', 'Price', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần chọn %s']);
 			$this->form_validation->set_rules('quantity', 'Quantity', 'trim|required', ['required' => 'Bạn cần chọn %s']);
 
@@ -65,6 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'title' => $this->input->post('title'),
 						'slug' => $this->input->post('slug'),
 						'description' => $this->input->post('description'),
+						'price' => $this->input->post('price'),
 						'image' => $product_filename,
 						'status' => $this->input->post('status'),
 						'quantity'=> $this->input->post('quantity'),
@@ -108,6 +110,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		{
 			$this->form_validation->set_rules('title', 'Title', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);
+			$this->form_validation->set_rules('price', 'Price', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần chọn %s']);
 			$this->form_validation->set_rules('quantity', 'Quantity', 'trim|required', ['required' => 'Bạn cần chọn %s']);
 			
@@ -137,6 +140,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							'title' => $this->input->post('title'),
 							'slug' => $this->input->post('slug'),
 							'description' => $this->input->post('description'),
+							'price' => $this->input->post('price'),
 							'image' => $product_filename,
 							'status' => $this->input->post('status'),
 							'quantity'=> $this->input->post('quantity'),
@@ -149,6 +153,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'title' => $this->input->post('title'),
 						'slug' => $this->input->post('slug'),
 						'description' => $this->input->post('description'),
+						'price' => $this->input->post('price'),
 						'status' => $this->input->post('status'),
 						'quantity'=> $this->input->post('quantity'),
 						'brand_id'=> $this->input->post('brand_id'),
