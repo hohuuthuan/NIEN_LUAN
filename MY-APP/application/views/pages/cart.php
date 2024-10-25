@@ -41,11 +41,15 @@
 								<p><?php echo  number_format($items['price'],0, ',', '.')?> VND</p>
 							</td>
 							<td class="cart_quantity">
+								<form action="<?php echo base_url('update-cart-item')?>" method="POST">
+									
 								<div class="cart_quantity_button">
-									<!-- <a class="cart_quantity_up" href=""> + </a> -->
-									<input class="cart_quantity_input" type="text" name="quantity" value="<?php echo  $items['qty']?>" autocomplete="off" size="2">
-									<!-- <a class="cart_quantity_down" href=""> - </a> -->
+										<input type="hidden" value="<?php echo $items['rowid']?>"  name="rowid">
+										<input class="cart_quantity_input" type="number" min="1" name="quantity" value="<?php echo  $items['qty']?>" autocomplete="off">
+										<input type="submit" name="capnhat" class="btn btn-warning" value="Cập nhật"></input>
+										
 								</div>
+								</form>
 							</td>
 							<td class="cart_total">
 								<p class="cart_total_price"><?php echo  number_format($subtotal,0, ',', '.')?> VND</p>
@@ -59,7 +63,8 @@
                     ?>
                     <tr>
                         <td><p colspan="5" class="cart_total_price"><?php echo  number_format($total,0, ',', '.')?> VND</p></td>
-						<td><a href="<?php echo base_url('delete-to-cart')?>" class="btn btn-danger" >Xóa tất cả</a></td>
+						<td><a href="<?php echo base_url('delete-all-cart')?>" class="btn btn-danger" >Xóa tất cả</a></td>
+						<td><a href="<?php echo base_url('checkout')?>" class="btn btn-success" >Đặt hàng</a></td>
 					</tr>
 					</tbody>
 				</table>

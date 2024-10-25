@@ -12,10 +12,13 @@ $route['thuong-hieu/(:any)']['GET'] = 'indexController/brand/$1';
 $route['san-pham/(:any)']['GET'] = 'indexController/product/$1';
 $route['gio-hang']['GET'] = 'indexController/cart';
 $route['add-to-cart']['POST'] = 'indexController/add_to_cart';
-$route['delete-to-cart']['GET'] = 'indexController/delete_to_cart';
+$route['update-cart-item']['POST'] = 'indexController/update_cart_item';
+$route['login-customer']['POST'] = 'indexController/loginCustomer';
+$route['delete-all-cart']['GET'] = 'indexController/delete_all_cart';
 $route['delete-item/(:any)']['GET'] = 'indexController/delete_item/$1';
 $route['dang-nhap']['GET'] = 'indexController/login';
-
+$route['dang-xuat']['GET'] = 'indexController/logout';
+$route['checkout']['GET'] = 'indexController/checkout';
 
 
 
@@ -23,6 +26,8 @@ $route['dang-nhap']['GET'] = 'indexController/login';
 // login
 $route['login']['GET'] = 'loginController/index';
 $route['login-user']['POST'] = 'loginController/loginUser';
+$route['dang-ky']['POST'] = 'indexController/dang_ky';
+
 // dashboard
 $route['dashboard']['GET'] = 'dashboardController/index';
 $route['logout']['GET'] = 'dashboardController/logout';
