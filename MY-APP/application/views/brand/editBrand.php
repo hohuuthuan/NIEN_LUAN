@@ -12,12 +12,12 @@
         <form action="<?php echo base_url('brand/update/'.$brand->id) ?>" method="POST" enctype="multipart/form-data" >
             <div class="form-group">
                 <label>Title</label>
-                <input name="title" value="<?php echo $brand->title ?>" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                <input name="title" value="<?php echo $brand->title ?>" type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();" on aria-describedby="emailHelp" placeholder="">
                 <?php echo '<span class="text text-danger">'.form_error('title').'</span>' ?>
             </div>
             <div class="form-group">
                 <label>Slug</label>
-                <input name="slug" value="<?php echo $brand->slug ?>" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                <input name="slug" value="<?php echo $brand->slug ?>" type="text" class="form-control" id="convert_slug" aria-describedby="emailHelp" placeholder="">
                 <?php echo '<span class="text text-danger">'.form_error('slug').'</span>' ?>
             </div>
             <div class="form-group">

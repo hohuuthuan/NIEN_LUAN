@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$new_name = time()."".str_replace(' ', '-', $ori_filename);
 				$config = [
 					'upload_path' => './uploads/product',
-					'allowed_types' => 'gif|jpg|png|jpeg',
+					'allowed_types' => 'gif|jpg|png|jpeg|webp',
 					'file_name' => $new_name
 				];
 				$this->load->library('upload', $config);

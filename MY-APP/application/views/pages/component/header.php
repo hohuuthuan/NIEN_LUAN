@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Home | E-Shopper</title>
+    <title><?php echo $this->config->config['pageTitle']?></title>
     <link href="<?php echo base_url('frontend/css/bootstrap.min.css')?>" rel="stylesheet">
     <link href="<?php echo base_url('frontend/css/font-awesome.min.css')?>" rel="stylesheet">
     <link href="<?php echo base_url('frontend/css/prettyPhoto.css')?>" rel="stylesheet">
@@ -91,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="header-bottom"><!--header-bottom-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-9">
+					<div class="col-sm-7">
 						<div class="navbar-header">
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 								<span class="sr-only">Toggle navigation</span>
@@ -102,13 +102,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
+								<li><a href="<?php echo base_url('/')?>" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
 										<?php 
 											foreach ($category as $key => $cate) {
 										?>
-                                        	<li><a href="<?php echo base_url('danh-muc/'.$cate->id)?>"><?php echo $cate->title?></a></li>
+                                        	<li><a href="<?php echo base_url('danh-muc/'.$cate->id.'/'.$cate->slug)?>"><?php echo $cate->title?></a></li>
 										<?php } ?>
                                     </ul>
                                 </li> 
@@ -123,9 +123,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-5">
 						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
+							<form action="<?php echo base_url('search-product')?>" method="GET">
+								<input type="text" name="keyword" placeholder="Search product..."/>
+								<input type="submit" class="btn btn-default" value="Search"/>
+							</form>
 						</div>
 					</div>
 				</div>

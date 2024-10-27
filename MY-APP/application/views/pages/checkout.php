@@ -6,6 +6,11 @@
 				  <li class="active">Checkout</li>
 				</ol>
 			</div>
+			<?php if($this->session->flashdata('success')) { ?>
+				<div class="alert alert-success"><?php echo $this->session->flashdata('success') ?></div>
+			<?php } elseif($this->session->flashdata('error')) { ?>
+				<div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
+			<?php } ?>
 			<div class="table-responsive cart_info">
                 <?php
                     if($this->cart->contents()){
@@ -80,19 +85,23 @@
                         <div class="col-sm-10 col-sm-offset-1">
                             <div class="login-form"><!--login form-->
                                 <h2>Điển thông tin thanh toán</h2>
-                                <form onsubmit="return confirm('Xác nhận đặt hàng')" method="POST" action="#">
+                                <form onsubmit="return confirm('Xác nhận đặt hàng')" method="POST" action="confirm-checkout">
                                     <label>Name</label>
                                     <input type="text" name="name" placeholder="Name" />
+									<?php echo form_error('name'); ?>
                                     <label>Address</label>
                                     <input type="text" name="address" placeholder="Address" />
+									<?php echo form_error('address'); ?>
                                     <label>Phone</label>
                                     <input type="text" name="phone" placeholder="Phone" />
+									<?php echo form_error('phone'); ?>
                                     <label>Email</label>
                                     <input type="text" name="email" placeholder="Email" />
+									<?php echo form_error('email'); ?>
                                     <label>Hình thức thanh toán</label>
-                                    <select name="hinh-thuc-thanh-toan" id="">
-                                        <option>COD</option>
-                                        <option>VNPAY</option>
+                                    <select name="form_of_payment" id="">
+                                        <option value="COD">COD</option>
+                                        <option value="VNPAY">VNPAY</option>
                                     </select>
                                     <button type="submit" class="btn btn-default">Xác nhận thanh toán</button>
                                 </form>

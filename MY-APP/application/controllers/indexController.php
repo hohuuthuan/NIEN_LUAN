@@ -13,6 +13,40 @@ class indexController extends CI_Controller {
 
 	public function index()
 	{
+
+		//custom config link
+		$config = array();
+        $config["base_url"] = base_url() .'/pagination/index'; 
+		$config['total_rows'] = ceil($this->indexModel->countAllProduct()); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
+		$config["per_page"] = 1; //từng trang 3 sản phẩn
+        $config["uri_segment"] = 3; //lấy số trang hiện tại
+		$config['use_page_numbers'] = TRUE; //trang có số
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_link'] = 'First';
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'Last';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active"><a>';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = '</li>';
+		//end custom config link
+		$this->pagination->initialize($config); //tự động tạo trang
+		$this->page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0; //current page active 
+		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
+		// Giới hạn sản phẩm trong trang (limit, start)
+		$this->data['allproduct_pagination'] = $this->indexModel->getIndexPagination($config["per_page"], $this->page);
+		//pagination
+
+
+
 		$this->data['allProduct'] = $this->indexModel->getAllProduct();
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/component/slider');
@@ -21,44 +55,169 @@ class indexController extends CI_Controller {
 	}
 	public function category($id)
 	{
-		$this->data['category_Product'] = $this->indexModel->getCategoryProduct($id);
+		$this->data['slug'] = $this->indexModel->getCategorySlug($id);
+		//custom config link
+		$config = array();
+        $config["base_url"] = base_url() .'/pagination/danh-muc/'.'/'.$id.'/'.$this->data['slug']; 
+		$config['total_rows'] = ceil($this->indexModel->countAllProductByCate($id)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
+		$config["per_page"] = 1; //từng trang 3 sản phẩn
+        $config["uri_segment"] = 5; //lấy số trang hiện tại
+		$config['use_page_numbers'] = TRUE; //trang có số
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_link'] = 'First';
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'Last';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active"><a>';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = '</li>';
+		//end custom config link
+		$this->pagination->initialize($config); //tự động tạo trang
+		$this->page = ($this->uri->segment(5)) ? $this->uri->segment(5) : 0; //current page active 
+		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
+		// Giới hạn sản phẩm trong trang (limit, start)
+		$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPagination($id, $config["per_page"], $this->page);
+		//pagination
+
+
+
+
+		// $this->data['category_Product'] = $this->indexModel->getCategoryProduct($id);
 		$this->data['title'] = $this->indexModel->getCategoryTitle($id);
+		$this->config->config['pageTitle'] = $this->data['title'];
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/category', $this->data);
 		$this->load->view('pages/component/footer');
 	}
 	public function brand($id)
 	{
-		$this->data['brand_Product'] = $this->indexModel->getBrandProduct($id);
+
+		$this->data['slug'] = $this->indexModel->getBrandSlug($id);
+		//custom config link
+		$config = array();
+        $config["base_url"] = base_url() .'/pagination/thuong-hieu/'.'/'.$id.'/'.$this->data['slug']; 
+		$config['total_rows'] = ceil($this->indexModel->countAllProductByBrand($id)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
+		$config["per_page"] = 1; //từng trang 3 sản phẩn
+        $config["uri_segment"] = 5; //lấy số trang hiện tại
+		$config['use_page_numbers'] = TRUE; //trang có số
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_link'] = 'First';
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'Last';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active"><a>';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = '</li>';
+		//end custom config link
+		$this->pagination->initialize($config); //tự động tạo trang
+		$this->page = ($this->uri->segment(5)) ? $this->uri->segment(5) : 0; //current page active 
+		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
+		// Giới hạn sản phẩm trong trang (limit, start)
+		$this->data['allproductbybrand_pagination'] = $this->indexModel->getbrandPagination($id, $config["per_page"], $this->page);
+		//pagination
+
+
+		// $this->data['brand_Product'] = $this->indexModel->getBrandProduct($id);
 		$this->data['title'] = $this->indexModel->getBrandTitle($id);
+		$this->config->config['pageTitle'] = $this->data['title'];
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/brand',$this->data);
 		$this->load->view('pages/component/footer');
 	}
+
+
+
+	public function search_product()
+	{
+		if(isset($_GET['keyword']) && $_GET['keyword'] != ''){
+			$keyword = $_GET['keyword'];
+		}
+
+		//custom config link
+		$config = array();
+        $config["base_url"] = base_url().'/search-product'; 
+		$config['reuse_query_string'] = TRUE;
+		$config['total_rows'] = ceil($this->indexModel->countAllProductByKeyword($keyword)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
+		$config["per_page"] = 1; //từng trang 3 sản phẩn
+        $config["uri_segment"] = 2; //lấy số trang hiện tại
+		$config['use_page_numbers'] = TRUE; //trang có số
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_link'] = 'First';
+		$config['first_tag_open'] = '<li>';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'Last';
+		$config['last_tag_open'] = '<li>';
+		$config['last_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active"><a>';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li>';
+		$config['num_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li>';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li>';
+		$config['prev_tag_close'] = '</li>';
+		//end custom config link
+		$this->pagination->initialize($config); //tự động tạo trang
+		$this->page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0; //current page active 
+		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
+		// Giới hạn sản phẩm trong trang (limit, start)
+		$this->data['allproductbykeyword_pagination'] = $this->indexModel->getSearchPagination($keyword, $config["per_page"], $this->page);
+		//pagination
+
+
+		// $this->data['product'] = $this->indexModel->getProductByKeyword($keyword);
+		$this->data['title'] = $keyword;
+		$this->config->config['pageTitle'] = "Search product: ".$keyword;
+		$this->load->view('pages/component/header', $this->data);
+		$this->load->view('pages/search-product', $this->data);
+		$this->load->view('pages/component/footer');
+	}
+
+
+
+
 	public function product($id)
 	{
 		$this->data['product_details'] = $this->indexModel->getProductDetails($id);
+		$this->data['title'] = $this->indexModel->getProductTitle($id);
+		$this->config->config['pageTitle'] = $this->data['title'];
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/product_detail', $this->data);
 		$this->load->view('pages/component/footer');
 	}
+	public function thank_you_for_order()
+	{
+		$this->config->config['pageTitle'] = 'Cảm ơn bạn đã đặt hàng';
+		$this->data['allProduct'] = $this->indexModel->getAllProduct();
+		$this->load->view('pages/component/header', $this->data);
+		$this->load->view('pages/thank-you-for-order', );
+		$this->load->view('pages/component/footer');
+	}
 	public function cart()
 	{
+		$this->config->config['pageTitle'] = 'Giỏ hàng';
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/cart');
 		$this->load->view('pages/component/footer');
 	}
 
-	public function checkout()
-	{
-		if($this->session->userdata('logged_in_customer')){
-			$this->load->view('pages/component/header', $this->data);
-			$this->load->view('pages/checkout');
-			$this->load->view('pages/component/footer');
-		}else{
-			redirect(base_url().'gio-hang');
-		}
-	}
 
 
 	public function add_to_cart()
@@ -108,6 +267,7 @@ class indexController extends CI_Controller {
 
 	public function login()
 	{
+		$this->config->config['pageTitle'] = 'Đăng nhập';
 		$this->load->view('pages/component/header');
 		$this->load->view('pages/login');
 		$this->load->view('pages/component/footer');
@@ -194,7 +354,81 @@ class indexController extends CI_Controller {
 		}
 	}
 
+	public function checkout()
+	{
+		$this->config->config['pageTitle'] = 'Checkout';
+		if($this->session->userdata('logged_in_customer') && $this->cart->contents()){
+			$this->load->view('pages/component/header', $this->data);
+			$this->load->view('pages/checkout');
+			$this->load->view('pages/component/footer');
+		}else{
+			redirect(base_url().'gio-hang');
+		}
+	}
 
+	public function confirm_checkout(){
+		$this->form_validation->set_rules('name', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		if ($this->form_validation->run() == TRUE) {
+
+			$name = $this->input->post('name');
+			$email = $this->input->post('email');
+			$phone = $this->input->post('phone');
+			$address = $this->input->post('address');
+			$form_of_payment = $this->input->post('form_of_payment');
+
+			$data = [
+				'name' => $name,
+				'email'=> $email,
+				'phone' => $phone,
+				'address'=> $address,
+				'form_of_payment'=> $form_of_payment
+
+			];	
+			
+			$this->load->model('loginModel');
+			$result = $this->loginModel->newShipping($data);
+			if($result){
+				$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3); // Lấy 3 chữ cái ngẫu nhiên
+				$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
+				$order_code = $letters . $numbers; // Kết hợp chữ cái và số
+				// echo $order_code;
+				// Lưu vàp orders
+				$data_orders = [
+					'order_code' => $order_code,
+					'status' => 1,
+					'form_of_payment_id'=> $result
+	
+				];	
+				$insert_orders = $this->loginModel->insert_orders($data_orders);
+
+				// Order details
+				foreach ($this->cart->contents() as $items) {
+					$data_orders_details = array(
+						'order_code' => $order_code,
+						'product_id' => $items['id'],
+						'quantity' => $items['qty']
+					);
+					$insert_orders_details = $this->loginModel->insert_orders_details($data_orders_details);
+				}
+
+				
+				$this->session->set_flashdata('success', 'Đặt hàng thành công');
+				// Khi đã đặt hàng thành công thì giỏ hàng sẽ xóa đi các mặt hàng đã đặt
+				$this->cart->destroy();
+				redirect(base_url('thank-you-for-order'));
+			} else{
+				$this->session->set_flashdata('error', 'Đặt hàng thất bại');
+				redirect(base_url('checkout'));
+			}
+		}else{	
+			redirect(base_url('checkout'));
+		}
+	}
+
+	
 
 
 }
