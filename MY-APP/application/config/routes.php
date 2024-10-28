@@ -7,6 +7,8 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 // Page
+
+$route['HomePage']['GET'] = 'HomePage';
 $route['danh-muc/(:any)/(:any)']['GET'] = 'indexController/category/$1/$2';
 $route['thuong-hieu/(:any)/(:any)']['GET'] = 'indexController/brand/$1/$2';
 $route['san-pham/(:any)/(:any)']['GET'] = 'indexController/product/$1/$2';
@@ -27,6 +29,9 @@ $route['search-product']['GET'] = 'indexController/search_product';
 $route['login']['GET'] = 'loginController/index';
 $route['login-user']['POST'] = 'loginController/loginUser';
 $route['dang-ky']['POST'] = 'indexController/dang_ky';
+$route['kich-hoat-tai-khoan']['GET'] = 'indexController/kich_hoat_tai_khoan';
+
+
 
 // dashboard
 $route['dashboard']['GET'] = 'dashboardController/index';
@@ -67,4 +72,13 @@ $route['order_admin/update-order-status']['POST'] = 'orderController/update_orde
 $route['order_admin/viewOrder/(:any)']['GET'] = 'orderController/viewOrder/$1';
 $route['order_admin/deleteOrder/(:any)']['GET'] = 'orderController/deleteOrder/$1';
 
-$route['HomePage']['GET'] = 'HomePage';
+
+// Mail
+
+$route['send-mail'] = 'indexController/send_mail';
+
+
+
+
+
+

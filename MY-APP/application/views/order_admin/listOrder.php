@@ -34,9 +34,18 @@
                         <?php
                         if ($ord->status == 1) {
                             echo '<span class="text text-primary">Đang chờ xử lý</span>';
-                        } elseif ($ord->status == 2) {
-                            echo '<span class="text text-success">Đã giao hàng</span>';
-                        } else {
+                        }
+                        
+                        elseif ($ord->status == 2) {
+                            echo '<span class="text text-warning">Đang chuẩn bị hàng</span>';
+                        } 
+                        elseif ($ord->status == 3) {
+                            echo '<span class="text text-success">Đã giao cho đơn vị vận chuyển</span>';
+                        }
+                        // elseif ($ord->status == 3) {
+                        //     echo '<span class="text text-success">Đã giao cho đơn vị vận chuyển</span>';
+                        // }
+                          else {
                             echo '<span class="text text-danger">Đã hủy</span>';
                         }
                         ?>

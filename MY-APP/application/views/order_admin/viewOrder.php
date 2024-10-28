@@ -44,25 +44,32 @@
                             <?php 
                                 if($ord->order_status == 1){     
                             ?>
-                                <option id="<?php echo $ord->order_code ?>" value="0">Xử lý đơn hàng</option>
-                                <option selected id="<?php echo $ord->order_code ?>" value="1">Đang chuẩn bị hàng</option>
-                                <option id="<?php echo $ord->order_code ?>" value="2">Đơn đã được giao cho đơn bị vận chuyển</option>
-                                <option id="<?php echo $ord->order_code ?>" value="3">Hủy đơn</option>
+                                <option selected  id="<?php echo $ord->order_code ?>" value="1">Xử lý đơn hàng</option>
+                                <option id="<?php echo $ord->order_code ?>" value="2">Đang chuẩn bị hàng</option>
+                                <option id="<?php echo $ord->order_code ?>" value="3">Đơn đã được giao cho đơn bị vận chuyển</option>
+                                <option id="<?php echo $ord->order_code ?>" value="4">Hủy đơn</option>
                           
                             <?php      
                                 }elseif($ord->order_status == 2){
                             ?>
-                                <option id="<?php echo $ord->order_code ?>" value="0">Xử lý đơn hàng</option>
-                                <option id="<?php echo $ord->order_code ?>" value="1">Đang chuẩn bị hàng</option>
-                                <option selected id="<?php echo $ord->order_code ?>" value="2">Đơn đã được giao cho đơn bị vận chuyển</option>
-                                <option id="<?php echo $ord->order_code ?>" value="3">Hủy đơn</option>
+                                <option id="<?php echo $ord->order_code ?>" value="1">Xử lý đơn hàng</option>
+                                <option selected id="<?php echo $ord->order_code ?>" value="2">Đang chuẩn bị hàng</option>
+                                <option id="<?php echo $ord->order_code ?>" value="3">Đơn đã được giao cho đơn bị vận chuyển</option>
+                                <option id="<?php echo $ord->order_code ?>" value="4">Hủy đơn</option>
                             <?php      
                                 }elseif($ord->order_status == 3){
                             ?>
-                                <option id="<?php echo $ord->order_code ?>" value="0">Xử lý đơn hàng</option>
-                                <option id="<?php echo $ord->order_code ?>" value="1">Đang chuẩn bị hàng</option>
-                                <option id="<?php echo $ord->order_code ?>" value="2">Đơn đã được giao cho đơn bị vận chuyển</option>
-                                <option selected id="<?php echo $ord->order_code ?>" value="3">Hủy đơn</option>
+                                <option id="<?php echo $ord->order_code ?>" value="1">Xử lý đơn hàng</option>
+                                <option id="<?php echo $ord->order_code ?>" value="2">Đang chuẩn bị hàng</option>
+                                <option selected id="<?php echo $ord->order_code ?>" value="3">Đơn đã được giao cho đơn bị vận chuyển</option>
+                                <option id="<?php echo $ord->order_code ?>" value="4">Hủy đơn</option>
+                            <?php      
+                            }elseif($ord->order_status == 4){
+                            ?>
+                                <option id="<?php echo $ord->order_code ?>" value="1">Xử lý đơn hàng</option>
+                                <option id="<?php echo $ord->order_code ?>" value="2">Đang chuẩn bị hàng</option>
+                                <option id="<?php echo $ord->order_code ?>" value="3">Đơn đã được giao cho đơn bị vận chuyển</option>
+                                <option selected id="<?php echo $ord->order_code ?>" value="4">Hủy đơn</option>
                             <?php 
                                 }
                             ?>

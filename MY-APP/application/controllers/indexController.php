@@ -10,10 +10,9 @@ class indexController extends CI_Controller {
 		$this->data['brand'] = $this->indexModel->getBrandHome();
 		$this->data['category'] = $this->indexModel->getCategoryHome();
 	}
-
 	public function index()
 	{
-
+		echo Carbon\Carbon::now('Asia/Ho_Chi_Minh');
 		//custom config link
 		$config = array();
         $config["base_url"] = base_url() .'/pagination/index'; 
@@ -53,6 +52,106 @@ class indexController extends CI_Controller {
 		$this->load->view('pages/home', $this->data);
 		$this->load->view('pages/component/footer');
 	}
+
+	public function send_mail($to_mail, $subject, $message) {
+
+		$config = array();
+
+		$config['protocol'] = 'smtp';
+		$config['smtp_host'] = 'ssl://smtp.gmail.com';
+		$config['smtp_user'] = 'hohuuthuan789@gmail.com';
+		$config['smtp_pass'] = 'xvinihubnvdnmloz';
+		$config['smtp_port'] = '465';
+		$config['charset'] = 'utf-8';
+		$config['wordwrap'] = TRUE;
+		$this->email->initialize($config);
+		$this->email->set_newline("\r\n");
+		$from_mail = 'hohuuthuan789@gmail.com';
+
+		$this->email->from($from_mail, 'Trang web abc.xyz');
+		$this->email->to($to_mail);
+		// Gửi 1 bản copy cho 1 hay nhiều người
+		// $this->email->cc('another@another-example.com');
+		// Gửi 1 bản copy cho 1 hay nhiều người mà không thấy được thông tin người gửi
+		// $this->email->bcc('them@their-example.com');
+
+		
+		$this->email->subject($subject);
+		$this->email->message($message);
+
+		$this->email->send();
+	}
+	public function confirm_checkout(){
+		$this->form_validation->set_rules('name', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		if ($this->form_validation->run() == TRUE) {
+
+			$name = $this->input->post('name');
+			$email = $this->input->post('email');
+			$phone = $this->input->post('phone');
+			$address = $this->input->post('address');
+			$form_of_payment = $this->input->post('form_of_payment');
+
+			$data = [
+				'name' => $name,
+				'email'=> $email,
+				'phone' => $phone,
+				'address'=> $address,
+				'form_of_payment'=> $form_of_payment
+
+			];	
+			
+			$this->load->model('loginModel');
+			$result = $this->loginModel->newShipping($data);
+			if($result){
+				$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3); // Lấy 3 chữ cái ngẫu nhiên
+				$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
+				$order_code = $letters . $numbers; // Kết hợp chữ cái và số
+				// echo $order_code;
+				// Lưu vàp orders
+				$data_orders = [
+					'order_code' => $order_code,
+					'status' => 1,
+					'form_of_payment_id'=> $result
+	
+				];	
+				$insert_orders = $this->loginModel->insert_orders($data_orders);
+
+				// Order details
+				foreach ($this->cart->contents() as $items) {
+					$data_orders_details = array(
+						'order_code' => $order_code,
+						'product_id' => $items['id'],
+						'quantity' => $items['qty']
+					);
+					$insert_orders_details = $this->loginModel->insert_orders_details($data_orders_details);
+				}
+
+				
+				$this->session->set_flashdata('success', 'Đặt hàng thành công');
+				// Khi đã đặt hàng thành công thì giỏ hàng sẽ xóa đi các mặt hàng đã đặt
+				$this->cart->destroy();
+
+				// Gửi mail thông báo đã đặt hàng
+				$to_mail = $email;
+				$subject = 'Thông báo đặt hàng';
+				$message = 'Cảm ơn bạn đã đặt hàng, chúng tôi sẽ gửi đơn hàng đến bạn sớm nhất.';
+
+				$this->send_mail($to_mail, $subject, $message);
+
+				redirect(base_url('thank-you-for-order'));
+			} else{
+				$this->session->set_flashdata('error', 'Đặt hàng thất bại');
+				redirect(base_url('checkout'));
+			}
+		}else{	
+			redirect(base_url('checkout'));
+		}
+	}
+
+	
 	public function category($id)
 	{
 		$this->data['slug'] = $this->indexModel->getCategorySlug($id);
@@ -323,15 +422,20 @@ class indexController extends CI_Controller {
 			$phone = $this->input->post('phone');
 			$address = $this->input->post('address');
 
+			$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3); // Lấy 3 chữ cái ngẫu nhiên
+			$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
+			$token = $letters . $numbers; // Kết hợp chữ cái và số
+			$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh');
+
 			$data = [
 				'username' => $username,
 				'email'=> $email,
 				'password'=> $password,
 				'phone' => $phone,
 				'address'=> $address,
-
+				'token'=> $token,
+				'date_created'=> $date_created
 			];
-
 
 			$this->load->model('loginModel');
 			$result = $this->loginModel->newCustomer($data);
@@ -343,6 +447,14 @@ class indexController extends CI_Controller {
 
 				$this->session->set_userdata('logged_in_customer', $session_array);
 				$this->session->set_flashdata('success', 'Đăng nhập thành công');
+
+				// Gửi mail thông báo đã đăng ký thành công
+				$fullURL = base_url().'kich-hoat-tai-khoan/?token='.$token.'&email='.$email;
+				$to_mail = $email;
+				$subject = 'Thông báo đăng ký tài khoản thành công';
+				$message = 'Click vào đường link để kích hoạt tài khoản: '.$fullURL;
+				$this->send_mail($to_mail, $subject, $message);
+				
 				redirect(base_url('checkout'));
 			} else{
 				$this->session->set_flashdata('error', 'Đăng nhập thất bại');
@@ -352,6 +464,9 @@ class indexController extends CI_Controller {
 		else{
 			$this->login();
 		}
+	}
+	public function kich_hoat_tai_khoan(){
+		echo 'Kích hoạt tài khoản';
 	}
 
 	public function checkout()
@@ -366,67 +481,7 @@ class indexController extends CI_Controller {
 		}
 	}
 
-	public function confirm_checkout(){
-		$this->form_validation->set_rules('name', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		if ($this->form_validation->run() == TRUE) {
-
-			$name = $this->input->post('name');
-			$email = $this->input->post('email');
-			$phone = $this->input->post('phone');
-			$address = $this->input->post('address');
-			$form_of_payment = $this->input->post('form_of_payment');
-
-			$data = [
-				'name' => $name,
-				'email'=> $email,
-				'phone' => $phone,
-				'address'=> $address,
-				'form_of_payment'=> $form_of_payment
-
-			];	
-			
-			$this->load->model('loginModel');
-			$result = $this->loginModel->newShipping($data);
-			if($result){
-				$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3); // Lấy 3 chữ cái ngẫu nhiên
-				$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
-				$order_code = $letters . $numbers; // Kết hợp chữ cái và số
-				// echo $order_code;
-				// Lưu vàp orders
-				$data_orders = [
-					'order_code' => $order_code,
-					'status' => 1,
-					'form_of_payment_id'=> $result
 	
-				];	
-				$insert_orders = $this->loginModel->insert_orders($data_orders);
-
-				// Order details
-				foreach ($this->cart->contents() as $items) {
-					$data_orders_details = array(
-						'order_code' => $order_code,
-						'product_id' => $items['id'],
-						'quantity' => $items['qty']
-					);
-					$insert_orders_details = $this->loginModel->insert_orders_details($data_orders_details);
-				}
-
-				
-				$this->session->set_flashdata('success', 'Đặt hàng thành công');
-				// Khi đã đặt hàng thành công thì giỏ hàng sẽ xóa đi các mặt hàng đã đặt
-				$this->cart->destroy();
-				redirect(base_url('thank-you-for-order'));
-			} else{
-				$this->session->set_flashdata('error', 'Đặt hàng thất bại');
-				redirect(base_url('checkout'));
-			}
-		}else{	
-			redirect(base_url('checkout'));
-		}
-	}
 
 	
 
