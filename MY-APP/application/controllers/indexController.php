@@ -12,12 +12,11 @@ class indexController extends CI_Controller {
 	}
 	public function index()
 	{
-		echo Carbon\Carbon::now('Asia/Ho_Chi_Minh');
 		//custom config link
 		$config = array();
         $config["base_url"] = base_url() .'/pagination/index'; 
 		$config['total_rows'] = ceil($this->indexModel->countAllProduct()); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
-		$config["per_page"] = 1; //từng trang 3 sản phẩn
+		$config["per_page"] = 6; //từng trang 3 sản phẩn
         $config["uri_segment"] = 3; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
@@ -159,7 +158,7 @@ class indexController extends CI_Controller {
 		$config = array();
         $config["base_url"] = base_url() .'/pagination/danh-muc/'.'/'.$id.'/'.$this->data['slug']; 
 		$config['total_rows'] = ceil($this->indexModel->countAllProductByCate($id)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
-		$config["per_page"] = 1; //từng trang 3 sản phẩn
+		$config["per_page"] = 6; //từng trang 3 sản phẩn
         $config["uri_segment"] = 5; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
@@ -182,12 +181,27 @@ class indexController extends CI_Controller {
 		$this->pagination->initialize($config); //tự động tạo trang
 		$this->page = ($this->uri->segment(5)) ? $this->uri->segment(5) : 0; //current page active 
 		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
-		// Giới hạn sản phẩm trong trang (limit, start)
-		$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPagination($id, $config["per_page"], $this->page);
-		//pagination
+	
+		// Lấy giá thấp nhất và lớn nhất
+		$min_price = $this->data['min_price'] = $this->indexModel->getMinPriceProduct($id);
+		$max_price = $this->data['max_price'] = $this->indexModel->getMaxPriceProduct($id);
 
 
 
+		// Filter
+		if(isset($_GET['kytu'])){
+			$kytu = $_GET['kytu'];
+			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryKyTuPagination($id, $kytu, $config["per_page"], $this->page);
+		}elseif(isset($_GET['gia'])){
+			$kytu = $_GET['gia'];
+			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPricePagination($id, $kytu, $config["per_page"], $this->page);
+		}elseif(isset($_GET['to']) && isset($_GET['from']) ){
+			$from_price = $_GET['from'];
+			$to_price = $_GET['to'];
+			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPriceRangePagination($id, $from_price, $to_price, $config["per_page"], $this->page);
+		}else{
+			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPagination($id, $config["per_page"], $this->page);
+		}
 
 		// $this->data['category_Product'] = $this->indexModel->getCategoryProduct($id);
 		$this->data['title'] = $this->indexModel->getCategoryTitle($id);
@@ -204,7 +218,7 @@ class indexController extends CI_Controller {
 		$config = array();
         $config["base_url"] = base_url() .'/pagination/thuong-hieu/'.'/'.$id.'/'.$this->data['slug']; 
 		$config['total_rows'] = ceil($this->indexModel->countAllProductByBrand($id)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
-		$config["per_page"] = 1; //từng trang 3 sản phẩn
+		$config["per_page"] = 6; //từng trang 3 sản phẩn
         $config["uri_segment"] = 5; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
@@ -379,6 +393,7 @@ class indexController extends CI_Controller {
 
 			$email = $this->input->post('email');
 			$password = md5($this->input->post('password'));
+			
 			$this->load->model('loginModel');
 			$result = $this->loginModel->checkLoginCustomer($email, $password);
 			if(count($result)>0){
@@ -386,13 +401,14 @@ class indexController extends CI_Controller {
 					'id'=> $result[0]->id,
 					'username'=> $result[0]->username,
 					'email'=> $result[0]->email,
+
 				];
 
 				$this->session->set_userdata('logged_in_customer', $session_array);
 				$this->session->set_flashdata('success', 'Đăng nhập thành công');
 				redirect(base_url('/checkout'));
 			} else{
-				$this->session->set_flashdata('error', 'Đăng nhập thất bại');
+				$this->session->set_flashdata('error', 'Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu');
 				redirect(base_url('/dang-nhap'));
 			}
 		}
@@ -440,13 +456,13 @@ class indexController extends CI_Controller {
 			$this->load->model('loginModel');
 			$result = $this->loginModel->newCustomer($data);
 			if($result){
-				$session_array = [
-					'email'=> $email,
-					'username'=> $username,
-				];
+				// $session_array = [
+				// 	'email'=> $email,
+				// 	'username'=> $username,
+				// ];
 
-				$this->session->set_userdata('logged_in_customer', $session_array);
-				$this->session->set_flashdata('success', 'Đăng nhập thành công');
+				// $this->session->set_userdata('logged_in_customer', $session_array);
+				// $this->session->set_flashdata('success', 'Đăng nhập thành công');
 
 				// Gửi mail thông báo đã đăng ký thành công
 				$fullURL = base_url().'kich-hoat-tai-khoan/?token='.$token.'&email='.$email;
@@ -454,8 +470,8 @@ class indexController extends CI_Controller {
 				$subject = 'Thông báo đăng ký tài khoản thành công';
 				$message = 'Click vào đường link để kích hoạt tài khoản: '.$fullURL;
 				$this->send_mail($to_mail, $subject, $message);
-				
-				redirect(base_url('checkout'));
+				$this->session->set_flashdata('success', 'Đăng ký tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.');
+				redirect(base_url('dang-nhap'));
 			} else{
 				$this->session->set_flashdata('error', 'Đăng nhập thất bại');
 				redirect(base_url('dang-nhap'));
@@ -466,7 +482,40 @@ class indexController extends CI_Controller {
 		}
 	}
 	public function kich_hoat_tai_khoan(){
-		echo 'Kích hoạt tài khoản';
+		if(isset($_GET['email']) && $_GET['token']){
+			echo $token = $_GET['token'];
+			echo $email = $_GET['email'];
+		}
+		$data['get_customer'] = $this->indexModel->getCustomerToken($email); 
+		
+
+		// Update tài khoản vừa tạo
+		$time_now = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinute(10); // tạo thời gian 10 phút hoạt động cho đường link
+		// Tạo 1 token mới để tránh trùng lặp
+		$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3); // Lấy 3 chữ cái ngẫu nhiên
+		$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
+		$new_token = $letters . $numbers; // Kết hợp chữ cái và số
+
+		foreach($data['get_customer'] as $key => $value){
+			if($token!= $value->token){
+				$this->session->set_flashdata('error','Đường link kích hoạt không đúng hoặc đã được kích hoạt. Vui lòng kiểm tra lại!!!');
+				redirect(base_url('dang-nhap'));
+			}
+			$data_customer = [
+				'status' => 1,
+				'token'	=> $new_token
+			];
+			if($value->date_created < $time_now){
+				$active_customer = $this->indexModel->activeCustomerAndUpdateNewToken($email, $data_customer);
+				$this->session->set_flashdata('success','Kích hoạt tài khoản thành công, mời bạn đăng nhập lại');
+				redirect(base_url('dang-nhap'));
+			}else{
+				$this->session->set_flashdata('error','Kích hoạt tài khoản thất bại, bạn vui lòng quay lại bước đăng ký');
+				redirect(base_url('dang-nhap'));
+			}
+
+		}
+
 	}
 
 	public function checkout()
