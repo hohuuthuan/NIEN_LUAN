@@ -14,6 +14,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view("login/indexLogin");
 			$this->load->view("loginAdmin/footer");
 		}
+		public function register_admin()
+		{
+			$this->load->view("loginAdmin/header");
+			$this->load->view("register_admin/indexRegister");
+			$this->load->view("loginAdmin/footer");
+		}
+		
+
+		public function insert_admin(){
+
+			$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp username']);
+			$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
+			$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
+
+			if ($this->form_validation->run()) {
+				$username = $this->input->post('username');
+				$email = $this->input->post('email');
+				$password = md5($this->input->post('password'));
+
+				$data = [
+					'username' => $username,
+					'email' => $email,
+					'password' => $password,
+					'status' => 0
+				];
+
+				$this->load->model('loginModel');
+				$result = $this->loginModel->newUserAdmin($data);
+				if($result){
+					$this->session->set_flashdata('success', 'Đăng ký thành công');
+					redirect(base_url('login'));
+				} else{
+					$this->session->set_flashdata('error', 'Đăng ký thất bại');
+					redirect(base_url('login'));
+				}
+			}
+			else{
+				$this->loginUser();
+			}
+		}
+
 
 		public function loginUser(){
 			$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);

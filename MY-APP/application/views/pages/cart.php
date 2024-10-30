@@ -12,11 +12,19 @@
                 ?>
 				<table class="table table-condensed">
 					<thead>
+					
+							<?php if($this->session->flashdata('success')) { ?>
+								<div class="alert alert-success"><?php echo $this->session->flashdata('success') ?></div>
+							<?php } elseif($this->session->flashdata('error')) { ?>
+								<div class="alert alert-warning"><?php echo $this->session->flashdata('error') ?></div>
+							<?php } ?>
+					
 						<tr class="cart_menu">
                             <td class="description">Image</td>
 							<td class="image">Item</td>
 							<td class="price">Price</td>
 							<td class="quantity">Quantity</td>
+							<td class="in_stock">In Stock</td>
 							<td class="total">Total</td>
 							<td></td>
 						</tr>
@@ -45,11 +53,28 @@
 									
 								<div class="cart_quantity_button">
 										<input type="hidden" value="<?php echo $items['rowid']?>"  name="rowid">
-										<input class="cart_quantity_input" type="number" min="1" name="quantity" value="<?php echo  $items['qty']?>" autocomplete="off">
+										<?php
+											if($items['qty'] > $items['options']['in_stock']){					
+										?>
+										<input class="cart_quantity_input" type="number" min="1" name="quantity" value="<?php echo  $items['options']['in_stock']?>" autocomplete="off"> 
+										<?php
+											}else{
+										?>
+										<input class="cart_quantity_input" type="number" min="1" name="quantity" value="<?php echo  $items['qty']?>" autocomplete="off"> 
+										<?php
+											}
+										?>
 										<input type="submit" name="capnhat" class="btn btn-warning" value="Cập nhật"></input>
+										 
+								
+
+										
 										
 								</div>
 								</form>
+							</td>
+							<td class="in_stock">
+								<p><?php echo $items['options']['in_stock']?></p>
 							</td>
 							<td class="cart_total">
 								<p class="cart_total_price"><?php echo  number_format($subtotal,0, ',', '.')?> VND</p>

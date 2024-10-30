@@ -7,8 +7,8 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 // Page
-
 $route['HomePage']['GET'] = 'HomePage';
+$route['404_override'] = 'indexController/page_404';
 $route['danh-muc/(:any)/(:any)']['GET'] = 'indexController/category/$1/$2';
 $route['thuong-hieu/(:any)/(:any)']['GET'] = 'indexController/brand/$1/$2';
 $route['san-pham/(:any)/(:any)']['GET'] = 'indexController/product/$1/$2';
@@ -25,11 +25,18 @@ $route['confirm-checkout']['POST'] = 'indexController/confirm_checkout';
 $route['thank-you-for-order']['GET'] = 'indexController/thank_you_for_order';
 $route['search-product']['GET'] = 'indexController/search_product';
 
-// login
-$route['login']['GET'] = 'loginController/index';
+// admin
 $route['login-user']['POST'] = 'loginController/loginUser';
+$route['register-admin']['GET'] = 'loginController/register_admin';
+$route['register-admin-submit']['POST'] = 'loginController/insert_admin';
+
+
+// Customer
+$route['login']['GET'] = 'loginController/index';
 $route['dang-ky']['POST'] = 'indexController/dang_ky';
 $route['kich-hoat-tai-khoan']['GET'] = 'indexController/kich_hoat_tai_khoan';
+
+
 
 
 
@@ -50,6 +57,16 @@ $route['category/edit/(:any)']['GET'] = 'categoryController/editCategory/$1';
 $route['category/store']['POST'] = 'categoryController/storeCategory';
 $route['category/update/(:any)']['POST'] = 'categoryController/updateCategory/$1';
 $route['category/delete/(:any)']['GET'] = 'categoryController/deleteCategory/$1';
+// Slider
+$route['slider/list']['GET'] = 'sliderController/index';
+$route['slider/create']['GET'] = 'sliderController/createSlider';
+$route['slider/edit/(:any)']['GET'] = 'sliderController/editSlider/$1';
+$route['slider/store']['POST'] = 'sliderController/storeSlider';
+$route['slider/update/(:any)']['POST'] = 'sliderController/updateSlider/$1';
+$route['slider/delete/(:any)']['GET'] = 'sliderController/deleteSlider/$1';
+
+
+
 // Product
 $route['product/list']['GET'] = 'productController/index';
 $route['product/create']['GET'] = 'productController/createProduct';

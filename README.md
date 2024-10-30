@@ -10,3 +10,6 @@ done BAI42
 done BAI47
 done BAI49
 done BAI51
+
+
+BAI57 làm về số lượng đặt hàng của customer

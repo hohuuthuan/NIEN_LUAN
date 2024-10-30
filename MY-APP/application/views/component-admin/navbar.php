@@ -69,7 +69,17 @@
           Orders
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('order_admin/listOrder'); ?>">List Orders</a>
+          <a class="dropdown-item" href="<?php echo base_url('slider/listSlider'); ?>">List Orders</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          SLiders
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<?php echo base_url('slider/create'); ?>">Add Slider</a>
+          <a class="dropdown-item" href="<?php echo base_url('slider/list'); ?>">List Slider</a>
         </div>
       </li>
     </ul>

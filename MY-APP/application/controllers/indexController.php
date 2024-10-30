@@ -6,9 +6,15 @@ class indexController extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('indexModel');
+		$this->load->model('sliderModel');
 		$this->load->library('cart');
 		$this->data['brand'] = $this->indexModel->getBrandHome();
 		$this->data['category'] = $this->indexModel->getCategoryHome();
+	}
+	public function page_404(){
+
+		$this->load->view('pages/component/page404');
+
 	}
 	public function index()
 	{
@@ -46,8 +52,9 @@ class indexController extends CI_Controller {
 
 
 		$this->data['allProduct'] = $this->indexModel->getAllProduct();
+		$this->data['sliders'] = $this->sliderModel->selectAllSlider();
 		$this->load->view('pages/component/header', $this->data);
-		$this->load->view('pages/component/slider');
+		$this->load->view('pages/component/slider', $this->data);
 		$this->load->view('pages/home', $this->data);
 		$this->load->view('pages/component/footer');
 	}
@@ -333,34 +340,62 @@ class indexController extends CI_Controller {
 
 
 
-	public function add_to_cart()
-	{
+	public function add_to_cart() {
 		$product_id = $this->input->post('product_id');
 		$quantity = $this->input->post('quantity');
 		$this->data['product_details'] = $this->indexModel->getProductDetails($product_id);
+	
 		// Đặt hàng
-		foreach ($this->data['product_details'] as $key => $product) {
-			$cart = array(
-				'id'      => $product->id,
-				'qty'     => $quantity,
-				'price'   => $product->price,
-				'name'    => $product->title,
-				'options' => array('image' => $product->image)
-			);
+		$found = false;
+		foreach ($this->cart->contents() as $items) {
+			if ($items['id'] == $product_id) {
+				$this->session->set_flashdata('error', 'Mặt hàng bạn đặt đã tồn tại trong giỏ hàng. Vui lòng vào giỏ hàng chỉnh sửa số lượng');
+				redirect(base_url().'gio-hang', 'refresh');
+				$found = true;
+				break;
+			}
 		}
-		$this->cart->insert($cart);
-		redirect(base_url().'gio-hang', 'refresh');
+	
+		if (!$found) {
+			foreach ($this->data['product_details'] as $key => $product) {
+				if ($product->quantity >= $quantity) {
+					$cart = array(
+						'id'      => $product->id,
+						'qty'     => $quantity,
+						'price'   => $product->price,
+						'name'    => $product->title,
+						'options' => array('image' => $product->image, 'in_stock' => $product->quantity)
+					);
+					$this->cart->insert($cart);
+					$this->session->set_flashdata('success', 'Thêm vào giỏ hàng thành công.');
+					redirect(base_url().'gio-hang', 'refresh');
+				} else {
+					$this->session->set_flashdata('error', 'Số lượng bạn chọn vượt quá số lượng tồn kho. Vui lòng chọn lại.');
+					redirect($_SERVER['HTTP_REFERER']);
+				}
+			}
+		}
+
 	}
+	
 	
 	public function update_cart_item(){
 		$rowid = $this->input->post('rowid');
 		$quantity = $this->input->post('quantity');
 		foreach ($this->cart->contents() as  $items){
 			if($rowid == $items['rowid']){
-				$cart = array(
-					'rowid' => $rowid,
-					'qty' => $quantity
-				);
+				if($quantity < $items['options']['in_stock']){
+					$cart = array(
+						'rowid' => $rowid,
+						'qty' => $quantity
+					);
+				}elseif($quantity > $items['options']['in_stock']){
+					$cart = array(
+						'rowid' => $rowid,
+						'qty' => $items['options']['in_stock']
+					);
+				}
+				
 			}
 		}
 		$this->cart->update($cart);

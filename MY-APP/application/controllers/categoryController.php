@@ -135,7 +135,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$this->session->set_flashdata('success', 'Đã chỉnh sửa danh mục thành công');
 				redirect(base_url('category/list'));	
 			}else{
-				$this->editCategory($id);
+				$this->editcategory($id);
 			}
 		}
 

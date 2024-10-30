@@ -20,6 +20,11 @@
 
 						<form action="<?php echo base_url('add-to-cart') ?>" method="POST">
 						<div class="col-sm-7">
+						<?php if($this->session->flashdata('success')) { ?>
+							<div class="alert alert-success"><?php echo $this->session->flashdata('success') ?></div>
+						<?php } elseif($this->session->flashdata('error')) { ?>
+							<div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
+						<?php } ?>
 							<div class="product-information"><!--/product-information-->
 								<h2><?php echo $pro_det->title ?></h2>
 								<input type="hidden" value="<?php echo $pro_det->id?>" name="product_id">
@@ -237,7 +242,7 @@
 					<div class="recommended_items"><!--recommended_items-->
 						<h2 class="title text-center">recommended items</h2>
 						
-						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+						<!-- <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
 							<div class="carousel-inner">
 								<div class="item active">	
 									<div class="col-sm-4">
@@ -322,7 +327,7 @@
 							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
 								<i class="fa fa-angle-right"></i>
 							  </a>			
-						</div>
+						</div> -->
 					</div><!--/recommended_items-->
 					
 				</div>

@@ -16,6 +16,11 @@
             return $this->db->insert('customers', $data);
         
         }
+        public function newUserAdmin($data)
+        {
+            return $this->db->insert('user  ', $data);
+        
+        }
         public function newShipping($data)
         {
             $this->db->insert('shipping', $data);
