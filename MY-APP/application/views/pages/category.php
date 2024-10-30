@@ -19,7 +19,7 @@
 								</div>
 							</div>
 							<div class="col-md-7">
-								<form method="POST">
+								<form method="GET">
 								<p>
 									<label for="amount">Price range:</label>
 									<input type="text" id="amount" readonly="" style="border:0; color:#f6931f; font-weight:bold;">

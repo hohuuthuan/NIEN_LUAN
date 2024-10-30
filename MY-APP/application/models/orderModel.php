@@ -24,6 +24,17 @@ class orderModel extends CI_Model
 
         return $query->result();    
     }
+    public function printOrderDetails($orderCode)
+    {
+        $query =$this->db->select('orders.order_code, orders.status as order_status, orders_details.quantity as qty, orders_details.order_code,orders_details.product_id, products.*')
+        ->from('orders_details')
+        ->join('products', 'orders_details.product_id= products.id')
+        ->join('orders', 'orders.order_code= orders_details.order_code')
+        ->where('orders_details.order_code', $orderCode)
+        ->get();
+
+        return $query->result();    
+    }
 
     public function deleteOrder($order_code)
     {

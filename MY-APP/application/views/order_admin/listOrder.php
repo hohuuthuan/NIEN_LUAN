@@ -53,6 +53,7 @@
                     <td>
                         <a onclick="return confirm('Bạn chắc chắn muốn xóa chứ?')" href="<?php echo base_url('order_admin/deleteOrder/'.$ord->order_code) ?>" class="btn btn-danger">Delete</a>
                         <a href="<?php echo base_url('order_admin/viewOrder/'.$ord->order_code) ?>" class="btn btn-warning">View</a>
+                        <a href="<?php echo base_url('order_admin/printOrder/'.$ord->order_code) ?>" class="btn btn-warning">Print Order</a>
                     </td>
                 </tr>
                 <?php } ?>

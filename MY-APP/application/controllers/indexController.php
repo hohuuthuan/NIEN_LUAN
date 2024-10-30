@@ -49,9 +49,10 @@ class indexController extends CI_Controller {
 		$this->data['allproduct_pagination'] = $this->indexModel->getIndexPagination($config["per_page"], $this->page);
 		//pagination
 
+		// Dùng để hiển thị danh sách sản phẩm theo từng danh mục
+		$this->data['items_category'] = $this->indexModel->getItemsCategoryHome();
 
-
-		$this->data['allProduct'] = $this->indexModel->getAllProduct();
+		// $this->data['allProduct'] = $this->indexModel->getAllProduct();
 		$this->data['sliders'] = $this->sliderModel->selectAllSlider();
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/component/slider', $this->data);
@@ -316,6 +317,8 @@ class indexController extends CI_Controller {
 	public function product($id)
 	{
 		$this->data['product_details'] = $this->indexModel->getProductDetails($id);
+		$this->data['product_comments'] = $this->indexModel->getListConmment($id);
+
 		$this->data['title'] = $this->indexModel->getProductTitle($id);
 		$this->config->config['pageTitle'] = $this->data['title'];
 		$this->load->view('pages/component/header', $this->data);
@@ -566,7 +569,18 @@ class indexController extends CI_Controller {
 	}
 
 	
-
+	public function comment_send(){
+		$data = [
+			'name' => $this->input->post('name_comment'),
+			'email' => $this->input->post('email_comment'),
+			'comment' => $this->input->post('comment'),
+			'product_id_comment' => $this->input->post('pro_id_cmt'),
+			'status' => 0,
+			'date_cmt' => Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+ 		];
+		$result = $this->indexModel->commentSend($data);
+		
+	}
 	
 
 

@@ -214,24 +214,29 @@
 							
 							<div class="tab-pane fade active in" id="reviews" >
 								<div class="col-sm-12">
+									<?php 
+										foreach ($product_comments as $comment){
+									?>
 									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-									<p><b>Write Your Review</b></p>
+										<li><a href=""><i class="fa fa-user"></i><?php echo $comment->name ?></a></li>
+										<li><a href=""><i class="fa fa-clock-o"></i><?php echo $comment->date_cmt ?></a></li>
+										<p><?php echo $comment->comment?></p>
 									
-									<form action="#">
+									</ul>
+									
+								
+									<?php } ?>
+									<form>
 										<span>
-											<input type="text" placeholder="Your Name"/>
-											<input type="email" placeholder="Email Address"/>
+											<input type="hidden" required class="product_id_comment" value="<?php echo $pro_det->id?>">
+											<input class="name_comment" type="text" required placeholder="Họ và Tên của bạn..."/>
+											<input class="email_comment" type="email" required placeholder="Email..."/>
 										</span>
-										<textarea name="" ></textarea>
+										<textarea name="" class="comment" plaholder="Viết đánh giá..." required ></textarea>
 										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">
-											Submit
-										</button>
+										<button type="button" class="btn btn-default pull-right write-comment">
+											Gửi đánh giá
+										</button> 
 									</form>
 								</div>
 							</div>
@@ -242,7 +247,7 @@
 					<div class="recommended_items"><!--recommended_items-->
 						<h2 class="title text-center">recommended items</h2>
 						
-						<!-- <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
 							<div class="carousel-inner">
 								<div class="item active">	
 									<div class="col-sm-4">
@@ -327,8 +332,8 @@
 							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
 								<i class="fa fa-angle-right"></i>
 							  </a>			
-						</div> -->
-					</div><!--/recommended_items-->
+						</div> 
+					</div><!--/recommended_items
 					
 				</div>
 			</div>

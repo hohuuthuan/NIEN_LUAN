@@ -88,14 +88,13 @@ $route['order_admin/listOrder']['GET'] = 'orderController/index';
 $route['order_admin/update-order-status']['POST'] = 'orderController/update_order_status';
 $route['order_admin/viewOrder/(:any)']['GET'] = 'orderController/viewOrder/$1';
 $route['order_admin/deleteOrder/(:any)']['GET'] = 'orderController/deleteOrder/$1';
-
+$route['order_admin/printOrder/(:any)']['GET'] = 'orderController/printOrder/$1';
 
 // Mail
-
 $route['send-mail'] = 'indexController/send_mail';
 
-
-
+// Comment
+$route['comment/send']['POST'] = 'indexController/comment_send';
 
 
 

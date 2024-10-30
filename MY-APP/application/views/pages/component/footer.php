@@ -221,6 +221,29 @@
 			}
 	</script>
 
+	<script>
+		$('.write-comment').click(function(){
+			var name_comment = $('.name_comment').val();
+			var email_comment = $('.email_comment').val();
+			var comment = $('.comment').val();
+			var pro_id_cmt = $('.product_id_comment').val();
+			if(name_comment == '' || email_comment == '' || comment == ''){
+				alert('Hãy điền đầy đủ thông tin');
+			}else{
+				$.ajax({
+					method: 'POST',
+					url: '/comment/send',
+					data:{name_comment:name_comment, email_comment:email_comment, comment:comment, pro_id_cmt:pro_id_cmt},
+					success: function() {
+						alert('Đánh giá của bạn đã được ghi nhận');
+					}
+				})
+			}
+
+
+		});
+	</script>
+
 
 </body>
 </html>

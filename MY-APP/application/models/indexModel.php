@@ -24,8 +24,19 @@ class indexModel extends CI_Model
     }
     public function activeCustomerAndUpdateNewToken($email, $data_customer)
     {
-        return$this->db->update('customers',$data_customer ,['email' => $email]);
+        return $this->db->update('customers',$data_customer ,['email' => $email]);
     }
+
+    // comment
+    public function commentSend($data){
+        return $this->db->insert('comment',$data);
+    }
+    public function getListConmment(){
+       $query = $this->db->get_where('comment',['status' => 1]);
+        return $query->result();
+    }
+
+
 
     // Pagination
     public function countAllProduct()
@@ -157,6 +168,22 @@ class indexModel extends CI_Model
 // Hết pagination
 
 
+    public function getItemsCategoryHome()
+    {
+        $this->db->select('products.*, categories.title as cate_title, categories.id');
+        $this->db->from('categories');
+        $this->db->join('products', 'products.category_id = categories.id');
+        $query = $this->db->get();
+        $result = $query->result_array();
+        // print_r($result);
+        $newArray = array();
+        foreach ($result as $key => $value) {
+            $newArray[ $value['cate_title'] ][] = $value;
+        }
+        // print_r($newArray);
+        return $newArray;
+        
+    }
 
 
 

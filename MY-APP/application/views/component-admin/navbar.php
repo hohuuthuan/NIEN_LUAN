@@ -69,7 +69,7 @@
           Orders
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('slider/listSlider'); ?>">List Orders</a>
+          <a class="dropdown-item" href="<?php echo base_url('order_admin/listOrder'); ?>">List Orders</a>
         </div>
       </li>
 

@@ -53,5 +53,72 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			);
 			$this->orderModel->updateOrder($data, $order_code);
 		}
+
+		public function printOrder($order_code){
+       
+			$this->load->library('Pdf');
+	
+			$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+			$pdf->SetTitle('Print Order: '.$order_code);
+			$pdf->SetHeaderMargin(30);
+			$pdf->SetTopMargin(20);
+			$pdf->setFooterMargin(20);
+			$pdf->SetAutoPageBreak(true);
+			$pdf->SetAuthor('Author');
+			$pdf->SetDisplayMode('real', 'default');
+			$pdf->Write(5, 'CodeIgniter TCPDF Integration');
+			$pdf->SetFont('dejavusans', '', 10);
+	
+			//in đơn hàng
+			$pdf->SetFont('dejavusans', '', 10);
+			// add a page
+			$pdf->AddPage();
+			$this->load->model('orderModel');
+	
+			$data['order_details'] = $this->orderModel->printOrderDetails($order_code);
+	
+			$html = '
+			<h3>Đơn hàng của bạn bao gồm các sản phẩm:</h3>    
+			<p>Cảm ơn bạn đã ủng hộ website <a href="#">abc.domain</a> của chúng tôi. Vui lòng liên hệ hotline nếu xảy ra sự cố: 19001900</p>        
+			<table border="1" cellspacing="3" cellpadding="4">
+			  <thead>
+				<tr>
+				  <th>STT</th>
+				  <th>Mã đơn hàng</th>
+				  <th>Tên sản phẩm</th>
+				  <th>Giá</th>
+				  <th>Số lượng</th>
+				  <th>Tổng số tiền:</th>
+				</tr>
+			  </thead>
+			  <tbody>
+			  ';
+			  $total = 0;
+			  foreach($data['order_details'] as $key => $product){
+				$total+=$product->quantity*$product->price;
+				$html.='
+					<tr>
+					<td>'.$key.'</td>
+					<td>'.$order_code.'</td>
+					<td>'.$product->title.'</td> 
+					<td>'.$product->price.'</td>
+					<td>'.$product->quantity.'</td>
+					<td>'.number_format($product->quantity*$product->price,0,',','.').'đ</td>
+					
+					</tr>
+					';
+				}
+	
+			$html.='<tr><td colspan="7" align="right">Tổng tiền: '.number_format($total,0,',','.').'đ</td></tr>
+			</tbody>
+			</table>';
+		  
+	
+			// output the HTML content
+			$pdf->writeHTML($html, true, false, true, false, '');
+			$pdf->Output('Order: '.$order_code.'.pdf', 'I'); 
+		}
+
+
     }
 ?>
