@@ -16,7 +16,7 @@
 							<?php if($this->session->flashdata('success')) { ?>
 								<div class="alert alert-success"><?php echo $this->session->flashdata('success') ?></div>
 							<?php } elseif($this->session->flashdata('error')) { ?>
-								<div class="alert alert-warning"><?php echo $this->session->flashdata('error') ?></div>
+								<div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
 							<?php } ?>
 					
 						<tr class="cart_menu">

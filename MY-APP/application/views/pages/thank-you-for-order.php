@@ -7,7 +7,7 @@
 				</ol>
 			</div>
             <div class="alert alert-success">
-                <p>Thank you. Your order has been received.</p>
+                <p>Cảm ơn bạn đã đặt hàng. Bạn có thể kiểm tra email thông báo đặt hàng thành công</p>
             </div>
 		</div>
 </section>

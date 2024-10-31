@@ -1,17 +1,37 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class indexController extends CI_Controller {
+class indexController extends CI_Controller
+{
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
+
+
+		if (session_status() == PHP_SESSION_NONE) {
+			session_start();
+		}
+		if (!isset($_SESSION['history'])) {
+			$_SESSION['history'] = [];
+		}
+		// Lưu URL hiện tại vào lịch sử (trừ URL hiện tại)
+		if (end($_SESSION['history']) !== $_SERVER['REQUEST_URI']) {
+			$_SESSION['history'][] = $_SERVER['REQUEST_URI'];
+		}
+		// Giới hạn lịch sử chỉ lưu 3 URL gần nhất
+		if (count($_SESSION['history']) > 3) {
+			array_shift($_SESSION['history']);
+		}
+
 		$this->load->model('indexModel');
 		$this->load->model('sliderModel');
 		$this->load->library('cart');
 		$this->data['brand'] = $this->indexModel->getBrandHome();
 		$this->data['category'] = $this->indexModel->getCategoryHome();
 	}
-	public function page_404(){
+	public function page_404()
+	{
 
 		$this->load->view('pages/component/page404');
 
@@ -20,10 +40,10 @@ class indexController extends CI_Controller {
 	{
 		//custom config link
 		$config = array();
-        $config["base_url"] = base_url() .'/pagination/index'; 
+		$config["base_url"] = base_url() . '/pagination/index';
 		$config['total_rows'] = ceil($this->indexModel->countAllProduct()); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
 		$config["per_page"] = 6; //từng trang 3 sản phẩn
-        $config["uri_segment"] = 3; //lấy số trang hiện tại
+		$config["uri_segment"] = 3; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
 		$config['full_tag_close'] = '</ul>';
@@ -60,7 +80,8 @@ class indexController extends CI_Controller {
 		$this->load->view('pages/component/footer');
 	}
 
-	public function send_mail($to_mail, $subject, $message) {
+	public function send_mail($to_mail, $subject, $message)
+	{
 
 		$config = array();
 
@@ -82,13 +103,14 @@ class indexController extends CI_Controller {
 		// Gửi 1 bản copy cho 1 hay nhiều người mà không thấy được thông tin người gửi
 		// $this->email->bcc('them@their-example.com');
 
-		
+
 		$this->email->subject($subject);
 		$this->email->message($message);
 
 		$this->email->send();
 	}
-	public function confirm_checkout(){
+	public function confirm_checkout()
+	{
 		$this->form_validation->set_rules('name', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
@@ -103,16 +125,16 @@ class indexController extends CI_Controller {
 
 			$data = [
 				'name' => $name,
-				'email'=> $email,
+				'email' => $email,
 				'phone' => $phone,
-				'address'=> $address,
-				'form_of_payment'=> $form_of_payment
+				'address' => $address,
+				'form_of_payment' => $form_of_payment
 
-			];	
-			
+			];
+
 			$this->load->model('loginModel');
 			$result = $this->loginModel->newShipping($data);
-			if($result){
+			if ($result) {
 				$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3); // Lấy 3 chữ cái ngẫu nhiên
 				$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
 				$order_code = $letters . $numbers; // Kết hợp chữ cái và số
@@ -121,9 +143,9 @@ class indexController extends CI_Controller {
 				$data_orders = [
 					'order_code' => $order_code,
 					'status' => 1,
-					'form_of_payment_id'=> $result
-	
-				];	
+					'form_of_payment_id' => $result
+
+				];
 				$insert_orders = $this->loginModel->insert_orders($data_orders);
 
 				// Order details
@@ -136,7 +158,7 @@ class indexController extends CI_Controller {
 					$insert_orders_details = $this->loginModel->insert_orders_details($data_orders_details);
 				}
 
-				
+
 				$this->session->set_flashdata('success', 'Đặt hàng thành công');
 				// Khi đã đặt hàng thành công thì giỏ hàng sẽ xóa đi các mặt hàng đã đặt
 				$this->cart->destroy();
@@ -149,25 +171,25 @@ class indexController extends CI_Controller {
 				$this->send_mail($to_mail, $subject, $message);
 
 				redirect(base_url('thank-you-for-order'));
-			} else{
+			} else {
 				$this->session->set_flashdata('error', 'Đặt hàng thất bại');
 				redirect(base_url('checkout'));
 			}
-		}else{	
+		} else {
 			redirect(base_url('checkout'));
 		}
 	}
 
-	
+
 	public function category($id)
 	{
 		$this->data['slug'] = $this->indexModel->getCategorySlug($id);
 		//custom config link
 		$config = array();
-        $config["base_url"] = base_url() .'/pagination/danh-muc/'.'/'.$id.'/'.$this->data['slug']; 
+		$config["base_url"] = base_url() . '/pagination/danh-muc/' . '/' . $id . '/' . $this->data['slug'];
 		$config['total_rows'] = ceil($this->indexModel->countAllProductByCate($id)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
 		$config["per_page"] = 6; //từng trang 3 sản phẩn
-        $config["uri_segment"] = 5; //lấy số trang hiện tại
+		$config["uri_segment"] = 5; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
 		$config['full_tag_close'] = '</ul>';
@@ -189,7 +211,7 @@ class indexController extends CI_Controller {
 		$this->pagination->initialize($config); //tự động tạo trang
 		$this->page = ($this->uri->segment(5)) ? $this->uri->segment(5) : 0; //current page active 
 		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
-	
+
 		// Lấy giá thấp nhất và lớn nhất
 		$min_price = $this->data['min_price'] = $this->indexModel->getMinPriceProduct($id);
 		$max_price = $this->data['max_price'] = $this->indexModel->getMaxPriceProduct($id);
@@ -197,17 +219,17 @@ class indexController extends CI_Controller {
 
 
 		// Filter
-		if(isset($_GET['kytu'])){
+		if (isset($_GET['kytu'])) {
 			$kytu = $_GET['kytu'];
 			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryKyTuPagination($id, $kytu, $config["per_page"], $this->page);
-		}elseif(isset($_GET['gia'])){
+		} elseif (isset($_GET['gia'])) {
 			$kytu = $_GET['gia'];
 			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPricePagination($id, $kytu, $config["per_page"], $this->page);
-		}elseif(isset($_GET['to']) && isset($_GET['from']) ){
+		} elseif (isset($_GET['to']) && isset($_GET['from'])) {
 			$from_price = $_GET['from'];
 			$to_price = $_GET['to'];
 			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPriceRangePagination($id, $from_price, $to_price, $config["per_page"], $this->page);
-		}else{
+		} else {
 			$this->data['allproductbycate_pagination'] = $this->indexModel->getCategoryPagination($id, $config["per_page"], $this->page);
 		}
 
@@ -224,10 +246,10 @@ class indexController extends CI_Controller {
 		$this->data['slug'] = $this->indexModel->getBrandSlug($id);
 		//custom config link
 		$config = array();
-        $config["base_url"] = base_url() .'/pagination/thuong-hieu/'.'/'.$id.'/'.$this->data['slug']; 
+		$config["base_url"] = base_url() . '/pagination/thuong-hieu/' . '/' . $id . '/' . $this->data['slug'];
 		$config['total_rows'] = ceil($this->indexModel->countAllProductByBrand($id)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
 		$config["per_page"] = 6; //từng trang 3 sản phẩn
-        $config["uri_segment"] = 5; //lấy số trang hiện tại
+		$config["uri_segment"] = 5; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
 		$config['full_tag_close'] = '</ul>';
@@ -258,7 +280,7 @@ class indexController extends CI_Controller {
 		$this->data['title'] = $this->indexModel->getBrandTitle($id);
 		$this->config->config['pageTitle'] = $this->data['title'];
 		$this->load->view('pages/component/header', $this->data);
-		$this->load->view('pages/brand',$this->data);
+		$this->load->view('pages/brand', $this->data);
 		$this->load->view('pages/component/footer');
 	}
 
@@ -266,17 +288,17 @@ class indexController extends CI_Controller {
 
 	public function search_product()
 	{
-		if(isset($_GET['keyword']) && $_GET['keyword'] != ''){
+		if (isset($_GET['keyword']) && $_GET['keyword'] != '') {
 			$keyword = $_GET['keyword'];
 		}
 
 		//custom config link
 		$config = array();
-        $config["base_url"] = base_url().'/search-product'; 
+		$config["base_url"] = base_url() . '/search-product';
 		$config['reuse_query_string'] = TRUE;
 		$config['total_rows'] = ceil($this->indexModel->countAllProductByKeyword($keyword)); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
 		$config["per_page"] = 1; //từng trang 3 sản phẩn
-        $config["uri_segment"] = 2; //lấy số trang hiện tại
+		$config["uri_segment"] = 2; //lấy số trang hiện tại
 		$config['use_page_numbers'] = TRUE; //trang có số
 		$config['full_tag_open'] = '<ul class="pagination">';
 		$config['full_tag_close'] = '</ul>';
@@ -305,7 +327,7 @@ class indexController extends CI_Controller {
 
 		// $this->data['product'] = $this->indexModel->getProductByKeyword($keyword);
 		$this->data['title'] = $keyword;
-		$this->config->config['pageTitle'] = "Search product: ".$keyword;
+		$this->config->config['pageTitle'] = "Search product: " . $keyword;
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/search-product', $this->data);
 		$this->load->view('pages/component/footer');
@@ -343,35 +365,36 @@ class indexController extends CI_Controller {
 
 
 
-	public function add_to_cart() {
+	public function add_to_cart()
+	{
 		$product_id = $this->input->post('product_id');
 		$quantity = $this->input->post('quantity');
 		$this->data['product_details'] = $this->indexModel->getProductDetails($product_id);
-	
+
 		// Đặt hàng
 		$found = false;
 		foreach ($this->cart->contents() as $items) {
 			if ($items['id'] == $product_id) {
 				$this->session->set_flashdata('error', 'Mặt hàng bạn đặt đã tồn tại trong giỏ hàng. Vui lòng vào giỏ hàng chỉnh sửa số lượng');
-				redirect(base_url().'gio-hang', 'refresh');
+				redirect(base_url() . 'gio-hang', 'refresh');
 				$found = true;
 				break;
 			}
 		}
-	
+
 		if (!$found) {
 			foreach ($this->data['product_details'] as $key => $product) {
 				if ($product->quantity >= $quantity) {
 					$cart = array(
-						'id'      => $product->id,
-						'qty'     => $quantity,
-						'price'   => $product->price,
-						'name'    => $product->title,
+						'id' => $product->id,
+						'qty' => $quantity,
+						'price' => $product->price,
+						'name' => $product->title,
 						'options' => array('image' => $product->image, 'in_stock' => $product->quantity)
 					);
 					$this->cart->insert($cart);
 					$this->session->set_flashdata('success', 'Thêm vào giỏ hàng thành công.');
-					redirect(base_url().'gio-hang', 'refresh');
+					redirect(base_url() . 'gio-hang', 'refresh');
 				} else {
 					$this->session->set_flashdata('error', 'Số lượng bạn chọn vượt quá số lượng tồn kho. Vui lòng chọn lại.');
 					redirect($_SERVER['HTTP_REFERER']);
@@ -380,25 +403,26 @@ class indexController extends CI_Controller {
 		}
 
 	}
-	
-	
-	public function update_cart_item(){
+
+
+	public function update_cart_item()
+	{
 		$rowid = $this->input->post('rowid');
 		$quantity = $this->input->post('quantity');
-		foreach ($this->cart->contents() as  $items){
-			if($rowid == $items['rowid']){
-				if($quantity < $items['options']['in_stock']){
+		foreach ($this->cart->contents() as $items) {
+			if ($rowid == $items['rowid']) {
+				if ($quantity < $items['options']['in_stock']) {
 					$cart = array(
 						'rowid' => $rowid,
 						'qty' => $quantity
 					);
-				}elseif($quantity > $items['options']['in_stock']){
+				} elseif ($quantity > $items['options']['in_stock']) {
 					$cart = array(
 						'rowid' => $rowid,
 						'qty' => $items['options']['in_stock']
 					);
 				}
-				
+
 			}
 		}
 		$this->cart->update($cart);
@@ -406,24 +430,28 @@ class indexController extends CI_Controller {
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
-	public function delete_all_cart(){
+	public function delete_all_cart()
+	{
 		$this->cart->destroy();
-		redirect(base_url().'gio-hang', 'refresh');
+		redirect(base_url() . 'gio-hang', 'refresh');
 	}
-	public function delete_item($rowid){
+	public function delete_item($rowid)
+	{
 		$this->cart->remove($rowid);
-		redirect(base_url().'gio-hang', 'refresh');
+		redirect(base_url() . 'gio-hang', 'refresh');
 	}
 
 
 	public function login()
 	{
 		$this->config->config['pageTitle'] = 'Đăng nhập';
-		$this->load->view('pages/component/header');
+		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/login');
 		$this->load->view('pages/component/footer');
 	}
-	public function loginCustomer(){
+
+	public function loginCustomer()
+	{
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
 		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
 
@@ -431,38 +459,207 @@ class indexController extends CI_Controller {
 
 			$email = $this->input->post('email');
 			$password = md5($this->input->post('password'));
-			
+
 			$this->load->model('loginModel');
 			$result = $this->loginModel->checkLoginCustomer($email, $password);
-			if(count($result)>0){
+			if (count($result) > 0) {
 				$session_array = [
-					'id'=> $result[0]->id,
-					'username'=> $result[0]->username,
-					'email'=> $result[0]->email,
+					'id' => $result[0]->id,
+					'username' => $result[0]->username,
+					'email' => $result[0]->email,
 
 				];
 
 				$this->session->set_userdata('logged_in_customer', $session_array);
 				$this->session->set_flashdata('success', 'Đăng nhập thành công');
-				redirect(base_url('/checkout'));
-			} else{
+
+				$this->session->set_flashdata('success', 'Đăng nhập thành công, mời bạn tiếp tục mua hàng');
+
+
+				if ($this->cart->contents()) {
+					$this->session->set_flashdata('success', 'Đăng nhập thành công, mời bạn tiếp tục mua hàng');
+					if (isset($_SESSION['history'][count($_SESSION['history']) - 3])) {
+						$previous_url = $_SESSION['history'][count($_SESSION['history']) - 3];
+						redirect($previous_url);
+					} else {
+						redirect($_SERVER['HTTP_REFERER']);
+					}
+				} else {
+					redirect(base_url('/checkout'));
+				}
+
+
+			} else {
 				$this->session->set_flashdata('error', 'Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu');
 				redirect(base_url('/dang-nhap'));
 			}
-		}
-		else{
+		} else {
 			$this->login();
 		}
 	}
 
-	public function logout(){
+	public function getUserOnSession()
+	{
+
+		// Lấy thông tin người dùng từ session
+		$user_data = $this->session->userdata('logged_in_customer');
+		return $user_data['id'];
+	}
+
+	public function profile_user() {
+		$user_id = $this->getUserOnSession();
+		
+		// Kiểm tra nếu user_id hợp lệ
+		if ($user_id) {
+			$this->load->model('customerModel');
+			$profile_user = $this->customerModel->selectCustomerById($user_id);
+			
+			if ($profile_user) {
+				// echo $profile_user->id;
+				$this->load->view('customer/profile_Customer', ['profile_user' => $profile_user]);
+			} else {
+				echo 'Không tìm thấy thông tin người dùng';
+			}
+		} else {
+			echo 'Không tìm thấy ID người dùng trong session';
+		}
+	}
+	
+	
+
+
+
+	public function editCustomer($user_id)
+	{
+		$this->config->config['pageTitle'] = 'Chỉnh sửa thông tin người dùng';
+
+		$user_id = $this->getUserOnSession();
+		
+		// Kiểm tra nếu user_id hợp lệ
+		if ($user_id) {
+			$this->load->model('customerModel');
+			$profile_user = $this->customerModel->selectCustomerById($user_id);
+			
+			if ($profile_user) {
+				// echo $profile_user->id;
+				$this->load->view('customer/editCustomer', ['profile_user' => $profile_user]);
+			} else {
+				echo 'Không tìm thấy thông tin người dùng';
+			}
+		} else {
+			echo 'Không tìm thấy ID người dùng trong session';
+		}
+	}
+	
+	public function updateAvatarCustomer($user_id) {
+
+			if (!empty($_FILES['image']['name'])) {
+				// Upload Image
+				$ori_filename = $_FILES['image']['name'];
+				$new_name = time() . "-" . str_replace(' ', '-', $ori_filename);
+				$config = [
+					'upload_path' => './uploads/user',
+					'allowed_types' => 'gif|jpg|png|jpeg',
+					'file_name' => $new_name
+				];
+				$this->load->library('upload', $config);
+	
+				if (!$this->upload->do_upload('image')) {
+					$error = ['error' => $this->uploerad->display_errors()];
+					$this->load->view('customer/update_profile_us', $error);
+					return; // Thêm return để dừng việc thực thi tiếp tục
+				} else {
+					$avatar_filename = $this->upload->data('file_name');
+					$data = [
+						'avatar' => $avatar_filename
+					];
+				}
+			} else {
+				$data = [
+					
+				];
+			}
+	
+			// Kiểm tra giá trị của $data trước khi cập nhật
+			// echo '<pre>';
+			// print_r($data);
+			// echo '</pre>';
+	
+			$this->load->model('customerModel');
+			$this->customerModel->updateCustomers($user_id, $data);
+			$this->session->set_flashdata('success', 'Đã chỉnh sửa thông tin thành công');
+			redirect(base_url('profile-user'));
+	}
+	
+
+
+
+	public function updateCustomer($user_id) {
+		$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần điền %s']);
+		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần điền %s']);
+		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần chọn %s']);
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần chọn %s']);
+	
+		if ($this->form_validation->run()) {
+			if (!empty($_FILES['image']['name'])) {
+				// Upload Image
+				$ori_filename = $_FILES['image']['name'];
+				$new_name = time() . "-" . str_replace(' ', '-', $ori_filename);
+				$config = [
+					'upload_path' => './uploads/user',
+					'allowed_types' => 'gif|jpg|png|jpeg',
+					'file_name' => $new_name
+				];
+				$this->load->library('upload', $config);
+	
+				if (!$this->upload->do_upload('image')) {
+					$error = ['error' => $this->upload->display_errors()];
+					$this->load->view('customer/update_profile_user', $error);
+					return; // Thêm return để dừng việc thực thi tiếp tục
+				} else {
+					$avatar_filename = $this->upload->data('file_name');
+					$data = [
+						'username' => $this->input->post('username'),
+						'email' => $this->input->post('email'),
+						'address' => $this->input->post('address'),
+						'phone' => $this->input->post('phone'),
+						'avatar' => $avatar_filename
+					];
+				}
+			} else {
+				$data = [
+					'username' => $this->input->post('username'),
+					'email' => $this->input->post('email'),
+					'address' => $this->input->post('address'),
+					'phone' => $this->input->post('phone'),
+				];
+			}
+	
+			// Kiểm tra giá trị của $data trước khi cập nhật
+			// echo '<pre>';
+			// print_r($data);
+			// echo '</pre>';
+
+			$this->load->model('customerModel');
+			$this->customerModel->updateCustomers($user_id, $data);
+			$this->session->set_flashdata('success', 'Đã chỉnh sửa thông tin thành công');
+			redirect(base_url('profile-user'));
+		} else {
+			$this->editCustomer($user_id);
+		}
+	}
+	
+
+	public function logout()
+	{
 		$this->session->unset_userdata('logged_in_customer');
 		$this->session->set_flashdata('success', 'Đăng xuất thành công');
 		redirect(base_url('/dang-nhap'));
 	}
 
 
-	public function dang_ky(){
+	public function dang_ky()
+	{
 		$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
@@ -483,17 +680,17 @@ class indexController extends CI_Controller {
 
 			$data = [
 				'username' => $username,
-				'email'=> $email,
-				'password'=> $password,
+				'email' => $email,
+				'password' => $password,
 				'phone' => $phone,
-				'address'=> $address,
-				'token'=> $token,
-				'date_created'=> $date_created
+				'address' => $address,
+				'token' => $token,
+				'date_created' => $date_created
 			];
 
 			$this->load->model('loginModel');
 			$result = $this->loginModel->newCustomer($data);
-			if($result){
+			if ($result) {
 				// $session_array = [
 				// 	'email'=> $email,
 				// 	'username'=> $username,
@@ -503,29 +700,29 @@ class indexController extends CI_Controller {
 				// $this->session->set_flashdata('success', 'Đăng nhập thành công');
 
 				// Gửi mail thông báo đã đăng ký thành công
-				$fullURL = base_url().'kich-hoat-tai-khoan/?token='.$token.'&email='.$email;
+				$fullURL = base_url() . 'kich-hoat-tai-khoan/?token=' . $token . '&email=' . $email;
 				$to_mail = $email;
 				$subject = 'Thông báo đăng ký tài khoản thành công';
-				$message = 'Click vào đường link để kích hoạt tài khoản: '.$fullURL;
+				$message = 'Click vào đường link để kích hoạt tài khoản: ' . $fullURL;
 				$this->send_mail($to_mail, $subject, $message);
 				$this->session->set_flashdata('success', 'Đăng ký tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.');
 				redirect(base_url('dang-nhap'));
-			} else{
+			} else {
 				$this->session->set_flashdata('error', 'Đăng nhập thất bại');
 				redirect(base_url('dang-nhap'));
 			}
-		}
-		else{
+		} else {
 			$this->login();
 		}
 	}
-	public function kich_hoat_tai_khoan(){
-		if(isset($_GET['email']) && $_GET['token']){
+	public function kich_hoat_tai_khoan()
+	{
+		if (isset($_GET['email']) && $_GET['token']) {
 			echo $token = $_GET['token'];
 			echo $email = $_GET['email'];
 		}
-		$data['get_customer'] = $this->indexModel->getCustomerToken($email); 
-		
+		$data['get_customer'] = $this->indexModel->getCustomerToken($email);
+
 
 		// Update tài khoản vừa tạo
 		$time_now = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinute(10); // tạo thời gian 10 phút hoạt động cho đường link
@@ -534,21 +731,21 @@ class indexController extends CI_Controller {
 		$numbers = sprintf("%06d", rand(0, 999999)); // Tạo 6 chữ số ngẫu nhiên
 		$new_token = $letters . $numbers; // Kết hợp chữ cái và số
 
-		foreach($data['get_customer'] as $key => $value){
-			if($token!= $value->token){
-				$this->session->set_flashdata('error','Đường link kích hoạt không đúng hoặc đã được kích hoạt. Vui lòng kiểm tra lại!!!');
+		foreach ($data['get_customer'] as $key => $value) {
+			if ($token != $value->token) {
+				$this->session->set_flashdata('error', 'Đường link kích hoạt không đúng hoặc đã được kích hoạt. Vui lòng kiểm tra lại!!!');
 				redirect(base_url('dang-nhap'));
 			}
 			$data_customer = [
 				'status' => 1,
-				'token'	=> $new_token
+				'token' => $new_token
 			];
-			if($value->date_created < $time_now){
+			if ($value->date_created < $time_now) {
 				$active_customer = $this->indexModel->activeCustomerAndUpdateNewToken($email, $data_customer);
-				$this->session->set_flashdata('success','Kích hoạt tài khoản thành công, mời bạn đăng nhập lại');
+				$this->session->set_flashdata('success', 'Kích hoạt tài khoản thành công, mời bạn đăng nhập lại');
 				redirect(base_url('dang-nhap'));
-			}else{
-				$this->session->set_flashdata('error','Kích hoạt tài khoản thất bại, bạn vui lòng quay lại bước đăng ký');
+			} else {
+				$this->session->set_flashdata('error', 'Kích hoạt tài khoản thất bại, bạn vui lòng quay lại bước đăng ký');
 				redirect(base_url('dang-nhap'));
 			}
 
@@ -559,17 +756,19 @@ class indexController extends CI_Controller {
 	public function checkout()
 	{
 		$this->config->config['pageTitle'] = 'Checkout';
-		if($this->session->userdata('logged_in_customer') && $this->cart->contents()){
+		if ($this->session->userdata('logged_in_customer') && $this->cart->contents()) {
 			$this->load->view('pages/component/header', $this->data);
 			$this->load->view('pages/checkout');
 			$this->load->view('pages/component/footer');
-		}else{
-			redirect(base_url().'gio-hang');
+		} else {
+			$this->session->set_flashdata('error', 'Vui lòng đăng nhập để thực hiện đặt hàng');
+			redirect(base_url() . 'gio-hang');
 		}
 	}
 
-	
-	public function comment_send(){
+
+	public function comment_send()
+	{
 		$data = [
 			'name' => $this->input->post('name_comment'),
 			'email' => $this->input->post('email_comment'),
@@ -577,11 +776,11 @@ class indexController extends CI_Controller {
 			'product_id_comment' => $this->input->post('pro_id_cmt'),
 			'status' => 0,
 			'date_cmt' => Carbon\Carbon::now('Asia/Ho_Chi_Minh')
- 		];
+		];
 		$result = $this->indexModel->commentSend($data);
-		
+
 	}
-	
+
 
 
 }

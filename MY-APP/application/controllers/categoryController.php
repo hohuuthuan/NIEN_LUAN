@@ -86,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view("component-admin/footer");
 		}
 		
-		public function updatecategory($id)
+		public function updateCategory($id)
 		{
 			$this->form_validation->set_rules('title', 'Title', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);

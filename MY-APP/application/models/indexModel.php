@@ -287,6 +287,23 @@ class indexModel extends CI_Model
             ->get();
         return $query->result();
     }
+
+
+    public function getProfileUser($user_id) {
+        $query = $this->db->select('*')
+                          ->from('customers')
+                          ->where('id', $user_id)
+                          ->get();
+        return $query->row();
+    }
+    public function updateCustomer($user_id, $data) {
+        $this->db->where('id', $user_id);
+        return $this->db->update('customers', $data);
+    }
+    
+
+
+
 }
 
 ?>

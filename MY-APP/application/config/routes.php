@@ -25,6 +25,26 @@ $route['confirm-checkout']['POST'] = 'indexController/confirm_checkout';
 $route['thank-you-for-order']['GET'] = 'indexController/thank_you_for_order';
 $route['search-product']['GET'] = 'indexController/search_product';
 
+// Customer
+
+$route['profile-user']['GET'] = 'indexController/profile_user';
+$route['customer/edit/(:any)']['GET'] = 'indexController/editCustomer/$1';
+$route['customer/update/(:any)']['POST'] = 'indexController/updateCustomer/$1';
+$route['customer/update-avatar/(:any)']['POST'] = 'indexController/updateAvatarCustomer/$1';
+
+
+
+// Category
+$route['category/list']['GET'] = 'categoryController/index';
+$route['category/create']['GET'] = 'categoryController/createCategory';
+$route['category/edit/(:any)']['GET'] = 'categoryController/editCategory/$1';
+$route['category/store']['POST'] = 'categoryController/storeCategory';
+$route['category/update/(:any)']['POST'] = 'categoryController/updateCategory/$1';
+$route['category/delete/(:any)']['GET'] = 'categoryController/deleteCategory/$1';
+
+
+
+
 // admin
 $route['login-user']['POST'] = 'loginController/loginUser';
 $route['register-admin']['GET'] = 'loginController/register_admin';

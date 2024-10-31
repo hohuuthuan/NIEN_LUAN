@@ -68,7 +68,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<?php
 									if($this->session->userdata('logged_in_customer')){
 								?>
-								<li><a href="#"><i class="fa fa-user"></i> Account</a>: <?php echo $this->session->userdata('logged_in_customer')['username'] ?></li>
+								<li><a href="#">
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fa fa-user"></i><b><?php echo $this->session->userdata('logged_in_customer')['username'] ?></b>
+									</a>
+									<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<a class="dropdown-item" href="<?php echo base_url('profile-user'); ?>">Profile</a>
+									</div>
+								</li>
+								
+								
+								</a></li>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="<?php echo base_url('checkout')?>"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="<?php echo base_url('dang-xuat')?>"><i class="fa fa-lock"></i> Logout</a></li>

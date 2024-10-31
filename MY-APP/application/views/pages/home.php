@@ -1,5 +1,7 @@
+
 <section>
 	<div class="container">
+
 		<div class="row">
 			<?php $this->load->view('pages/component/sidebar'); ?>
 			<!-- Hiển thị ra tất cả sản phẩm, phân trang -->
