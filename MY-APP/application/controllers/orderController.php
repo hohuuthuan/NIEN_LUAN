@@ -14,7 +14,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
             $this->load->model('orderModel');
+
+
 			$data['order'] = $this->orderModel->selectOrder();
+			// In dữ liệu để kiểm tra
+			// echo '<pre>';
+			// print_r($data['order']);
+			// echo '</pre>';
+			
 			$this->load->view("order_admin/listOrder", $data);
 			$this->load->view("component-admin/footer");
 		}
@@ -25,7 +32,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
             $this->load->model('orderModel');
+
+
 			$data['order_details'] = $this->orderModel->selectOrderDetails($order_code);
+			// In dữ liệu để kiểm tra
+			// echo '<pre>';
+			// print_r($data['order_details']);
+			// echo '</pre>';
+
 			$this->load->view("order_admin/viewOrder", $data);
 			$this->load->view("component-admin/footer");
 		}

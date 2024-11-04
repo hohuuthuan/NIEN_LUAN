@@ -19,12 +19,12 @@ class indexModel extends CI_Model
     }
     public function getCustomerToken($email)
     {
-        $query = $this->db->get_where('customers', ['email' => $email]);
+        $query = $this->db->get_where('users', ['email' => $email]);
         return $query->result();
     }
     public function activeCustomerAndUpdateNewToken($email, $data_customer)
     {
-        return $this->db->update('customers',$data_customer ,['email' => $email]);
+        return $this->db->update('users',$data_customer ,['email' => $email]);
     }
 
     // comment

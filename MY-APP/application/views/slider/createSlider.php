@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Thêm danh mục</div>
         <div class="card-body">

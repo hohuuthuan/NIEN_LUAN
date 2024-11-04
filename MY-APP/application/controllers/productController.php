@@ -17,6 +17,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->load->model('productModel');
 			$data['product'] = $this->productModel->selectAllProduct();
 
+			echo '<pre>';
+			print_r($data);
+			echo '</pre>';
+
+
 			$this->load->view("product/listProduct", $data);
 			$this->load->view("component-admin/footer");
 		}
@@ -31,6 +36,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// Load brand
 			$this->load->model('brandModel');
 			$data['brand'] = $this->brandModel->selectBrand();
+
+
+
 
 			$this->load->view("product/createProduct", $data);
 			$this->load->view("component-admin/footer");
@@ -74,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'category_id'=> $this->input->post('category_id'),
 					];
 					$this->load->model('productModel');
-					$this->productModel->insertproduct($data);
+					$this->productModel->insertProductAndWarehouse($data);
 					$this->session->set_flashdata('success', 'Đã thêm danh mục thành công');
 					redirect(base_url('product/list'));
 

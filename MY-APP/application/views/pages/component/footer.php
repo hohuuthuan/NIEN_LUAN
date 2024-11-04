@@ -245,5 +245,14 @@
 	</script>
 
 
+
+	<script>
+				// Hiển thị vòng xoay khi trang được tải lại
+		window.addEventListener('beforeunload', function () {
+		document.getElementById('loader').style.display = 'block';
+		});
+
+	</script>
+
 </body>
 </html>

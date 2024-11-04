@@ -23,7 +23,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 
 		public function insert_admin(){
-
 			$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp username']);
 			$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
 			$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
@@ -37,6 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'username' => $username,
 					'email' => $email,
 					'password' => $password,
+					'role_id' => 0,
 					'status' => 0
 				];
 
@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 
-		public function loginUser(){
+		public function loginAdmin(){
 			$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
 			$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
 
@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$email = $this->input->post('email');
 				$password = md5($this->input->post('password'));
 				$this->load->model('loginModel');
-				$result = $this->loginModel->checkLogin($email, $password);
+				$result = $this->loginModel->checkLoginAdmin($email, $password);
 				if(count($result)>0){
 					$session_array = [
 						'id'=> $result[0]->id,

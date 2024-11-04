@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Chỉnh sửa Slider</div>
         <div class="card-body">

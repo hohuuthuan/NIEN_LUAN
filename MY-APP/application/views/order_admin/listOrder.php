@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Danh sách đơn đặt hàng</div>
             <?php if($this->session->flashdata('success')) { ?>
@@ -15,6 +15,7 @@
                     <th scope="col">Customer name</th>
                     <th scope="col">Customer phone</th>
                     <th scope="col">Customer address</th>
+                    <th scope="col">Form of cash payment</th>
                     <th scope="col">Status</th>
                     <th scope="col">Manage</th>
                 </tr>
@@ -29,7 +30,7 @@
                     <td><?php echo $ord->name?></td>
                     <td><?php echo $ord->phone?></td>
                     <td><?php echo $ord->address?></td>
-                
+                    <td><?php echo $ord->form_of_payment?></td>
                     <td>
                         <?php
                         if ($ord->status == 1) {

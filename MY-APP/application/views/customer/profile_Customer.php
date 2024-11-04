@@ -10,7 +10,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <!--  All snippets are MIT license http://bootdey.com/license -->
     <title><?php echo $this->config->config['pageTitle'] ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style type="text/css">
         body {
             margin-top: 20px;
@@ -93,7 +94,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
         <?php } ?>
         <?php if (isset($profile_user)) { ?>
-            <nav class="nav nav-borders">
+            <nav style="font-size: 16px" class="nav nav-borders">
                 <a class="nav-link" style="color: crimson;" href="<?php echo base_url('/') ?>" target="__blank">Trở về trang chủ</a>
                 <a class="nav-link active   ms-0" href="<?php echo base_url('profile-user/') ?>" target="__blank">Chi tiết thông tin người dùng</a>
                 <a class="nav-link ms-0" href="<?php echo base_url('customer/edit/' . $profile_user->id) ?>" target="__blank">Chỉnh sửa thông tin</a>

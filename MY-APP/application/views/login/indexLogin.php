@@ -5,7 +5,7 @@
     <div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
   <?php } ?>
   <h2>Login admin</h2>
-  <form action="<?php echo base_url('login-user') ?>" method="POST">
+  <form action="<?php echo base_url('login-admin') ?>" method="POST">
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">

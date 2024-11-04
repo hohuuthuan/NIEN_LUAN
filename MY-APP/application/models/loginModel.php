@@ -1,24 +1,24 @@
 <?php 
     class loginModel extends CI_Model
     {
-        public function checkLogin($email, $password)
+        public function checkLoginAdmin($email, $password)
         {
-            $query = $this->db->where('email', $email)->where('password', $password)->get('user');
+            $query = $this->db->where('email', $email)->where('password', $password)->where('status', 1)->where('role_id', 1)->get('users');
             return $query->result();
         }
         public function checkLoginCustomer($email, $password)
         {
-            $query = $this->db->where('email', $email)->where('password', $password)->where('status', 1)->get('customers');
+            $query = $this->db->where('email', $email)->where('password', $password)->where('status', 1)->where('role_id', 2)->get('users');
             return $query->result();
         }
         public function newCustomer($data)
         {
-            return $this->db->insert('customers', $data);
+            return $this->db->insert('users', $data);
         
         }
         public function newUserAdmin($data)
         {
-            return $this->db->insert('user  ', $data);
+            return $this->db->insert('users', $data);
         
         }
         public function newShipping($data)

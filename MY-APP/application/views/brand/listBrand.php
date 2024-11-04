@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Danh sách thương hiệu</div>
             <?php if($this->session->flashdata('success')) { ?>

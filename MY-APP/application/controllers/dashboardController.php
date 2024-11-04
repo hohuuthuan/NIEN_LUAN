@@ -22,5 +22,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->session->unset_userdata('logged_in');
 			$this->session->set_flashdata('message', 'Đăng xuất thành công');
 			redirect(base_url('login'));
-		}
+		}	
 }

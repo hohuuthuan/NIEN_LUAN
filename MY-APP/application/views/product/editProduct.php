@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Chỉnh sửa sản phẩm</div>
         <div class="card-body">
@@ -85,7 +85,11 @@
                         ?>
                             <option selected value="1">Active</option>
                             <option value="0">Inactive</option>
-                        <?php } ?>
+                            <?php }elseif($customers->status ==0){
+                            ?>
+                            <option value="1">Active</option>
+                            <option selected  value="0">Inactive</option>
+                        <?php }?>
                     </select>
                 </div>
             </div>

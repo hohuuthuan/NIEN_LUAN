@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Danh sách đơn đặt hàng</div>
             <?php if($this->session->flashdata('success')) { ?>
@@ -16,12 +16,14 @@
                     <th scope="col">Product Image</th>
                     <th scope="col">Product Price</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Hình thức thanh toán</th>
                     <th scope="col">Subtotal</th>
                     <th scope="col">Manage</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
+               
                     foreach($order_details as $key => $ord){
                 ?>
                 <tr>
@@ -32,7 +34,7 @@
                     <td><img src="<?php echo base_url('uploads/product/'.$ord->image) ?>" alt="" width="150" height="150"></td>
                     <td><?php echo number_format($ord->price,0, ',','.') ?>vnd</td>
                     <td><?php echo $ord->qty?></td>
-                
+                    <td><?php echo $ord->form_of_payment?></td>
                     <td><?php echo number_format($ord->qty * $ord->price,0, ',','.') ?>vnd</td>
 
 

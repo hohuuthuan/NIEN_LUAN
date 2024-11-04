@@ -1,19 +1,28 @@
-<?php 
-    class customerModel extends CI_Model
+<?php
+class customerModel extends CI_Model
+{
+    public function selectCustomer()
     {
-
-        public function selectCustomerById($user_id)
-        {
-            $query = $this->db->get_where('customers', ['id' => $user_id]); 
-            return $query->row();  
-        }
-
-        public function updateCustomers($user_id, $data)
-        {
-            return $this->db->update('customers',$data, ['id'=>$user_id]);   
-        }
-
-
+        $this->db->where('role_id', 2);
+        $query = $this->db->get('users');
+        return $query->result();
     }
-    
+
+    public function selectCustomerById($id)
+    {
+        $query = $this->db->get_where('users', ['id' => $id]);
+        return $query->row();
+    }
+
+    public function updateCustomer($id, $data)
+    {
+        return $this->db->update('users', $data, ['id' => $id]);
+    }
+
+    public function deleteCustomer($id)
+    {
+        return $this->db->delete('users', ['id' => $id]);
+    }
+}
+
 ?>

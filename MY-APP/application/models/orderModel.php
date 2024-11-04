@@ -12,13 +12,26 @@ class orderModel extends CI_Model
 
         return $query->result();
     }
+    public function getOrderByUserId($user_id) {
+        $query = $this->db->select('orders.*, orders_details.*, shipping.*')
+            ->from('orders')
+            ->join('orders_details', 'orders.order_code = orders_details.order_code','')
+            ->join('shipping', 'orders.form_of_payment_id = shipping.id')
+            ->where('shipping.user_id', $user_id)
+            ->get();
+        return $query->result();
+    }
+    
+
+
 
     public function selectOrderDetails($orderCode)
     {
-        $query =$this->db->select('orders.order_code, orders.status as order_status, orders_details.quantity as qty, orders_details.order_code,orders_details.product_id, products.*')
+        $query =$this->db->select('orders.order_code, orders.status as order_status, orders_details.quantity as qty, orders_details.order_code,orders_details.product_id, products.*, shipping.*')
         ->from('orders_details')
         ->join('products', 'orders_details.product_id= products.id')
         ->join('orders', 'orders.order_code= orders_details.order_code')
+        ->join('shipping', 'orders.form_of_payment_id= shipping.id')
         ->where('orders_details.order_code', $orderCode)
         ->get();
 
