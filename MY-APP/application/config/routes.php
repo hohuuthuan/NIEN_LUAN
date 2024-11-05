@@ -101,6 +101,16 @@ $route['product/store']['POST'] = 'productController/storeProduct';
 $route['product/update/(:any)']['POST'] = 'productController/updateProduct/$1';
 $route['product/delete/(:any)']['GET'] = 'productController/deleteProduct/$1';
 
+// Warehouse
+$route['warehouse/list']['GET'] = 'warehouseController/index';
+$route['quantity/update/(:any)']['GET'] = 'warehouseController/updateQuantityProduct/$1';
+
+$route['warehouse/plusquantity/(:any)']['POST'] = 'warehouseController/plusQuantity/$1';
+
+
+
+
+
 // Pagination
 $route['pagination/index/(:num)']['GET'] = 'indexController/index/$1';
 $route['pagination/index']['GET'] = 'indexController/index/';
@@ -132,6 +142,8 @@ $route['comment/send']['POST'] = 'indexController/comment_send';
 
 // Cart
 $route['cart/order-items']['GET'] = 'indexController/order_items';
+
+
 
 
 

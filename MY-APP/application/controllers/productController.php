@@ -17,9 +17,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->load->model('productModel');
 			$data['product'] = $this->productModel->selectAllProduct();
 
-			echo '<pre>';
-			print_r($data);
-			echo '</pre>';
+			// echo '<pre>';
+			// print_r($data);
+			// echo '</pre>';
 
 
 			$this->load->view("product/listProduct", $data);
@@ -37,9 +37,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->model('brandModel');
 			$data['brand'] = $this->brandModel->selectBrand();
 
-
-
-
 			$this->load->view("product/createProduct", $data);
 			$this->load->view("component-admin/footer");
 		}
@@ -49,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);
 			$this->form_validation->set_rules('price', 'Price', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần chọn %s']);
-			$this->form_validation->set_rules('quantity', 'Quantity', 'trim|required', ['required' => 'Bạn cần chọn %s']);
+
 
 			if ($this->form_validation->run()) {
 
@@ -83,12 +80,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					];
 					$this->load->model('productModel');
 					$this->productModel->insertProductAndWarehouse($data);
-					$this->session->set_flashdata('success', 'Đã thêm danh mục thành công');
+					$this->session->set_flashdata('success', 'Đã thêm sản phẩm thành công');
 					redirect(base_url('product/list'));
 
-				}
-
-				
+				}	
 			}else{
 				$this->createProduct();
 			}
@@ -106,9 +101,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->model('brandModel');
 			$data['brand'] = $this->brandModel->selectBrand();
 
+			
+
 
 			$this->load->model('productModel');
 			$data['product'] = $this->productModel->selectProductById($id);
+
+
+			echo '<pre>';
+			print_r($data);
+			echo '</pre>';
 
 			$this->load->view("product/editProduct", $data);
 			$this->load->view("component-admin/footer");
@@ -120,7 +122,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);
 			$this->form_validation->set_rules('price', 'Price', 'trim|required', ['required' => 'Bạn cần diền %s']);
 			$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần chọn %s']);
-			$this->form_validation->set_rules('quantity', 'Quantity', 'trim|required', ['required' => 'Bạn cần chọn %s']);
+			
 			
 
 			if ($this->form_validation->run()) {
@@ -151,7 +153,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							'price' => $this->input->post('price'),
 							'image' => $product_filename,
 							'status' => $this->input->post('status'),
-							'quantity'=> $this->input->post('quantity'),
+					
 							'brand_id'=> $this->input->post('brand_id'),
 							'category_id'=> $this->input->post('category_id'),
 						];
@@ -163,7 +165,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						'description' => $this->input->post('description'),
 						'price' => $this->input->post('price'),
 						'status' => $this->input->post('status'),
-						'quantity'=> $this->input->post('quantity'),
+
 						'brand_id'=> $this->input->post('brand_id'),
 						'category_id'=> $this->input->post('category_id'),
 					];

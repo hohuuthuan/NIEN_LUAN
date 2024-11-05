@@ -14,9 +14,15 @@ class indexModel extends CI_Model
 
     public function getAllProduct()
     {
-        $query = $this->db->get_where('products', ['status' => 1]);
+        // Chọn tất cả các cột từ bảng products và cột quantity từ bảng warehouses
+        $this->db->select('products.*, warehouses.quantity');
+        $this->db->from('products');
+        $this->db->join('warehouses', 'warehouses.product_id = products.id', 'left');
+        $this->db->where('products.status', 1);
+        $query = $this->db->get();
         return $query->result();
     }
+
     public function getCustomerToken($email)
     {
         $query = $this->db->get_where('users', ['email' => $email]);
@@ -24,15 +30,17 @@ class indexModel extends CI_Model
     }
     public function activeCustomerAndUpdateNewToken($email, $data_customer)
     {
-        return $this->db->update('users',$data_customer ,['email' => $email]);
+        return $this->db->update('users', $data_customer, ['email' => $email]);
     }
 
     // comment
-    public function commentSend($data){
-        return $this->db->insert('comment',$data);
+    public function commentSend($data)
+    {
+        return $this->db->insert('comment', $data);
     }
-    public function getListConmment(){
-       $query = $this->db->get_where('comment',['status' => 1]);
+    public function getListConmment()
+    {
+        $query = $this->db->get_where('comment', ['status' => 1]);
         return $query->result();
     }
 
@@ -64,7 +72,7 @@ class indexModel extends CI_Model
         return $this->db->count_all_results();
 
     }
-    
+
     public function getIndexPagination($limit, $start)
     {
         $this->db->limit($limit, $start);
@@ -116,8 +124,8 @@ class indexModel extends CI_Model
             ->join('products', 'products.category_id = categories.id')
             ->join('brands', 'brands.id = products.brand_id')
             ->where('products.category_id', $id)
-            ->where('products.price >='.$from_price)
-            ->where('products.price <='.$to_price)
+            ->where('products.price >=' . $from_price)
+            ->where('products.price <=' . $to_price)
             ->order_by('products.price', 'asc')
             ->get();
         return $query->result();
@@ -165,7 +173,7 @@ class indexModel extends CI_Model
             ->get();
         return $query->result();
     }
-// Hết pagination
+    // Hết pagination
 
 
     public function getItemsCategoryHome()
@@ -178,11 +186,11 @@ class indexModel extends CI_Model
         // print_r($result);
         $newArray = array();
         foreach ($result as $key => $value) {
-            $newArray[ $value['cate_title'] ][] = $value;
+            $newArray[$value['cate_title']][] = $value;
         }
         // print_r($newArray);
         return $newArray;
-        
+
     }
 
 
@@ -200,7 +208,8 @@ class indexModel extends CI_Model
         return $title = $result->title;
     }
 
-    public function getMinPriceProduct($id){
+    public function getMinPriceProduct($id)
+    {
         $this->db->select('products.*');
         $this->db->from('products');
         $this->db->select_min('price');
@@ -210,7 +219,8 @@ class indexModel extends CI_Model
         $result = $query->row();
         return $price = $result->price;
     }
-    public function getMaxPriceProduct($id){
+    public function getMaxPriceProduct($id)
+    {
         $this->db->select('products.*');
         $this->db->from('products');
         $this->db->select_max('price');
@@ -246,14 +256,16 @@ class indexModel extends CI_Model
     }
     public function getProductDetails($id)
     {
-        $query = $this->db->select('categories.title as tendanhmuc, products.*, brands.title as tenthuonghieu')
+        $query = $this->db->select('categories.title as tendanhmuc, products.*, brands.title as tenthuonghieu, warehouses.quantity')
             ->from('categories')
             ->join('products', 'products.category_id = categories.id')
             ->join('brands', 'brands.id = products.brand_id')
+            ->join('warehouses', 'warehouses.product_id = products.id', 'left')
             ->where('products.id', $id)
             ->get();
         return $query->result();
     }
+
 
     public function getBrandTitle($id)
     {
@@ -289,18 +301,20 @@ class indexModel extends CI_Model
     }
 
 
-    public function getProfileUser($user_id) {
+    public function getProfileUser($user_id)
+    {
         $query = $this->db->select('*')
-                          ->from('customers')
-                          ->where('id', $user_id)
-                          ->get();
+            ->from('customers')
+            ->where('id', $user_id)
+            ->get();
         return $query->row();
     }
-    public function updateCustomer($user_id, $data) {
+    public function updateCustomer($user_id, $data)
+    {
         $this->db->where('id', $user_id);
         return $this->db->update('customers', $data);
     }
-    
+
 
 
 

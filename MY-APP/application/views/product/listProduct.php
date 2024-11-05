@@ -18,12 +18,9 @@
                     <th scope="col">Price</th>
                     <th scope="col">Brand</th>
                     <th scope="col">Category</th>                   
-                    <th scope="col">Quantity</th>
+                    <th scope="col">Quantity in warehouse</th>
                     <th scope="col">Image</th>
                     <th scope="col">Status</th>
-                    
-                    
-                   
                     <th scope="col">Manage</th>
                 </tr>
             </thead>
@@ -39,7 +36,10 @@
                     <td><?php echo number_format($pro->price,0, ',','.') ?>vnd</td>
                     <td><?php echo $pro->tenthuonghieu?></td>
                     <td><?php echo $pro->tendanhmuc?></td>
-                    <td><?php echo $pro->quantity?></td>
+                    <td>
+                        <?php echo $pro->quantity?>
+                        
+                </td>
                     <td><img src="<?php echo base_url('uploads/product/'.$pro->image) ?>" alt="" width="150" height="150"></td>
                     <td><?php 
                         if($pro->status == 1){
@@ -49,8 +49,9 @@
                         }     
                     ?></td>
                     <td>
-                        <a onclick="return confirm('Bạn chắc chắn muốn xóa chứ?')" href="<?php echo base_url('product/delete/'.$pro->id) ?>" class="btn btn-danger">Delete</a>
-                        <a href="<?php echo base_url('product/edit/'.$pro->id) ?>" class="btn btn-warning">Edit</a>
+                        <a onclick="return confirm('Bạn chắc chắn muốn xóa chứ?')" href="<?php echo base_url('product/delete/'.$pro->product_id) ?>" class="btn btn-danger">Delete</a>
+                        <a href="<?php echo base_url('product/edit/'.$pro->product_id) ?>" class="btn btn-warning">Edit</a>
+                        <a href="<?php echo base_url('quantity/update/'.$pro->product_id)?>"><button class="btn btn-warning">Quản lý trong kho</button></a>
                     </td>
                 </tr>
                 <?php } ?>

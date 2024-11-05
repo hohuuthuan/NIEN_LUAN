@@ -422,9 +422,11 @@ class indexController extends CI_Controller
 	{
 		$this->data['product_details'] = $this->indexModel->getProductDetails($id);
 		$this->data['product_comments'] = $this->indexModel->getListConmment($id);
-
 		$this->data['title'] = $this->indexModel->getProductTitle($id);
 		$this->config->config['pageTitle'] = $this->data['title'];
+		// echo '<pre>';
+		// print_r($this->data);
+		// echo '</pre>';
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/product_detail', $this->data);
 		$this->load->view('pages/component/footer');

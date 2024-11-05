@@ -15,11 +15,11 @@
                 <input name="title" value="<?php echo $product->title ?>" type="text" class="form-control" id="slug" onkeyup="ChangeToSlug();" aria-describedby="emailHelp" placeholder="">
                 <?php echo '<span class="text text-danger">'.form_error('title').'</span>' ?>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Quantity</label>
                 <input name="quantity" value="<?php echo $product->quantity ?>" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
                 <?php echo '<span class="text text-danger">'.form_error('quantity').'</span>' ?>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label>Slug</label>
                 <input name="slug" value="<?php echo $product->slug ?>" type="text" class="form-control" id="convert_slug" aria-describedby="emailHelp" placeholder="">
