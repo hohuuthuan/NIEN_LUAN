@@ -8,7 +8,7 @@ class indexController extends CI_Controller
 	{
 		parent::__construct();
 
-		
+
 		if (session_status() == PHP_SESSION_NONE) {
 			session_start();
 		}
@@ -40,8 +40,8 @@ class indexController extends CI_Controller
 
 	public function checkLogin()
 	{
-		if(!$this->session->userdata('logged_in_customer')){
-				redirect(base_url('/dang-nhap'));
+		if (!$this->session->userdata('logged_in_customer')) {
+			redirect(base_url('/dang-nhap'));
 		}
 	}
 
@@ -54,13 +54,16 @@ class indexController extends CI_Controller
 	}
 	public function index()
 	{
-		//custom config link
+		// Lấy số lượng sản phẩm từ model
+		$total_products = $this->indexModel->countAllProduct();
+
+		// Cấu hình phân trang
 		$config = array();
 		$config["base_url"] = base_url() . '/pagination/index';
-		$config['total_rows'] = ceil($this->indexModel->countAllProduct()); //đếm tất cả sản phẩm //8 //hàm ceil làm tròn phân trang 
-		$config["per_page"] = 6; //từng trang 3 sản phẩn
-		$config["uri_segment"] = 3; //lấy số trang hiện tại
-		$config['use_page_numbers'] = TRUE; //trang có số
+		$config['total_rows'] = $total_products; // Sử dụng số lượng sản phẩm đã được đếm
+		$config["per_page"] = 6; // Số lượng sản phẩm trên mỗi trang
+		$config["uri_segment"] = 3; // Vị trí của số trang trong URI
+		$config['use_page_numbers'] = TRUE; // Sử dụng số trang thay vì offset
 		$config['full_tag_open'] = '<ul class="pagination">';
 		$config['full_tag_close'] = '</ul>';
 		$config['first_link'] = 'First';
@@ -77,19 +80,29 @@ class indexController extends CI_Controller
 		$config['next_tag_close'] = '</li>';
 		$config['prev_tag_open'] = '<li>';
 		$config['prev_tag_close'] = '</li>';
-		//end custom config link
-		$this->pagination->initialize($config); //tự động tạo trang
-		$this->page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0; //current page active 
-		$this->data["links"] = $this->pagination->create_links(); //tự động tạo links phân trang dựa vào trang hiện tại
-		// Giới hạn sản phẩm trong trang (limit, start)
-		$this->data['allproduct_pagination'] = $this->indexModel->getIndexPagination($config["per_page"], $this->page);
-		//pagination
 
-		// Dùng để hiển thị danh sách sản phẩm theo từng danh mục
+		// Khởi tạo phân trang
+		$this->pagination->initialize($config);
+
+		// Xác định trang hiện tại
+		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 1;
+		$start = ($page - 1) * $config["per_page"]; // Tính toán vị trí bắt đầu cho truy vấn
+
+		// Tạo các liên kết phân trang
+		$this->data["links"] = $this->pagination->create_links();
+
+		// Giới hạn sản phẩm trong trang (limit, start) HÀM getIndexPagination là hàm lấy tất cả sản phẩm status=1
+		$this->data['allproduct_pagination'] = $this->indexModel->getIndexPagination($config["per_page"], $start);
+		// echo '<pre>';
+		// print_r($this->data);
+		// echo '</pre>';
+		// Lấy danh sách sản phẩm theo danh mục
 		$this->data['items_category'] = $this->indexModel->getItemsCategoryHome();
 
-		// $this->data['allProduct'] = $this->indexModel->getAllProduct();
+		// Lấy dữ liệu các slider
 		$this->data['sliders'] = $this->sliderModel->selectAllSlider();
+
+		// Tải các view và truyền dữ liệu vào view
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/component/slider', $this->data);
 		$this->load->view('pages/home', $this->data);
@@ -126,10 +139,22 @@ class indexController extends CI_Controller
 		$this->email->send();
 	}
 
+
 	public function checkout()
 	{
 		$this->config->config['pageTitle'] = 'Checkout';
 		if ($this->session->userdata('logged_in_customer') && $this->cart->contents()) {
+
+
+			// Lấy nội dung giỏ hàng
+			// In ra nội dung giỏ hàng
+			// $cart_contents = $this->cart->contents();
+			// echo '<pre>';
+			// print_r($cart_contents);
+			// echo '</pre>';
+
+
+
 			$this->load->view('pages/component/header', $this->data);
 			$this->load->view('pages/checkout');
 			$this->load->view('pages/component/footer');
@@ -144,10 +169,10 @@ class indexController extends CI_Controller
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		
-		
+
+
 		$user_id = $this->getUserOnSession();
-		
+
 		if ($this->form_validation->run() == TRUE) {
 
 			$name = $this->input->post('name');
@@ -155,7 +180,7 @@ class indexController extends CI_Controller
 			$phone = $this->input->post('phone');
 			$address = $this->input->post('address');
 			$form_of_payment = $this->input->post('form_of_payment');
-			
+
 			$user_id = $this->getUserOnSession();
 			// lấy id bên shipping
 			// sekect ra ordercode có u
@@ -188,10 +213,13 @@ class indexController extends CI_Controller
 
 				// Order details
 				foreach ($this->cart->contents() as $items) {
+					$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
 					$data_orders_details = array(
 						'order_code' => $order_code,
 						'product_id' => $items['id'],
-						'quantity' => $items['qty']
+						'quantity' => $items['qty'],
+						'subtotal' => $items['subtotal'],
+						'date_order' => $date_created
 					);
 					$insert_orders_details = $this->loginModel->insert_orders_details($data_orders_details);
 				}
@@ -218,20 +246,21 @@ class indexController extends CI_Controller
 		}
 	}
 
-	public function listOrder(){
+	public function listOrder()
+	{
 		$this->load->view('pages/component/header', $this->data);
 		$user_id = $this->getUserOnSession();
 		$this->load->model('orderModel');
 		$data['order_items'] = $this->orderModel->getOrderByUserId($user_id);
 		// $this->load->view('pages/listOrder');
-			// In dữ liệu để kiểm tra
+		// In dữ liệu để kiểm tra
 		// echo '<pre>';
 		// print_r($data['order_items']);
 		// echo '</pre>';
 
 		$this->load->view('pages/listOrder', $data);
 		$this->load->view('pages/component/footer');
-		
+
 	}
 
 	public function viewOrder($order_code)
@@ -254,11 +283,11 @@ class indexController extends CI_Controller
 		$this->load->model('orderModel');
 		$status = $this->orderModel->selectOrderDetails($orderCode)['order_status'];
 		$del_order_details = $this->orderModel->deleteOrderDetails($order_code);
-		$del  = $this->orderModel->deleteOrder($order_code);
-		if($del && $del_order_details ){
+		$del = $this->orderModel->deleteOrder($order_code);
+		if ($del && $del_order_details) {
 			$this->session->set_flashdata('success', 'Xóa đơn hàng thành công');
 			redirect(base_url('order_customer/listOrder'));
-		}else{
+		} else {
 			$this->session->set_flashdata('error', 'Xóa đơn hàng thất bại');
 			redirect(base_url('order-customer/listOrder'));
 		}
@@ -424,9 +453,9 @@ class indexController extends CI_Controller
 		$this->data['product_comments'] = $this->indexModel->getListConmment($id);
 		$this->data['title'] = $this->indexModel->getProductTitle($id);
 		$this->config->config['pageTitle'] = $this->data['title'];
-		// echo '<pre>';
-		// print_r($this->data);
-		// echo '</pre>';
+		echo '<pre>';
+		print_r($this->data);
+		echo '</pre>';
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('pages/product_detail', $this->data);
 		$this->load->view('pages/component/footer');
@@ -469,10 +498,17 @@ class indexController extends CI_Controller
 		if (!$found) {
 			foreach ($this->data['product_details'] as $key => $product) {
 				if ($product->quantity >= $quantity) {
+					// Tính giá giảm nếu có discount
+					if (isset($product->discount) && $product->discount != 0) {
+						$price = $product->price * (1 - $product->discount / 100);
+					} else {
+						$price = $product->price;
+					}
+
 					$cart = array(
 						'id' => $product->id,
 						'qty' => $quantity,
-						'price' => $product->price,
+						'price' => $price,
 						'name' => $product->title,
 						'options' => array('image' => $product->image, 'in_stock' => $product->quantity)
 					);
@@ -485,8 +521,8 @@ class indexController extends CI_Controller
 				}
 			}
 		}
-
 	}
+
 
 
 	public function update_cart_item()
@@ -589,14 +625,15 @@ class indexController extends CI_Controller
 
 
 
-	public function profile_user() {
+	public function profile_user()
+	{
 		$user_id = $this->getUserOnSession();
-		
+
 		// Kiểm tra nếu user_id hợp lệ
 		if ($user_id) {
 			$this->load->model('customerModel');
 			$profile_user = $this->customerModel->selectCustomerById($user_id);
-			
+
 			if ($profile_user) {
 				// echo $profile_user->id;
 				$this->load->view('customer/profile_Customer', ['profile_user' => $profile_user]);
@@ -607,19 +644,19 @@ class indexController extends CI_Controller
 			echo 'Không tìm thấy ID người dùng trong session';
 		}
 	}
-	
+
 
 	public function editCustomer($user_id)
 	{
 		$this->config->config['pageTitle'] = 'Chỉnh sửa thông tin người dùng';
 
 		$user_id = $this->getUserOnSession();
-		
+
 		// Kiểm tra nếu user_id hợp lệ
 		if ($user_id) {
 			$this->load->model('customerModel');
 			$profile_user = $this->customerModel->selectCustomerById($user_id);
-			
+
 			if ($profile_user) {
 				// echo $profile_user->id;
 				$this->load->view('customer/editCustomer', ['profile_user' => $profile_user]);
@@ -630,56 +667,58 @@ class indexController extends CI_Controller
 			echo 'Không tìm thấy ID người dùng trong session';
 		}
 	}
-	
-	public function updateAvatarCustomer($user_id) {
 
-			if (!empty($_FILES['image']['name'])) {
-				// Upload Image
-				$ori_filename = $_FILES['image']['name'];
-				$new_name = time() . "-" . str_replace(' ', '-', $ori_filename);
-				$config = [
-					'upload_path' => './uploads/user',
-					'allowed_types' => 'gif|jpg|png|jpeg',
-					'file_name' => $new_name
-				];
-				$this->load->library('upload', $config);
-	
-				if (!$this->upload->do_upload('image')) {
-					$error = ['error' => $this->upload->display_errors()];
-					$this->load->view('customer/profile_Customer', $error);
-					return; // Thêm return để dừng việc thực thi tiếp tục
-				} else {
-					$avatar_filename = $this->upload->data('file_name');
-					$data = [
-						'avatar' => $avatar_filename
-					];
-				}
+	public function updateAvatarCustomer($user_id)
+	{
+
+		if (!empty($_FILES['image']['name'])) {
+			// Upload Image
+			$ori_filename = $_FILES['image']['name'];
+			$new_name = time() . "-" . str_replace(' ', '-', $ori_filename);
+			$config = [
+				'upload_path' => './uploads/user',
+				'allowed_types' => 'gif|jpg|png|jpeg',
+				'file_name' => $new_name
+			];
+			$this->load->library('upload', $config);
+
+			if (!$this->upload->do_upload('image')) {
+				$error = ['error' => $this->upload->display_errors()];
+				$this->load->view('customer/profile_Customer', $error);
+				return; // Thêm return để dừng việc thực thi tiếp tục
 			} else {
+				$avatar_filename = $this->upload->data('file_name');
 				$data = [
-					
+					'avatar' => $avatar_filename
 				];
 			}
-	
-			// Kiểm tra giá trị của $data trước khi cập nhật
-			echo '<pre>';
-			print_r($data);
-			echo '</pre>';
-	
-			$this->load->model('customerModel');
-			$this->customerModel->updateCustomer($user_id, $data);
-			$this->session->set_flashdata('success', 'Đã chỉnh sửa thông tin thành công');
-			redirect(base_url('profile-user'));
+		} else {
+			$data = [
+
+			];
+		}
+
+		// Kiểm tra giá trị của $data trước khi cập nhật
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+
+		$this->load->model('customerModel');
+		$this->customerModel->updateCustomer($user_id, $data);
+		$this->session->set_flashdata('success', 'Đã chỉnh sửa thông tin thành công');
+		redirect(base_url('profile-user'));
 	}
-	
 
 
 
-	public function updateCustomer($user_id) {
+
+	public function updateCustomer($user_id)
+	{
 		$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần điền %s']);
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần điền %s']);
 		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần chọn %s']);
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần chọn %s']);
-	
+
 		if ($this->form_validation->run()) {
 			if (!empty($_FILES['image']['name'])) {
 				// Upload Image
@@ -691,7 +730,7 @@ class indexController extends CI_Controller
 					'file_name' => $new_name
 				];
 				$this->load->library('upload', $config);
-	
+
 				if (!$this->upload->do_upload('image')) {
 					$error = ['error' => $this->upload->display_errors()];
 					$this->load->view('customer/update_profile_user', $error);
@@ -714,7 +753,7 @@ class indexController extends CI_Controller
 					'phone' => $this->input->post('phone'),
 				];
 			}
-	
+
 			// Kiểm tra giá trị của $data trước khi cập nhật
 			// echo '<pre>';
 			// print_r($data);
@@ -728,7 +767,7 @@ class indexController extends CI_Controller
 			$this->editCustomer($user_id);
 		}
 	}
-	
+
 
 	public function logout()
 	{
@@ -764,7 +803,7 @@ class indexController extends CI_Controller
 				'password' => $password,
 				'phone' => $phone,
 				'address' => $address,
-				'avatar'=> 'User-avatar.png',
+				'avatar' => 'User-avatar.png',
 				'token' => $token,
 				'role_id' => 2,
 				'date_created' => $date_created

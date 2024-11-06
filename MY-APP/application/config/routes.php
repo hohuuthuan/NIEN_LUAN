@@ -119,6 +119,9 @@ $route['pagination/danh-muc/(:any)/(:any)']['GET'] = 'indexController/category/$
 $route['pagination/thuong-hieu/(:any)/(:any)/(:any)']['GET'] = 'indexController/brand/$1/$2/$3';
 $route['pagination/thuong-hieu/(:any)/(:any)']['GET'] = 'indexController/brand/$1/$2';
 $route['search-product/(:any)']['GET'] = 'indexController/search_product/$1';
+
+
+
 // Order
 $route['order_admin/listOrder']['GET'] = 'orderController/index';
 $route['order_admin/update-order-status']['POST'] = 'orderController/update_order_status';
@@ -144,6 +147,7 @@ $route['comment/send']['POST'] = 'indexController/comment_send';
 $route['cart/order-items']['GET'] = 'indexController/order_items';
 
 
-
-
-
+// Revenue
+$route['revenue/week']['GET'] = 'revenueController/statistics_by_week';
+$route['revenue/month']['GET'] = 'revenueController/statistics_by_month';
+$route['revenue/year']['GET'] = 'revenueController/statistics_by_year';

@@ -57,15 +57,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				redirect(base_url('order-admin/listOrder'));
 			}
 		}
+
 		public function update_order_status()
 		{
 			$value = $this->input->post('value');
 			$order_code = $this->input->post('order_code');
 			$this->load->model('orderModel');
-			$data = array(
-				'status' => $value
-			);
-			$this->orderModel->updateOrder($data, $order_code);
+	
+			// Nếu value là 4, tạo ngày tháng và thêm vào cột date_delivered
+			if ($value == 4) {
+				$date_delivered = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+				$data_order = array(
+					'status' => $value,
+				);
+				$data_order_details = array(
+					'date_delivered' => $date_delivered
+				);
+				$this->orderModel->updateOrder($data_order, $order_code);
+				$this->orderModel->updateOrderDetails($data_order_details, $order_code);
+			}
+			elseif ($value == 5) {
+				$data_order = array(
+					'status' => $value,
+				);
+				$this->orderModel->updateOrder($data_order, $order_code);
+			}else{
+				$data_order = array(
+					'status' => $value
+				);
+				$data_order_details = array(
+					'date_delivered' => '0000-00-00'
+				);
+				$this->orderModel->updateOrder($data_order, $order_code);
+				$this->orderModel->updateOrderDetails($data_order_details, $order_code);
+			}
+			
 		}
 
 		public function printOrder($order_code){

@@ -43,10 +43,10 @@
                         elseif ($ord->status == 3) {
                             echo '<span class="text text-success">Đã giao cho đơn vị vận chuyển</span>';
                         }
-                        // elseif ($ord->status == 3) {
-                        //     echo '<span class="text text-success">Đã giao cho đơn vị vận chuyển</span>';
-                        // }
-                          else {
+                        elseif ($ord->status == 4) {
+                            echo '<span class="text text-success">Đơn hàng đã được thanh toán</span>';
+                        }
+                        else {
                             echo '<span class="text text-danger">Đã hủy</span>';
                         }
                         ?>

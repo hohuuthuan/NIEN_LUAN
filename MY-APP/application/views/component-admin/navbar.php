@@ -100,6 +100,18 @@
         </div>
       </li>
 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Revenue statistics
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<?php echo base_url('revenue/week'); ?>">Thống kê theo tuần</a>
+          <a class="dropdown-item" href="<?php echo base_url('revenue/month'); ?>">Thống kê theo tháng</a>
+          <a class="dropdown-item" href="<?php echo base_url('revenue/year'); ?>">Thống kê theo tháng</a>
+        </div>
+      </li>
+
+
 
     </ul>
     <!-- <form class="form-inline my-2 my-lg-0">

@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <input name="quantity" value="" type="text"
                                         class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                                        placeholder="Nhập vào số lượng sản phẩm thêm vào kho">
+                                        placeholder="Số lượng sản phẩm thêm vào kho">
                                     <?php echo '<span class="text text-danger">' . form_error('quantity') . '</span>' ?>
                                 </div>
                             </td>

@@ -5,24 +5,27 @@
 $(document).ready(function() {
     $('.order_status').change(function() {
         const value = $(this).val();
-        const order_code = $(this).find(':selected').attr('id');
-        if(value == 0){
+        const order_code = $(this).find('option:selected').attr('id'); // Lấy ID của option được chọn
+
+        if (value == 0) {
             alert('Hãy chọn trạng thái đơn hàng');
-        }else{
+        } else {
             $.ajax({
-            url: '/order_admin/update-order-status',
-            method: 'POST',
-            data: { value:value, order_code:order_code },
-            success: function(response) {
-                alert('Update trạng thái đơn hàng thành công');
-            }
-        });
-
+                url: '/order_admin/update-order-status',
+                method: 'POST',
+                data: { value: value, order_code: order_code },
+                success: function(response) {
+                    alert('Update trạng thái đơn hàng thành công');
+                },
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra khi cập nhật trạng thái đơn hàng');
+                }
+            });
         }
-
     });
 });
 </script>
+
 
 
 <script type="text/javascript">
