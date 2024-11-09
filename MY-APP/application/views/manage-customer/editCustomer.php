@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
     <div class="card">
         <div class="card-header">Chỉnh sửa khách hàng</div>
         <div class="card-body">
@@ -16,12 +16,12 @@
                         <?php 
                             if($customers->status == 1) {
                         ?>
-                            <option selected value="1">Active</option>
-                            <option value="0">Inactive</option>
+                            <option selected value="1">Kích hoạt</option>
+                            <option value="0">Khóa tài khoản</option>
                         <?php }elseif($customers->status ==0){
                             ?>
-                            <option value="1">Active</option>
-                            <option selected  value="0">Inactive</option>
+                            <option value="1">Kích hoạt</option>
+                            <option selected  value="0">Khóa tài koản</option>
                         <?php }?>
 
                     </select>

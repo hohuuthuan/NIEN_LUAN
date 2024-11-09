@@ -21,18 +21,8 @@
 											<img src="<?php echo base_url('uploads/product/' . $allPro->image) ?>"
 												alt="<?php echo $allPro->title ?>" />
 
-
-
-
-
-
-
-											<h2><?php echo number_format($allPro->price, 0, ',', '.') ?> VND</h2>
-											
-											
-											
-											
-											
+											<h2><?php echo number_format($allPro->selling_price, 0, ',', '.') ?> VND</h2>
+					
 											<p><?php echo $allPro->title ?></p>
 											<a href="<?php echo base_url('san-pham/' . $allPro->id . '/' . $allPro->slug) ?>"
 												class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Details</a>
@@ -47,10 +37,10 @@
 							</div>
 						</form>
 					<?php } ?>
-					<?php echo $links; ?>
+					
 				</div><!--features_items-->
 
-
+				<?php echo $links; ?>
 			</div>
 		</div>
 	</div>

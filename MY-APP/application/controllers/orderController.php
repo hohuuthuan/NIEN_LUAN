@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	
 			// Nếu value là 4, tạo ngày tháng và thêm vào cột date_delivered
 			if ($value == 4) {
-				$date_delivered = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+				$date_delivered = Carbon\Carbon::now('Asia/Ho_Chi_Minh');
 				$data_order = array(
 					'status' => $value,
 				);

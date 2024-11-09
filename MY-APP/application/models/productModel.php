@@ -1,7 +1,7 @@
 <?php
 class productModel extends CI_Model
 {
-    public function insertProductAndWarehouse($data)
+    public function insertProductAndWarehouse($data, $import_price_one_product)
     {
         // Bắt đầu giao dịch
         $this->db->trans_start();
@@ -19,7 +19,9 @@ class productModel extends CI_Model
         // Chuẩn bị dữ liệu cho bảng warehouses
         $warehouseData = array(
             'product_id' => $product_id,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'import_price_one_product' => $import_price_one_product,
+            'total_import_price' => $quantity*$import_price_one_product
         );
 
         // Chèn dữ liệu vào bảng warehouses
@@ -75,9 +77,6 @@ class productModel extends CI_Model
     
 
 
-
-
-
     public function plusQuantityProduct($id, $data)
     {
         // Lấy số lượng hiện tại của sản phẩm
@@ -90,9 +89,31 @@ class productModel extends CI_Model
         if ($result) {
             // Cập nhật số lượng mới bằng cách cộng số lượng hiện tại với số lượng mới
             $new_quantity = $result->quantity + $data['quantity'];
-
+            $new_import_price_one_product = $data['import_price_one_product'];
             // Cập nhật số lượng trong bảng warehouses
             $this->db->set('quantity', $new_quantity);
+            $this->db->set('import_price_one_product', $new_import_price_one_product);
+            $this->db->where('product_id', $id);
+            return $this->db->update('warehouses'); // Trả về true nếu cập nhật thành công
+        } else {
+            return false; // Trả về false nếu không tìm thấy sản phẩm
+        }
+    }
+    public function plusTotalPriceProduct($id, $total_import_price)
+    {
+        // Lấy tổng giá hiện tại của sản phẩm
+        $this->db->select('total_import_price');
+        $this->db->from('warehouses');
+        $this->db->where('product_id', $id);
+        $query = $this->db->get();
+        $result = $query->row();
+
+        if ($result) {
+            // Cập nhật tổng giá mới bằng cách cộng tổng giá với giá mới được tính vào
+            $new_total_import_price = $result->total_import_price +  $total_import_price;
+
+            // Cập nhật tổng giá trong bảng warehouses
+            $this->db->set('total_import_price', $new_total_import_price);
             $this->db->where('product_id', $id);
             return $this->db->update('warehouses'); // Trả về true nếu cập nhật thành công
         } else {

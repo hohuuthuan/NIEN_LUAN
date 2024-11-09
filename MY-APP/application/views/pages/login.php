@@ -35,8 +35,13 @@
 							<?php echo form_error('email'); ?>
 							<input type="password" name="password" placeholder="Password"/>
 							<?php echo form_error('password'); ?>
-							<button type="submit" class="btn btn-default">Signup</button>
+							<div style="display: flex;">
+								<button type="submit" class="btn btn-default">Signup</button>
+								<a style="margin-left: 10px; padding-top: 5px" href="<?php echo base_url('forgot-password-layout')?>"><u>Quên mật khẩu</u></a>
+							</div>
+							
 						</form>
+						
 					</div><!--/sign up form-->
 				</div>
 			</div>

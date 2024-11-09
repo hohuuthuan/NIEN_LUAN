@@ -24,10 +24,11 @@ class indexModel extends CI_Model
     }
 
     public function getCustomerToken($email)
-    {
-        $query = $this->db->get_where('users', ['email' => $email]);
-        return $query->result();
-    }
+{
+    $query = $this->db->get_where('users', ['email' => $email]);
+    return $query->row();
+}
+
     public function activeCustomerAndUpdateNewToken($email, $data_customer)
     {
         return $this->db->update('users', $data_customer, ['email' => $email]);
@@ -112,7 +113,7 @@ class indexModel extends CI_Model
             ->join('products', 'products.category_id = categories.id')
             ->join('brands', 'brands.id = products.brand_id')
             ->where('products.category_id', $id)
-            ->order_by('products.price', $gia)
+            ->order_by('products.selling_price', $gia)
             ->get();
         return $query->result();
     }
@@ -124,9 +125,9 @@ class indexModel extends CI_Model
             ->join('products', 'products.category_id = categories.id')
             ->join('brands', 'brands.id = products.brand_id')
             ->where('products.category_id', $id)
-            ->where('products.price >=' . $from_price)
-            ->where('products.price <=' . $to_price)
-            ->order_by('products.price', 'asc')
+            ->where('products.selling_price >=' . $from_price)
+            ->where('products.selling_price <=' . $to_price)
+            ->order_by('products.selling_price', 'asc')
             ->get();
         return $query->result();
     }
@@ -212,23 +213,23 @@ class indexModel extends CI_Model
     {
         $this->db->select('products.*');
         $this->db->from('products');
-        $this->db->select_min('price');
+        $this->db->select_min('selling_price');
         $this->db->where('products.category_id', $id);
         $this->db->limit(1);
         $query = $this->db->get();
         $result = $query->row();
-        return $price = $result->price;
+        return $price = $result->selling_price;
     }
     public function getMaxPriceProduct($id)
     {
         $this->db->select('products.*');
         $this->db->from('products');
-        $this->db->select_max('price');
+        $this->db->select_max('selling_price');
         $this->db->where('products.category_id', $id);
         $this->db->limit(1);
         $query = $this->db->get();
         $result = $query->row();
-        return $price = $result->price;
+        return $price = $result->selling_price;
     }
 
 
@@ -309,6 +310,9 @@ class indexModel extends CI_Model
             ->get();
         return $query->row();
     }
+
+
+    
     public function updateCustomer($user_id, $data)
     {
         $this->db->where('id', $user_id);

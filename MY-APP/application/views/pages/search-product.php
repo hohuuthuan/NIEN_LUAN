@@ -17,7 +17,7 @@
 									<div class="single-products">
 											<div class="productinfo text-center">
 												<img src="<?php echo base_url('uploads/product/'.$catePro->image)?>" alt="<?php echo $catePro->title ?>" />
-												<h2><?php echo number_format($catePro->price,0,',','.')?> VND</h2>
+												<h2><?php echo number_format($catePro->selling_price,0,',','.')?> VND</h2>
 												<p><?php echo $catePro->title ?></p>
 												<a href="<?php echo base_url('san-pham/'.$catePro->id.'/'.$catePro->slug)?>" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Details</a>
 												<button type="submit" class="btn btn-fefault cart">

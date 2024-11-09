@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
     <div class="card">
         <div class="card-header">Thêm sản phẩm</div>
         <div class="card-body">
@@ -28,13 +28,18 @@
             </div>
             <div class="form-group">
                 <label>Description</label>
-                <input name="description" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
+                <textarea name="description" type="text" class="form-control" id="exampleInputPassword1" placeholder=""></textarea>
                 <?php echo '<span class="text text-danger">'.form_error('description').'</span>' ?>
             </div>
             <div class="form-group">
-                <label>Price</label>
-                <input name="price" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
-                <?php echo '<span class="text text-danger">'.form_error('price').'</span>' ?>
+                <label>Import Price / One product</label>
+                <input name="import_price_one_product" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
+                <?php echo '<span class="text text-danger">'.form_error('import_price_one_product').'</span>' ?>
+            </div>
+            <div class="form-group">
+                <label>Selling Price</label>
+                <input name="selling_price" type="text" class="form-control" id="exampleInputPassword1" placeholder="">
+                <?php echo '<span class="text text-danger">'.form_error('selling_price').'</span>' ?>
             </div>
             <div class="form-group">
                 <label>Image</label>

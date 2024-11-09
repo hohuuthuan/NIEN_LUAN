@@ -33,9 +33,9 @@
                     <td><img src="<?php echo base_url('uploads/user/'.$cus->avatar) ?>" alt="" width="150" height="150"></td>
                     <td><?php 
                         if($cus->status == 1){
-                            echo "Active";
+                            echo "Bình thường";
                         }else{
-                            echo "Inactive";
+                            echo "Người dùng bị khóa";
                         }     
                     ?></td>
                     <td>

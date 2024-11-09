@@ -41,20 +41,19 @@ class warehouseController extends CI_Controller
 		// echo '</pre>';
 		$this->load->view("warehouse/plusQuantityInWarehouse", $data);
 
-
-
-
 		$this->load->view("component-admin/footer");
 	}
 
-	public function plusQuantity($id)
+	public function plusQuantityWarehouses($id)
 	{
 		$data = [
-			'quantity' => $this->input->post('quantity')
+			'quantity' => $this->input->post('quantity_warehouses'),
+			'import_price_one_product' => $this->input->post('import_price_warehouses'),
 		];
+		$total_import_price = ($this->input->post('import_price_warehouses'))*($this->input->post('quantity_warehouses'));
 		$this->load->model('productModel');
 
-		if ($this->productModel->plusQuantityProduct($id, $data)) {
+		if ($this->productModel->plusQuantityProduct($id, $data) && $this->productModel->plusTotalPriceProduct($id, $total_import_price)) {
 			$this->session->set_flashdata('success', 'Đã thêm vào kho thành công');
 		} else {
 			$this->session->set_flashdata('error', 'Thêm vào kho thất bại');

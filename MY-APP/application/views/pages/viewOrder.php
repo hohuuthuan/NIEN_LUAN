@@ -12,8 +12,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Order Code</th>
-                    <th scope="col">Product Name</th>
                     <th scope="col">Product Image</th>
+                    <th scope="col" style="width: 200px;" >Product Name</th>
                     <th scope="col">Product Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Hình thức thanh toán</th>
@@ -26,25 +26,22 @@
                
                     foreach($order_details as $key => $ord){
                 ?>
-                <tr>
-                    <th scope="row"><?php echo $key ?></th>
+                <tr style="border-bottom: 2px solid;">
+                    <th scope="row"><?php echo $key+1 ?></th>
                     <td><?php echo $ord->order_code?></td>
-                    <td><?php echo $ord->title?></td>
-        
                     <td><img src="<?php echo base_url('uploads/product/'.$ord->image) ?>" alt="" width="150" height="150"></td>
-                    <td><?php echo number_format($ord->price,0, ',','.') ?>vnd</td>
+                    <td><?php echo $ord->title?></td>
+                    <td><?php echo number_format($ord->selling_price,0, ',','.') ?>vnd</td>
                     <td><?php echo $ord->qty?></td>
                     <td><?php echo $ord->form_of_payment?></td>
-                    <td><?php echo number_format($ord->qty * $ord->price,0, ',','.') ?>vnd</td>
+                    <td><?php echo number_format($ord->qty * $ord->selling_price,0, ',','.') ?>vnd</td>
                     
-                    <?php if(($ord->order_status == 1) || ($ord->order_status == 2) ) {?>
-                        echo '
+                    <?php if(($ord->order_status == 1) || ($ord->order_status == 2) ) {
+                        ?>
                             <td>
                                 <a onclick="return confirm('Bạn chắc chắn xóa đơn này chứ, các sản phẩm trong đơn sẽ được xóa')" href="<?php echo base_url('order_customer/deleteOrder/'.$ord->order_code) ?>" class="btn btn-danger">Delete Order</a>
                                 
-                            </td>
-                        
-                        ';
+                            </td>  
                     <?php }?>
                 </tr>
                 <?php } ?>

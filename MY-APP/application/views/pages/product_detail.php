@@ -38,8 +38,8 @@
 										// Kiểm tra giá trị của $allPro->discount
 										if (isset($pro_det->discount) && $pro_det->discount != 0) {
 											// Tính giá giảm
-											$price_no_discount = $pro_det->price;
-											$pro_det->price = $pro_det->price * (1 - $pro_det->discount / 100);
+											$price_no_discount = $pro_det->selling_price;
+											$pro_det->selling_price = $pro_det->selling_price * (1 - $pro_det->discount / 100);
 											?>
 											<h2>
 											<span><?php echo number_format($pro_det->price, 0, ',', '.') ?> VND</span>
@@ -53,7 +53,7 @@
 										} else {
 											// Hiển thị giá gốc nếu discount bằng 0
 											?>
-											<h2><?php echo number_format($pro_det->price, 0, ',', '.') ?> VND</h2>
+											<h2><?php echo number_format($pro_det->selling_price, 0, ',', '.') ?> VND</h2>
 											<?php
 										}
 										?>

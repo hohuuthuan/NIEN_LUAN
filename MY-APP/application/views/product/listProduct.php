@@ -13,9 +13,8 @@
                 <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Slug</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Selling Price</th>
                     <th scope="col">Brand</th>
                     <th scope="col">Category</th>                   
                     <th scope="col">Quantity in warehouse</th>
@@ -31,9 +30,8 @@
                 <tr>
                     <th scope="row"><?php echo $key ?></th>
                     <td><?php echo $pro->title?></td>
-                    <td><?php echo $pro->slug?></td>
                     <td><?php echo $pro->description?></td>
-                    <td><?php echo number_format($pro->price,0, ',','.') ?>vnd</td>
+                    <td><?php echo number_format($pro->selling_price,0, ',','.') ?> VNĐ</td>
                     <td><?php echo $pro->tenthuonghieu?></td>
                     <td><?php echo $pro->tendanhmuc?></td>
                     <td>
@@ -49,9 +47,9 @@
                         }     
                     ?></td>
                     <td>
-                        <a onclick="return confirm('Bạn chắc chắn muốn xóa chứ?')" href="<?php echo base_url('product/delete/'.$pro->product_id) ?>" class="btn btn-danger">Delete</a>
-                        <a href="<?php echo base_url('product/edit/'.$pro->product_id) ?>" class="btn btn-warning">Edit</a>
-                        <a href="<?php echo base_url('quantity/update/'.$pro->product_id)?>"><button class="btn btn-warning">Quản lý trong kho</button></a>
+                        <a onclick="return confirm('Bạn chắc chắn muốn xóa chứ?')" href="<?php echo base_url('product/delete/'.$pro->product_id) ?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+                        <a href="<?php echo base_url('product/edit/'.$pro->product_id) ?>" class="btn btn-warning"><i class="fa-solid fa-wrench"></i>Edit</a>
+                        <a href="<?php echo base_url('quantity/update/'.$pro->product_id)?>"><button class="btn btn-warning"><i class="fa-solid fa-bars-progress"></i>Quản lý trong kho</button></a>
                     </td>
                 </tr>
                 <?php } ?>

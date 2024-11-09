@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <div class="card">
         <div class="card-header">Danh sách sản phẩm trong kho</div>
         <?php if ($this->session->flashdata('success')) { ?>
@@ -13,20 +13,29 @@
                         <th scope="col">STT</th>
                         <th scope="col">Title</th>
                         <th scope="col">Image</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Import Price</th>
+                        <th scope="col">Selling Price</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Status</th>
+                        
                         <th scope="col">Manage</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     foreach ($product as $key => $pro) {
+                        // var_dump($pro);
                         ?>
+                        
                         <tr>
                             <th scope="row"><?php echo $key ?></th>
                             <td><?php echo $pro->title ?></td>
                             <td><img src="<?php echo base_url('uploads/product/' . $pro->image) ?>" alt="" width="150" height="150"></td>
                             
+                            <td><?php echo number_format($pro->import_price_one_product,0, ',','.') ?> VNĐ</td>
+                            <td><?php echo number_format($pro->selling_price,0, ',','.') ?> VNĐ</td>
+                           
+                            <td><?php echo $pro->quantity ?></td>
                            <td><?php
                             if ($pro->status == 1) {
                                 echo "Active";
@@ -35,7 +44,7 @@
                             }
                             ?></td>
                             
-                            <td><?php echo $pro->quantity ?></td>
+                            
 
                             
                             <td>

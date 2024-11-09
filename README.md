@@ -33,3 +33,14 @@ Lấy đó mà trừ ra là ok
 
 Làm thêm cái thống kê doanh thu: chung 1 trang, giao diện là chọn ngày, tháng, năm để có thể tính doanh thu bất cứ thời gian nào
 Thêm các giao diện thống kê chỉ theo tháng, ngày, tuần, năm
+
+
+
+
+Ngày mai nên làm là:
+khi bấm xác thực thì gửi mail về
+Trên mail khi bấm xác thực thì có email trên đường dẫn luôn
+sau khi bấm xác thực thì trong hàm đó có lấy email về
+chuyển sang trang nhập mật khẩu mới với email đó truyền vào
+route resetpass thì update lại thông tin người dùng
+còn số điện thoại thì tính sau

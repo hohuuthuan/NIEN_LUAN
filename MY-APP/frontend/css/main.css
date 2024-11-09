@@ -253,6 +253,7 @@ a#scrollUp i{
 }
 
 .search_box input {
+  width: 100%;
   background: #F0F0E9;
   border: medium none;
   color: #B2B2B2;
@@ -948,7 +949,7 @@ h2.title {
   color: #696763;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .add-to-cart:hover {
@@ -1426,9 +1427,10 @@ h2.title {
 **************************/
 
 #form {
+
   display: block;
-  margin-bottom: 185px;
-  margin-top: 185px;
+  margin-bottom: 100px;
+  margin-top: 0px;
   overflow: hidden;
 }
 
@@ -1649,7 +1651,8 @@ h2.title {
   font-size: 16px;
   text-align: center;
   font-family: 'Roboto',sans-serif;
-  
+  width: 90px;
+  height: 33px;
 }
 
 
@@ -2527,15 +2530,15 @@ h2.title {
 
 /* Vòng xoay (loader) */
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 25px solid #f3f3f3; /* Light grey */
+  border-top: 25px solid #1bed13; /* Blue */
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   animation: spin 2s linear infinite;
   position: fixed;
-  left: 50%;
-  top: 50%;
+  left: 46%;
+  top: 33%;
   transform: translate(-50%, -50%);
   z-index: 9999;
   display: none; /* Mặc định ẩn */
@@ -2545,3 +2548,7 @@ h2.title {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+
+

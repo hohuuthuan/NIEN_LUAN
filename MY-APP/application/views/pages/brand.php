@@ -17,7 +17,7 @@
 									<div class="single-products">
 											<div class="productinfo text-center">
 												<img src="<?php echo base_url('uploads/product/'.$braPro->image)?>" alt="<?php echo $braPro->title ?>" />
-												<h2><?php echo number_format($braPro->price,0,',','.')?> VND</h2>
+												<h2><?php echo number_format($braPro->selling_price,0,',','.')?> VND</h2>
 												<p><?php echo $braPro->title ?></p>
 												<a href="<?php echo base_url('san-pham/'.$braPro->id.'/'.$braPro->slug)?>" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i>Details</a>
 												<button type="submit" class="btn btn-fefault cart">

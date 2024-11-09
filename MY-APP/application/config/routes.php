@@ -7,8 +7,8 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 // Page
-$route['HomePage']['GET'] = 'HomePage';
-// $route['404_override'] = 'indexController/page_404';
+
+$route['404_override'] = 'indexController/page_404';
 $route['danh-muc/(:any)/(:any)']['GET'] = 'indexController/category/$1/$2';
 $route['thuong-hieu/(:any)/(:any)']['GET'] = 'indexController/brand/$1/$2';
 $route['san-pham/(:any)/(:any)']['GET'] = 'indexController/product/$1/$2';
@@ -22,17 +22,44 @@ $route['update-cart-item']['POST'] = 'indexController/update_cart_item';
 
 
 //Customer login
-$route['login-customer']['POST'] = 'indexController/loginCustomer';
-
-$route['delete-all-cart']['GET'] = 'indexController/delete_all_cart';
-$route['delete-item/(:any)']['GET'] = 'indexController/delete_item/$1';
 $route['dang-nhap']['GET'] = 'indexController/login';
 $route['dang-xuat']['GET'] = 'indexController/logout';
+$route['login-customer']['POST'] = 'indexController/loginCustomer';
 
+
+// Forgot password
+$route['forgot-password-layout']['GET'] = 'indexController/forgot_password_layout';
+
+$route['customer/forgot-password']['POST'] = 'indexController/confirm_forgot_password';
+$route['lay-lai-mat-khau']['GET'] = 'indexController/lay_lai_mat_khau';
+$route['verify-token-forget-password']['POST'] = 'indexController/verify_token_forget_password';
+// Nhập mật khẩu mới
+$route['nhap-mat-khau-moi']['GET'] = 'indexController/nhap_mat_khau_moi';
+$route['enterNewPassword']['POST'] = 'indexController/enterNewPassword';
+$route['verify-token']['POST'] = 'indexController/verify_token';
+$route['reset-password']['POST'] = 'indexController/reset_password';
+// Đổi mật khẩu
+$route['change-password']['GET'] = 'indexController/change_password';
+$route['nhap-ma-xac-thuc']['GET'] = 'indexController/nhap_ma_xac_thuc';
+$route['change-password-verify-token']['POST'] = 'indexController/change_password_verify_token';
+$route['cap-nhat-mat-khau-moi']['GET'] = 'indexController/cap_nhat_mat_khau_moi';
+$route['changePassword']['POST'] = 'indexController/changePassword';
+
+
+// Customer
+$route['login']['GET'] = 'loginController/index';
+$route['dang-ky']['POST'] = 'indexController/dang_ky';
+$route['kich-hoat-tai-khoan']['GET'] = 'indexController/kich_hoat_tai_khoan';
+
+
+// Cart and checkout customer
+$route['delete-all-cart']['GET'] = 'indexController/delete_all_cart';
+$route['delete-item/(:any)']['GET'] = 'indexController/delete_item/$1';
 $route['checkout']['GET'] = 'indexController/checkout';
 $route['confirm-checkout']['POST'] = 'indexController/confirm_checkout';
-
 $route['thank-you-for-order']['GET'] = 'indexController/thank_you_for_order';
+
+// Tìm kiếm sản phẩm
 $route['search-product']['GET'] = 'indexController/search_product';
 
 //Customer
@@ -55,10 +82,7 @@ $route['register-admin']['GET'] = 'loginController/register_admin';
 $route['register-admin-submit']['POST'] = 'loginController/insert_admin';
 
 
-// Customer
-$route['login']['GET'] = 'loginController/index';
-$route['dang-ky']['POST'] = 'indexController/dang_ky';
-$route['kich-hoat-tai-khoan']['GET'] = 'indexController/kich_hoat_tai_khoan';
+
 
 
 
@@ -105,7 +129,7 @@ $route['product/delete/(:any)']['GET'] = 'productController/deleteProduct/$1';
 $route['warehouse/list']['GET'] = 'warehouseController/index';
 $route['quantity/update/(:any)']['GET'] = 'warehouseController/updateQuantityProduct/$1';
 
-$route['warehouse/plusquantity/(:any)']['POST'] = 'warehouseController/plusQuantity/$1';
+$route['warehouse/plusquantity-importpriceinwwarehouses/(:any)']['POST'] = 'warehouseController/plusQuantityWarehouses/$1';
 
 
 
@@ -151,3 +175,5 @@ $route['cart/order-items']['GET'] = 'indexController/order_items';
 $route['revenue/week']['GET'] = 'revenueController/statistics_by_week';
 $route['revenue/month']['GET'] = 'revenueController/statistics_by_month';
 $route['revenue/year']['GET'] = 'revenueController/statistics_by_year';
+
+

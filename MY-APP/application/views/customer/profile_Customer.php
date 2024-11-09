@@ -10,8 +10,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <!--  All snippets are MIT license http://bootdey.com/license -->
     <title><?php echo $this->config->config['pageTitle'] ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+    <link href="<?php echo base_url('frontend/css/main.css') ?>" rel="stylesheet">
     <style type="text/css">
         body {
             margin-top: 20px;
@@ -86,8 +87,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </head>
 
 <body>
+<div id="loader" class="loader"></div>
     <div class="container-xl px-4 mt-4">
-    <h1>Thông tin tài khoản</h1>
+        <h1>Thông tin tài khoản</h1>
         <?php if ($this->session->flashdata('success')) { ?>
             <div class="alert alert-success"><?php echo $this->session->flashdata('success') ?></div>
         <?php } elseif ($this->session->flashdata('error')) { ?>
@@ -95,28 +97,33 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <?php } ?>
         <?php if (isset($profile_user)) { ?>
             <nav style="font-size: 16px" class="nav nav-borders">
-                <a class="nav-link" style="color: crimson;" href="<?php echo base_url('/') ?>" target="__blank">Trở về trang chủ</a>
-                <a class="nav-link active   ms-0" href="<?php echo base_url('profile-user/') ?>" target="__blank">Chi tiết thông tin người dùng</a>
-                <a class="nav-link ms-0" href="<?php echo base_url('customer/edit/' . $profile_user->id) ?>" target="__blank">Chỉnh sửa thông tin</a>
-            </nav>  
+                <a class="nav-link" style="color: crimson;" href="<?php echo base_url('/') ?>" target="__blank">Trở về trang
+                    chủ</a>
+                <a class="nav-link active   ms-0" href="<?php echo base_url('profile-user/') ?>" target="__blank">Chi tiết
+                    thông tin người dùng</a>
+                <a class="nav-link ms-0" href="<?php echo base_url('customer/edit/' . $profile_user->id) ?>"
+                    target="__blank">Chỉnh sửa thông tin</a>
+            </nav>
             <hr class="mt-0 mb-4">
-        <div class="row">
-            <div class="col-xl-6">
-                <!-- Profile picture card-->
-                <div class="card mb-4 mb-xl-0">
-                    <div class="card-header">Profile Picture</div>
-                    <div class="card-body text-center">
-                        <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2" src="<?php echo base_url('uploads/user/'.$profile_user->avatar)?>" alt="Hình ảnh người dùng">
-                        <br>
+            <div class="row">
+                <div class="col-xl-6">
+                    <!-- Profile picture card-->
+                    <div class="card mb-4 mb-xl-0">
+                        <div class="card-header">Profile Picture</div>
+                        <div class="card-body text-center">
+                            <!-- Profile picture image-->
+                            <img class="img-account-profile rounded-circle mb-2"
+                                src="<?php echo base_url('uploads/user/' . $profile_user->avatar) ?>"
+                                alt="Hình ảnh người dùng">
+                            <br>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-6">
-                <!-- Account details card-->
-                <div class="card mb-4">
-                    <div class="card-header">Thông tin tài khoản</div>
-                    
+                <div class="col-xl-6">
+                    <!-- Account details card-->
+                    <div class="card mb-4">
+                        <div class="card-header">Thông tin tài khoản</div>
+
                         <div class="card-body">
                             <form>
                                 <!-- Form Group (username) -->
@@ -141,15 +148,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                     </label>
                                 </div>
                                 <!-- Save changes button -->
-                                <a href="<?php echo base_url('customer/edit/'.$profile_user->id) ?>">
-                                    <button class="btn btn-primary" type="button">Chỉnh sửa</button>
-                                </a>
+                                <div class="d-flex">
+                                <div class="">
+                                    <a style="width: 10px" href="<?php echo base_url('customer/edit/' . $profile_user->id) ?>">
+                                        <button class="btn btn-primary" type="button">Chỉnh sửa</button>
+                                    </a>
+                                </div>
+                                <div class="">
+                                    <a style="margin-left: 10px" href="<?php echo base_url('change-password') ?>">
+                                        <button onclick="return confirm('Bạn chắc chắn muốn đổi mật khẩu?')" class="btn btn-primary" type="button">Đổi mật khẩu</button>
+                                    </a>
+
+                                </div>
+                                </div>
+
                             </form>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <?php }?>
+        <?php } ?>
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -157,5 +175,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     </script>
 </body>
+<script>
+	// Hiển thị vòng xoay khi trang được tải lại
+	window.addEventListener('beforeunload', function () {
+		document.getElementById('loader').style.display = 'block';
+	});
 
+</script>
 </html>

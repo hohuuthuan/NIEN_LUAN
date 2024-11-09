@@ -34,11 +34,11 @@
                                 // Kiểm tra giá trị của $ord->discount
                                 if (isset($ord->discount) && $ord->discount != 0) {
                                     // Tính giá giảm
-                                    $discounted_price = $ord->price * (1 - $ord->discount / 100);
-                                    echo '<span style="text-decoration: line-through;">' . number_format($ord->price, 0, ',', '.') . ' VNĐ</span><br>';
+                                    $discounted_price = $ord->selling_price * (1 - $ord->discount / 100);
+                                    echo '<span style="text-decoration: line-through;">' . number_format($ord->selling_price, 0, ',', '.') . ' VNĐ</span><br>';
                                     echo '<span style="color: red;">' . number_format($discounted_price, 0, ',', '.') . ' VNĐ</span>';
                                 } else {
-                                    echo number_format($ord->price, 0, ',', '.') . ' VNĐ';
+                                    echo number_format($ord->selling_price, 0, ',', '.') . ' VNĐ';
                                 }
                                 ?>
                             </td>
@@ -50,11 +50,11 @@
                                 // Kiểm tra giá trị của $ord->discount
                                 if (isset($ord->discount) && $ord->discount != 0) {
                                     // Tính giá giảm
-                                    $discounted_price = $ord->price * (1 - $ord->discount / 100);
-                                    echo '<span style="text-decoration: line-through;">' . number_format($ord->qty * $ord->price, 0, ',', '.') . ' VNĐ</span><br>';
+                                    $discounted_price = $ord->selling_price * (1 - $ord->discount / 100);
+                                    echo '<span style="text-decoration: line-through;">' . number_format($ord->qty * $ord->selling_price, 0, ',', '.') . ' VNĐ</span><br>';
                                     echo '<span style="color: red;">' . number_format($ord->qty * $discounted_price, 0, ',', '.') . ' VNĐ</span>';
                                 } else {
-                                    echo number_format($ord->price, 0, ',', '.') . ' VNĐ';
+                                    echo number_format($ord->selling_price, 0, ',', '.') . ' VNĐ';
                                 }
                                 ?>
                             </td>

@@ -12,6 +12,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="<?php echo base_url('frontend/css/main.css') ?>" rel="stylesheet">
     <style type="text/css">
         body {
             margin-top: 20px;
@@ -86,6 +87,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </head>
 
 <body>
+<div id="loader" class="loader"></div>
     <div class="container-xl px-4 mt-4">
     <h1>Thông tin tài khoản</h1>
         <?php if ($this->session->flashdata('success')) { ?>
@@ -168,5 +170,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
     </script>
 </body>
+<script>
+	// Hiển thị vòng xoay khi trang được tải lại
+	window.addEventListener('beforeunload', function () {
+		document.getElementById('loader').style.display = 'block';
+	});
 
+</script>
 </html>
