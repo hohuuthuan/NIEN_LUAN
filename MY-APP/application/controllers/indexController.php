@@ -245,29 +245,54 @@ class indexController extends CI_Controller
 		$this->load->view('pages/component/header', $this->data);
 		$user_id = $this->getUserOnSession();
 		$this->load->model('orderModel');
+		$this->load->model('productModel');
+
+		// Lấy danh sách đơn hàng của người dùng
 		$data['order_items'] = $this->orderModel->getOrderByUserId($user_id['id']);
-		// $this->load->view('pages/listOrder');
+
+		if (!empty($data['order_items'])) {
+			// echo 'Có đơn hàng';
+			// Lấy chi tiết sản phẩm cho từng đơn hàng
+			foreach ($data['order_items'] as $order_item) {
+				$product_details = $this->productModel->selectProductById($order_item->product_id);
+				// Gắn thông tin chi tiết sản phẩm vào từng mục đơn hàng
+				$order_item->product_details = $product_details;
+			}
+
+			$this->load->view('pages/listOrder', $data);
+		} else {
+			// echo 'Không có đơn hàng';
+			$this->session->set_flashdata('error', 'Không có đơn hàng nào');
+			$this->load->view('pages/listOrder', $data);
+		}
+
 		// In dữ liệu để kiểm tra
 		// echo '<pre>';
-		// print_r($data['order_items']);
+		// print_r($data);
 		// echo '</pre>';
-
-		$this->load->view('pages/listOrder', $data);
 		$this->load->view('pages/component/footer');
-
 	}
+
 
 	public function viewOrder($order_code)
 	{
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->model('orderModel');
+		$this->load->model('productModel');
 
-
+		// Lấy chi tiết đơn hàng dựa trên order_code
 		$data['order_details'] = $this->orderModel->selectOrderDetails($order_code);
+
+		// Lặp qua từng mục chi tiết đơn hàng và lấy thông tin chi tiết sản phẩm
+		foreach ($data['order_details'] as $order_detail) {
+			$product_details = $this->productModel->selectProductById($order_detail->product_id);
+		}
+
 		// In dữ liệu để kiểm tra
 		// echo '<pre>';
 		// print_r($data['order_details']);
 		// echo '</pre>';
+
 		$this->load->view("pages/viewOrder", $data);
 		$this->load->view("pages/component/footer");
 	}
@@ -438,9 +463,6 @@ class indexController extends CI_Controller
 		$this->load->view('pages/component/footer');
 	}
 
-
-
-
 	public function product($id)
 	{
 		$this->data['product_details'] = $this->indexModel->getProductDetails($id);
@@ -469,8 +491,6 @@ class indexController extends CI_Controller
 		$this->load->view('pages/cart');
 		$this->load->view('pages/component/footer');
 	}
-
-
 
 	public function add_to_cart()
 	{
@@ -515,26 +535,23 @@ class indexController extends CI_Controller
 		}
 	}
 
-
-
 	public function update_cart_item()
 	{
 		$rowid = $this->input->post('rowid');
 		$quantity = $this->input->post('quantity');
 		foreach ($this->cart->contents() as $items) {
 			if ($rowid == $items['rowid']) {
-				if ($quantity < $items['options']['in_stock']) {
+				if ($quantity <= $items['options']['in_stock']) {
 					$cart = array(
 						'rowid' => $rowid,
 						'qty' => $quantity
 					);
-				} elseif ($quantity > $items['options']['in_stock']) {
+				} else {
 					$cart = array(
 						'rowid' => $rowid,
 						'qty' => $items['options']['in_stock']
 					);
 				}
-
 			}
 		}
 		$this->cart->update($cart);
@@ -552,7 +569,6 @@ class indexController extends CI_Controller
 		$this->cart->remove($rowid);
 		redirect(base_url() . 'gio-hang', 'refresh');
 	}
-
 
 	public function login()
 	{
@@ -597,9 +613,6 @@ class indexController extends CI_Controller
 			$this->login();
 		}
 	}
-
-
-
 
 
 	public function profile_user()
@@ -685,8 +698,6 @@ class indexController extends CI_Controller
 		$this->session->set_flashdata('success', 'Đã chỉnh sửa thông tin thành công');
 		redirect(base_url('profile-user'));
 	}
-
-
 
 
 	public function updateCustomer($user_id)
@@ -806,14 +817,6 @@ class indexController extends CI_Controller
 	}
 
 
-
-
-
-
-
-
-
-
 	// Lấy email trên đường dẫn 
 	public function kich_hoat_tai_khoan()
 	{
@@ -829,7 +832,6 @@ class indexController extends CI_Controller
 			redirect(base_url('dang-nhap'));
 		}
 	}
-
 
 	public function verify_token()
 	{
@@ -865,10 +867,6 @@ class indexController extends CI_Controller
 		redirect(base_url('dang-nhap'));
 	}
 
-
-
-
-
 	public function comment_send()
 	{
 		$data = [
@@ -883,8 +881,6 @@ class indexController extends CI_Controller
 
 	}
 
-
-
 	// Quên mật khẩu
 	public function forgot_password_layout()
 	{
@@ -892,8 +888,6 @@ class indexController extends CI_Controller
 		$this->load->view('pages/forgot_password');
 		$this->load->view('pages/component/footer');
 	}
-
-
 
 	// Hàm này kiểm tra xem có người dùng với email và phone đó không, nếu có thì thực hiện gửi mail và token
 	public function confirm_forgot_password()
@@ -955,7 +949,6 @@ class indexController extends CI_Controller
 		}
 	}
 
-
 	public function verify_token_forget_password()
 	{
 		$email = $this->input->post('email');
@@ -994,7 +987,6 @@ class indexController extends CI_Controller
 		redirect(base_url('dang-nhap'));
 	}
 
-
 	public function nhap_mat_khau_moi()
 	{
 
@@ -1013,7 +1005,6 @@ class indexController extends CI_Controller
 			redirect(base_url('dang-nhap'));
 		}
 	}
-
 
 	public function enterNewPassword()
 	{
@@ -1049,7 +1040,7 @@ class indexController extends CI_Controller
 				$this->session->unset_userdata('reset_phone');
 				$this->session->unset_userdata('reset_token');
 
-				
+
 				$this->session->set_flashdata('success', 'Cập nhật mật khẩu thành công, xin mời bạn đăng nhập lại');
 
 				redirect(base_url('dang-nhap'));
@@ -1064,26 +1055,6 @@ class indexController extends CI_Controller
 			redirect(base_url('nhap-mat-khau-moi'));
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	// Đổi mật khẩu khi đã đăng nhập
 	public function change_password()
@@ -1130,8 +1101,6 @@ class indexController extends CI_Controller
 		$this->load->view('pages/component/footer');
 	}
 
-
-
 	public function change_password_verify_token()
 	{
 		// Nhận vào từ input file changePas_verify
@@ -1161,23 +1130,22 @@ class indexController extends CI_Controller
 		}
 	}
 
-
 	public function cap_nhat_mat_khau_moi()
 	{
 		$this->checkLogin();
 		$results = $this->getUserOnSession();
 		$email = $results['email'];
 		$phone = $results['phone'];
-	
+
 		if ($this->session->userdata('password_updated')) {
 			$this->session->set_flashdata('error', 'Mật khẩu bạn đã được đổi trước đó, hãy thực hiện lại');
 			redirect(base_url('dang-nhap'));
 		}
-	
+
 		if ($email && $phone) {
 			$data['email'] = $email;
 			$data['phone'] = $phone;
-	
+
 			$this->load->view('pages/component/header', $this->data);
 			$this->load->view('customer/changePassword', $data);
 			$this->load->view('pages/component/footer');
@@ -1186,32 +1154,30 @@ class indexController extends CI_Controller
 			redirect(base_url('dang-nhap'));
 		}
 	}
-	
-
 
 	public function changePassword()
 	{
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', ['required' => 'Bạn cần cung cấp %s', 'valid_email' => 'Địa chỉ email không hợp lệ']);
 		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-	
+
 		if ($this->form_validation->run() == TRUE) {
 			$email = $this->input->post('email');
 			$phone = $this->input->post('phone');
 			$password = $this->input->post('password');
-	
+
 			$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
 			$numbers = sprintf("%06d", rand(0, 999999));
 			$new_token = $letters . $numbers;
-	
+
 			$update_data = [
 				'token' => $new_token,
 				'password' => password_hash($password, PASSWORD_DEFAULT),
 			];
-	
+
 			$this->load->model('customerModel');
 			$this->customerModel->updateCustomerForgotPassword($email, $phone, $update_data);
-	
+
 			$this->session->set_flashdata('success', 'Cập nhật mật khẩu thành công, xin mời bạn đăng nhập lại');
 			$this->session->set_userdata('password_updated', true); // Thiết lập cờ
 			$this->session->unset_userdata('logged_in_customer');
@@ -1221,7 +1187,5 @@ class indexController extends CI_Controller
 			redirect(base_url('nhap-mat-khau-moi'));
 		}
 	}
-	
-
 
 }

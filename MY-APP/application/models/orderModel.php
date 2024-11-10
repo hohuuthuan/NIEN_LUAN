@@ -28,7 +28,7 @@ class orderModel extends CI_Model
 
     public function selectOrderDetails($orderCode)
     {
-        $query = $this->db->select('orders.order_code, orders.status as order_status, orders_details.quantity as qty, orders_details.order_code, orders_details.product_id, products.*, shipping.*')
+        $query = $this->db->select('orders.order_code, orders.status as order_status,  orders_details.subtotal as sub, orders_details.quantity as qty, orders_details.order_code, orders_details.product_id, products.*, shipping.*')
             ->from('orders_details')
             ->join('products', 'orders_details.product_id = products.id', 'left') // Sử dụng LEFT JOIN để kết hợp với bảng products
             ->join('orders', 'orders.order_code = orders_details.order_code')
@@ -56,11 +56,13 @@ class orderModel extends CI_Model
         return $this->db->delete('orders', ['order_code' => $order_code]);
     }
 
-    public function deleteOrderDetails($order_code)
-    {
-        $this->db->where_in('order_code', $order_code);
-        return $this->db->delete('orders_details');
-    }
+
+    // Không cần xóa thông tin bên bảng này cần đê thống kê doanh thu
+    // public function deleteOrderDetails($order_code)
+    // {
+    //     $this->db->where_in('order_code', $order_code);
+    //     return $this->db->delete('orders_details');
+    // }
 
     public function updateOrder($data_order, $order_code)
     {

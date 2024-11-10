@@ -5,7 +5,7 @@
 $(document).ready(function() {
     $('.order_status').change(function() {
         const value = $(this).val();
-        const order_code = $(this).find('option:selected').attr('id'); // Lấy ID của option được chọn
+        const order_code = $(this).data('order-code'); // Sử dụng thuộc tính data-order-code
 
         if (value == 0) {
             alert('Hãy chọn trạng thái đơn hàng');
@@ -24,6 +24,7 @@ $(document).ready(function() {
         }
     });
 });
+
 </script>
 
 

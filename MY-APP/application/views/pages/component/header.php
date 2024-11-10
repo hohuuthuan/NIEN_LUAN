@@ -18,49 +18,32 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<link href="<?php echo base_url('frontend/css/main.css') ?>" rel="stylesheet">
 	<link href="<?php echo base_url('frontend/css/responsive.css') ?>" rel="stylesheet">
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 	<link rel="shortcut icon" href="<?php echo base_url('frontend/image/logo.png') ?>">
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<style>
+	@media (max-width: 575.98px) {
+		#slider {
+			display: none !important;
+		}
+	}
+
+	</style>
 </head><!--/head-->
 
 <body>
 	<div id="loader" class="loader"></div>
 	<header id="header"><!--header-->
-		<div class="header_top"><!--header_top-->
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="contactinfo">
-							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="social-icons pull-right">
-							<ul class="nav navbar-nav">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div><!--/header_top-->
-
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="<?php echo base_url('/') ?>"><img src="images/home/logo.png" alt="" /></a>
+							<a href="<?php echo base_url('/') ?>"><img style="width: 100px" src="<?php echo base_url('frontend/image/logo.png') ?>" alt="" />PESTICIDE SHOP</a>
 						</div>
 
 					</div>
@@ -70,24 +53,32 @@ defined('BASEPATH') or exit('No direct script access allowed');
 								<?php
 								if ($this->session->userdata('logged_in_customer')) {
 									?>
-									<li><a href="#">
-									<li class="nav-item dropdown">
-										<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-											data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<i
-												class="fa fa-user"></i><b><?php echo $this->session->userdata('logged_in_customer')['username'] ?></b>
+									<li>
+										<a href="#">
+											<li class="nav-item dropdown">
+												<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+													data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													<i class="fa fa-user"></i>
+													<b>
+														<?php echo $this->session->userdata('logged_in_customer')['username'] ?>
+													</b>
+													<i class="fa-solid fa-caret-down"></i>
+										
+
+												</a>
+												<div style="height: 50px" class="dropdown-menu" aria-labelledby="navbarDropdown">
+													<a class="dropdown-item"
+														href="<?php echo base_url('profile-user'); ?>">Profile</a>
+												</div>
+											</li>
 										</a>
-										<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-											<a class="dropdown-item"
-												href="<?php echo base_url('profile-user'); ?>">Profile</a>
-										</div>
 									</li>
-
-
-									</a></li>
-									<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-									<li><a href="<?php echo base_url('checkout') ?>"><i class="fa fa-crosshairs"></i>
-											Checkout</a></li>
+									<!-- <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li> -->
+									<li>
+										<a href="<?php echo base_url('checkout') ?>"><i class="fa fa-crosshairs"></i>
+											Checkout
+										</a>
+									</li>
 									<li>
 
 										<a href="<?php echo base_url('dang-xuat') ?>"><i class="fa fa-lock"></i> Logout</a>

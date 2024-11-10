@@ -44,3 +44,10 @@ sau khi bấm xác thực thì trong hàm đó có lấy email về
 chuyển sang trang nhập mật khẩu mới với email đó truyền vào
 route resetpass thì update lại thông tin người dùng
 còn số điện thoại thì tính sau
+
+
+
+Làm thống kê doanh thu
+Lưu ý là khi xóa đơn hàng thì chỉ xóa bên bảng order
+Bảng order_detail vẫn còn sử dụng để tính thống kê doanh thu
+Cập nhật trạng thái thanh toán với value = 4 của hàm update_order_status

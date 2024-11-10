@@ -61,6 +61,8 @@ class productModel extends CI_Model
     }
 
 
+
+
     public function updateProduct($id, $data)
     {
         return $this->db->update('products', $data, ['id' => $id]);

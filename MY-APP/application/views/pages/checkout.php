@@ -73,22 +73,27 @@
 						<?php
 						}
 						?>
-						<tr style="border-top: 2px solid;">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-
-							<td style="width: 231px;">
-								<h3 style="color: red">TỔNG THANH TOÁN</h3>
-								<p colspan="5" class="cart_total_price"><?php echo number_format($total, 0, ',', '.') ?> VND
-								</p>
-							</td>
-
-						</tr>
 					</tbody>
 				</table>
+				<div style="position: relative; width: 100%; height: 100px">
+
+			
+				<div style=" display: flex; position: absolute; right: 15px; top: -10px;">
+                        <h3>TỔNG THANH TOÁN:<h3 style="color: #FE980F; margin-left: 10px">
+                        <?php echo number_format($total,0, ',','.') ?> VNĐ</h3></h3>
+						
+                </div>
+
+				<!-- <div style=" display: flex; position: absolute; right: 15px; top: 55px;">	
+				<a style="margin-right: 30px" href="<?php echo base_url('delete-all-cart') ?>"
+							class="btn btn-danger">Xóa tất cả</a>
+				<a href="<?php echo base_url('checkout') ?>" class="btn btn-success">Đặt hàng</a>
+				</div> -->
+				
+
+
+						
+				</div>
 			<?php
 			} else {
 				echo '<span class="text text-danger">Hãy thêm sản phẩm vào giỏ hàng</span>';

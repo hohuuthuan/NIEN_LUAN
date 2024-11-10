@@ -47,9 +47,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function deleteOrder($order_code)
 		{
             $this->load->model('orderModel');
-			$del_order_details = $this->orderModel->deleteOrderDetails($order_code);
+			
+			$update_order_details = $this->orderModel->updateOrderDetails($order_code);
 			$del  = $this->orderModel->deleteOrder($order_code);
-			if($del && $del_order_details){
+			if($del && $update_order_details){
 				$this->session->set_flashdata('success', 'Xóa đơn hàng thành công');
 				redirect(base_url('order_admin/listOrder'));
 			}else{
@@ -95,11 +96,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 		public function printOrder($order_code){
-       
 			$this->load->library('Pdf');
-	
+		
 			$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-			$pdf->SetTitle('Print Order: '.$order_code);
+			$pdf->SetTitle('Print Order: ' . $order_code);
 			$pdf->SetHeaderMargin(30);
 			$pdf->SetTopMargin(20);
 			$pdf->setFooterMargin(20);
@@ -108,57 +108,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$pdf->SetDisplayMode('real', 'default');
 			$pdf->Write(5, 'CodeIgniter TCPDF Integration');
 			$pdf->SetFont('dejavusans', '', 10);
-	
-			//in đơn hàng
+		
+			// In đơn hàng
 			$pdf->SetFont('dejavusans', '', 10);
-			// add a page
+			// Add a page
 			$pdf->AddPage();
 			$this->load->model('orderModel');
-	
+		
 			$data['order_details'] = $this->orderModel->printOrderDetails($order_code);
-	
+		
 			$html = '
 			<h3>Đơn hàng của bạn bao gồm các sản phẩm:</h3>    
 			<p>Cảm ơn bạn đã ủng hộ website <a href="#">abc.domain</a> của chúng tôi. Vui lòng liên hệ hotline nếu xảy ra sự cố: 19001900</p>        
 			<table border="1" cellspacing="3" cellpadding="4">
-			  <thead>
-				<tr>
-				  <th>STT</th>
-				  <th>Mã đơn hàng</th>
-				  <th>Tên sản phẩm</th>
-				  <th>Giá</th>
-				  <th>Số lượng</th>
-				  <th>Tổng số tiền:</th>
-				</tr>
-			  </thead>
-			  <tbody>
-			  ';
-			  $total = 0;
-			  foreach($data['order_details'] as $key => $product){
-				$total+=$product->quantity*$product->price;
-				$html.='
+				<thead>
 					<tr>
-					<td>'.$key.'</td>
-					<td>'.$order_code.'</td>
-					<td>'.$product->title.'</td> 
-					<td>'.$product->price.'</td>
-					<td>'.$product->quantity.'</td>
-					<td>'.number_format($product->quantity*$product->price,0,',','.').'đ</td>
-					
+						<th>STT</th>
+						<th>Mã đơn hàng</th>
+						<th>Tên sản phẩm</th>
+						<th>Giá</th>
+						<th>Số lượng</th>
+						<th>Chiết khấu</th>
+						<th>Tổng số tiền:</th>
 					</tr>
-					';
-				}
-	
-			$html.='<tr><td colspan="7" align="right">Tổng tiền: '.number_format($total,0,',','.').'đ</td></tr>
+				</thead>
+				<tbody>
+			';
+			$total = 0;
+			foreach($data['order_details'] as $key => $product){
+				// echo '<pre>'; 
+				// print_r($product); 
+				// echo '</pre>';
+				$discounted_price = $product->selling_price * (1 - $product->discount / 100);
+				$total += $product->qty * $discounted_price;
+				$html .= '
+					<tr>
+						<td>' . ($key + 1) . '</td>
+						<td>' . $order_code . '</td>
+						<td>' . $product->title . '</td> 
+						<td>' . number_format($product->selling_price, 0, ',', '.') . 'đ</td>
+						<td>' . $product->qty . '</td>
+						<td>' . $product->discount . '%</td>
+						<td>' . number_format($product->qty * $discounted_price, 0, ',', '.') . 'đ</td>
+					</tr>
+				';
+			}
+		
+			$html .= '<tr><td colspan="7" align="right">Tổng tiền: ' . number_format($total, 0, ',', '.') . 'đ</td></tr>
 			</tbody>
 			</table>';
-		  
-	
-			// output the HTML content
+		
+			// Output the HTML content
 			$pdf->writeHTML($html, true, false, true, false, '');
-			$pdf->Output('Order: '.$order_code.'.pdf', 'I'); 
+			$pdf->Output('Order: ' . $order_code . '.pdf', 'I'); 
 		}
-
+		
+		
 
     }
 ?>
