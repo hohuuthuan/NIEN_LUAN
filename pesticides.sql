@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 09, 2024 lúc 09:17 PM
+-- Thời gian đã tạo: Th10 10, 2024 lúc 07:27 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -132,9 +132,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_code`, `status`, `form_of_payment_id`) VALUES
-(28, 'HNM124124', 4, 34),
-(30, 'DRW537473', 1, 36),
-(31, 'PNK538876', 1, 37);
+(41, 'ILB715752', 4, 47);
 
 -- --------------------------------------------------------
 
@@ -149,17 +147,17 @@ CREATE TABLE `orders_details` (
   `quantity` int(11) NOT NULL,
   `subtotal` int(11) NOT NULL,
   `date_order` varchar(50) DEFAULT NULL,
-  `date_delivered` varchar(50) DEFAULT NULL
+  `date_delivered` varchar(50) DEFAULT NULL,
+  `payment_status` int(2) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `orders_details`
 --
 
-INSERT INTO `orders_details` (`id`, `order_code`, `product_id`, `quantity`, `subtotal`, `date_order`, `date_delivered`) VALUES
-(34, 'HNM124124', 41, 10, 4990000, '2024-11-06', '2024-11-06'),
-(36, 'DRW537473', 41, 5, 1247500, '2024-11-07', '0000-00-00'),
-(37, 'PNK538876', 57, 3, 6000, '2024-11-09', NULL);
+INSERT INTO `orders_details` (`id`, `order_code`, `product_id`, `quantity`, `subtotal`, `date_order`, `date_delivered`, `payment_status`) VALUES
+(50, 'ILB715752', 59, 10, 20000, '2024-11-11', '2024-11-11 01:17:06', 0),
+(51, 'ILB715752', 60, 10, 20000, '2024-11-11', '2024-11-11 01:17:06', 0);
 
 -- --------------------------------------------------------
 
@@ -185,7 +183,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `title`, `description`, `selling_price`, `image`, `status`, `category_id`, `brand_id`, `slug`, `discount`) VALUES
-(57, 'Thêm sản phẩm phẩm phẩm phẩm phẩm phẩm phẩm', 'Mô tả sản phẩm Mô tả sản phẩm Mô tả sản phẩm Mô tả sản phẩm Mô tả sản phẩm Mô tả sản phẩm', 2000, '1731157049ctu.png', 1, 7, 7, 'them-san-pham-pham-pham-pham-pham-pham-pham', 0);
+(59, 'Sản phẩm 1', 'Mô tả sản phẩm 1', 2000, '1731259068ctu.png', 1, 7, 7, 'san-pham-1', 0),
+(60, 'Sản phẩm 2', 'Mô tả sản phẩm 2', 2000, '1731259086cabybara.jpg', 1, 7, 7, 'san-pham-2', 0);
 
 -- --------------------------------------------------------
 
@@ -227,10 +226,8 @@ CREATE TABLE `shipping` (
 --
 
 INSERT INTO `shipping` (`id`, `user_id`, `name`, `phone`, `address`, `email`, `form_of_payment`) VALUES
-(34, 9, 'Hồ Hữu Thuận', '03454927511', 'Hihihihihihihihi', 'thuan@gmail.com', 'COD'),
-(35, 9, 'Hữu Thuận', '0345492751', 'ấcc', 'hohuuthuan789@gmail.com', 'COD'),
-(36, 9, 'Hồ Hữu Thuận', '0345492751', 'đâuuuuuuuuuuuuuuuuuuuuuuuuu', 'thuan@gmail.com', 'COD'),
-(37, 21, 'Hồ Hữu Thuận', '0345492751', 'Ở đâu cũng được', 'hohuuthuan789@gmail.com', 'COD');
+(46, 21, 'Hồ Hữu Thuận', '0345492751', 'Tân Hòa, An Hiệp, Châu Thành, Đồng Tháp', 'hohuuthuan789@gmail.com', 'COD'),
+(47, 21, 'Hồ Hữu Thuận', '0345492751', 'địa chỉ của thuận', 'hohuuthuan789@gmail.com', 'COD');
 
 -- --------------------------------------------------------
 
@@ -302,7 +299,8 @@ CREATE TABLE `warehouses` (
 --
 
 INSERT INTO `warehouses` (`id`, `product_id`, `quantity`, `import_price_one_product`, `total_import_price`) VALUES
-(22, 57, 10, 5000, 42000);
+(24, 59, 1000, 1000, 1000000),
+(25, 60, 1001, 5000, 1005000);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -412,19 +410,19 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT cho bảng `orders_details`
 --
 ALTER TABLE `orders_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT cho bảng `role`
@@ -436,7 +434,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT cho bảng `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT cho bảng `sliders`
@@ -454,7 +452,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `warehouses`
 --
 ALTER TABLE `warehouses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
