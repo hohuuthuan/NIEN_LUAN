@@ -57,12 +57,12 @@ class orderModel extends CI_Model
     }
 
 
-    // Không cần xóa thông tin bên bảng này cần đê thống kê doanh thu
-    // public function deleteOrderDetails($order_code)
-    // {
-    //     $this->db->where_in('order_code', $order_code);
-    //     return $this->db->delete('orders_details');
-    // }
+
+    public function deleteOrderDetails($order_code)
+    {
+        $this->db->where_in('order_code', $order_code);
+        return $this->db->delete('orders_details');
+    }
 
     public function updateOrder($data_order, $order_code)
     {
@@ -74,6 +74,11 @@ class orderModel extends CI_Model
         return $this->db->update('orders_details', $data_order_details, ['order_code' => $order_code]);
 
     }
+
+    public function insertRevenue($data) {
+        $this->db->insert('revenue', $data);
+    }
+    
 }
 
 ?>

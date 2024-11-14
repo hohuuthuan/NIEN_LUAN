@@ -8,27 +8,30 @@
             <?php } elseif($this->session->flashdata('error')) { ?>
                 <div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
             <?php } ?>
-        <form action="<?php echo base_url('manage-customer/update/'.$customers->id) ?>" method="POST" enctype="multipart/form-data" >
+       
             <div class="form-group">
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Status</label>
+                    <form action="<?php echo base_url('manage-customer/update/'.$customers->id) ?>" method="POST" enctype="multipart/form-data" >
                     <select name="status" class="form-control" id="exampleFormControlSelect1">
                         <?php 
                             if($customers->status == 1) {
                         ?>
                             <option selected value="1">Kích hoạt</option>
                             <option value="0">Khóa tài khoản</option>
-                        <?php }elseif($customers->status ==0){
+                        <?php }elseif($customers->status == 0){
                             ?>
                             <option value="1">Kích hoạt</option>
                             <option selected  value="0">Khóa tài koản</option>
                         <?php }?>
 
                     </select>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            </form>
+           
+           
         </div>
     </div>
 </div>

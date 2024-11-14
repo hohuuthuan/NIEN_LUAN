@@ -82,15 +82,12 @@ $route['register-admin']['GET'] = 'loginController/register_admin';
 $route['register-admin-submit']['POST'] = 'loginController/insert_admin';
 
 
-
-
-
-
-
-
 // dashboard
 $route['dashboard']['GET'] = 'dashboardController/index';
 $route['logout']['GET'] = 'dashboardController/logout';
+
+
+
 
 
 // Brand
@@ -172,8 +169,12 @@ $route['cart/order-items']['GET'] = 'indexController/order_items';
 
 
 // Revenue
-$route['revenue/week']['GET'] = 'revenueController/statistics_by_week';
-$route['revenue/month']['GET'] = 'revenueController/statistics_by_month';
-$route['revenue/year']['GET'] = 'revenueController/statistics_by_year';
+
+$route['revenue']['GET'] = 'revenueController/index';
+$route['revenue-custom']['POST'] = 'revenueController/index';
+$route['revenuee']['GET'] = 'revenueController/revenuee';
+$route['revenueee']['POST'] = 'revenueController/revenueee';
 
 
+// Phần xử lý AI
+$route['getlayoutAI']['GET'] = 'predictionController/index';

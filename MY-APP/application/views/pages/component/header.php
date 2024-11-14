@@ -66,9 +66,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 										
 
 												</a>
-												<div style="height: 50px" class="dropdown-menu" aria-labelledby="navbarDropdown">
+												<div style=" text-align: center;" class="dropdown-menu" aria-labelledby="navbarDropdown">
 													<a class="dropdown-item"
-														href="<?php echo base_url('profile-user'); ?>">Profile</a>
+														href="<?php echo base_url('profile-user'); ?>"><h5>Thông tin cá nhân</h5></a>
 												</div>
 											</li>
 										</a>

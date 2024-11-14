@@ -37,6 +37,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->model('brandModel');
 			$data['brand'] = $this->brandModel->selectBrand();
 
+			
+			// echo '<pre>';
+			// print_r($data);
+			// echo '</pre>';
+
+
 			$this->load->view("product/createProduct", $data);
 			$this->load->view("component-admin/footer");
 		}

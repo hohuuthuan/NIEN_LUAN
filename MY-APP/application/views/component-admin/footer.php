@@ -5,8 +5,7 @@
 $(document).ready(function() {
     $('.order_status').change(function() {
         const value = $(this).val();
-        const order_code = $(this).data('order-code'); // Sử dụng thuộc tính data-order-code
-
+        const order_code = $(this).data('order-code');
         if (value == 0) {
             alert('Hãy chọn trạng thái đơn hàng');
         } else {
@@ -68,6 +67,30 @@ $(document).ready(function() {
    
 </script>
 
+<script>
+    document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
+        var day = document.querySelector('input[name="quantity_warehouses"]').value;
+        var month = document.querySelector('select[name="month"]').value;
+        var year = document.querySelector('input[name="import_price_warehouses"]').value;
+        var date = year + '-' + month + '-' + day;
+
+        fetch(`<?= base_url('revenueController/index') ?>`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `quantity_warehouses=${day}&month=${month}&import_price_warehouses=${year}`
+        }).then(response => response.json())
+        .then(data => {
+            if (data.custom_revenue && data.custom_revenue.length > 0) {
+                document.getElementById('resultCard').classList.remove('hidden');
+                // Cập nhật dữ liệu hiển thị
+            } else {
+                document.getElementById('resultCard').classList.add('hidden');
+            }
+        });
+    });
+</script>
 
 
 </body>

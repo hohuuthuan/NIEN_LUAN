@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					'username' => $username,
 					'email' => $email,
 					'password' => $password,
-					'role_id' => 0,
+					'role_id' => 1,
 					'status' => 0
 				];
 
@@ -59,20 +59,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function loginAdmin(){
 			$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
 			$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
-
+		
 			if ($this->form_validation->run()) {
-
 				$email = $this->input->post('email');
-				$password = md5($this->input->post('password'));
+				$password = $this->input->post('password');
 				$this->load->model('loginModel');
-				$result = $this->loginModel->checkLoginAdmin($email, $password);
-				if(count($result)>0){
+				$result = $this->loginModel->checkLoginAdmin($email);
+		
+				if($result && password_verify($password, $result[0]->password)){
 					$session_array = [
 						'id'=> $result[0]->id,
 						'username'=> $result[0]->username,
 						'email'=> $result[0]->email,
 					];
-
+		
 					$this->session->set_userdata('logged_in', $session_array);
 					$this->session->set_flashdata('success', 'Đăng nhập thành công');
 					redirect(base_url('dashboard'));
@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$this->index();
 			}
 		}
-
+		
 
 		
 

@@ -8,7 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				redirect(base_url('login'));
 			}
 		}
-
+		public function logout (){
+			$this->session->unset_userdata('logged_in');
+			$this->session->set_flashdata('message', 'Đăng xuất thành công');
+			redirect(base_url('login'));
+		}
 		public function index()
 		{
 			$this->load->view("component-admin/header");
@@ -16,11 +20,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$this->load->view("dashboard/indexDashboard");
 			$this->load->view("component-admin/footer");
 		}
+		public function revenue()
+		{
+			$this->load->model('revenueModel');
+			$data['daily_revenue'] = $this->revenueModel->getRevenueByDay();
+			$data['monthly_revenue'] = $this->revenueModel->getRevenueByMonth();
+			$data['yearly_revenue'] = $this->revenueModel->getRevenueByYear();
+			$this->load->view('revenue_view', $data);
+		}
 
-
-		public function logout (){
-			$this->session->unset_userdata('logged_in');
-			$this->session->set_flashdata('message', 'Đăng xuất thành công');
-			redirect(base_url('login'));
-		}	
+			
 }

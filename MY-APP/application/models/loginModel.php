@@ -1,11 +1,11 @@
 <?php
 class loginModel extends CI_Model
 {
-    public function checkLoginAdmin($email, $password)
-    {
-        $query = $this->db->where('email', $email)->where('password', $password)->where('status', 1)->where('role_id', 1)->get('users');
+    public function checkLoginAdmin($email) {
+        $query = $this->db->where('email', $email)->where('status', 1)->where('role_id', 1)->get('users');
         return $query->result();
     }
+    
     public function checkLoginCustomer($email)
     {
         $this->db->select('*');

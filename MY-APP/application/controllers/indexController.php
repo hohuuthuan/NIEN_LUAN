@@ -578,18 +578,17 @@ class indexController extends CI_Controller
 		$this->load->view('pages/login');
 		$this->load->view('pages/component/footer');
 	}
-	public function loginCustomer()
-	{
+	public function loginCustomer() {
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
 		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
-
+	
 		if ($this->form_validation->run()) {
 			$email = $this->input->post('email');
-			$password = $this->input->post('password'); // Lấy mật khẩu chưa băm để sử dụng cho password_verify
-
+			$password = $this->input->post('password');
+	
 			$this->load->model('loginModel');
 			$result = $this->loginModel->checkLoginCustomer($email);
-
+	
 			if (count($result) > 0 && password_verify($password, $result[0]->password)) {
 				$session_array = [
 					'id' => $result[0]->id,
@@ -597,14 +596,18 @@ class indexController extends CI_Controller
 					'email' => $result[0]->email,
 					'phone' => $result[0]->phone,
 				];
-
+	
 				$this->session->set_userdata('logged_in_customer', $session_array);
 				$this->session->set_flashdata('success', 'Đăng nhập thành công, mời bạn tiếp tục mua hàng');
-				// Xóa cờ khi mà người dùng đã thay đổi mật khẩu
-				$this->session->unset_userdata('password_updated');
-				redirect(base_url('/'));
-
-
+	
+				// Kiểm tra role_id và chuyển hướng
+				if ($result[0]->role_id == 1) {
+					redirect(base_url('dashboard'));
+				} else {
+					// Xóa cờ khi mà người dùng đã thay đổi mật khẩu
+					$this->session->unset_userdata('password_updated');
+					redirect(base_url('/'));
+				}
 			} else {
 				$this->session->set_flashdata('error', 'Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu');
 				redirect(base_url('/dang-nhap'));
@@ -613,6 +616,7 @@ class indexController extends CI_Controller
 			$this->login();
 		}
 	}
+	
 
 
 	public function profile_user()

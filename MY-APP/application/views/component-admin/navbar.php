@@ -102,15 +102,28 @@
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Revenue statistics
+        Revenue
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('revenue/week'); ?>">Thống kê theo tuần</a>
-          <a class="dropdown-item" href="<?php echo base_url('revenue/month'); ?>">Thống kê theo tháng</a>
-          <a class="dropdown-item" href="<?php echo base_url('revenue/year'); ?>">Thống kê theo tháng</a>
+          <a class="dropdown-item" href="<?php echo base_url('revenue'); ?>">Thống kê theo tuần</a>
+          <a class="dropdown-item" href="<?php echo base_url('revenuee'); ?>">Thống kê tùy chỉnh</a>
         </div>
+
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        AI
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<?php echo base_url('getlayoutAI'); ?>">Dự đoán bệnh</a>
+          <a class="dropdown-item" href="<?php echo base_url('predict'); ?>">Thống kê theo tuần</a>
+         
+        </div>
+
       </li>
 
+    
+      </li>
 
 
     </ul>

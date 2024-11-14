@@ -3,7 +3,7 @@ class customerModel extends CI_Model
 {
     public function selectCustomer()
     {
-        $this->db->where('role_id', 2);
+        // $this->db->where('role_id', 2);
         $query = $this->db->get('users');
         return $query->result();
     }
