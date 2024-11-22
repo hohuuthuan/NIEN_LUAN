@@ -1192,4 +1192,22 @@ class indexController extends CI_Controller
 		}
 	}
 
+
+
+
+
+	// AI
+
+	public function AI()
+    {
+        // Cấu hình CORS
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+        // Trả về view
+        $this->load->view('pages/component/header', $this->data);
+        $this->load->view('AI/postFile');
+        $this->load->view('pages/component/footer');
+    }
 }

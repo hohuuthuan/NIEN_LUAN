@@ -166,7 +166,7 @@
 
     async function predict() {
         // 1. Chuyển ảnh về tensor
-        let image = document.getElementById("display_image");
+        let image = document.getElementById("displ  ay_image");
         let img = tf.browser.fromPixels(image);
         let normalizationOffset = tf.scalar(255/2); // 127.5
         let tensor = img

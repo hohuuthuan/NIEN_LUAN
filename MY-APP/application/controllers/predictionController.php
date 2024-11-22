@@ -9,7 +9,9 @@ class predictionController extends CI_Controller
         header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
         // Trả về view
-        $this->load->view('AI/postFile');
+        $this->load->view('pages/component/header', $this->data);
+        $this->load->view('AI/AI_page');
+        $this->load->view('pages/component/footer');
     }
 }
 ?>

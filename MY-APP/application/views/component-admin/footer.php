@@ -92,6 +92,14 @@ $(document).ready(function() {
     });
 </script>
 
-
+<script>
+    document.getElementById("revenueForm").onsubmit = function(event) {
+        // Vô hiệu hóa nút submit để ngăn gửi nhiều lần
+        document.getElementById("submitBtn").disabled = true;
+        
+        // Đảm bảo form chỉ gửi một lần
+        return true;
+    };
+</script>
 </body>
 </html>

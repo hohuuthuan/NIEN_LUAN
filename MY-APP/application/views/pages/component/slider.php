@@ -22,9 +22,9 @@
                         <?php 
                             foreach ($sliders as $key => $slide) {
                         ?>
-                        <div class="item <?php echo ($key==0)?'active' : ''; ?>">
-                            <div class="col-sm-12">
-                                <img style="width: 1000px; height: 300px;" src="<?php echo base_url('uploads/sliders/'.$slide->image) ?>" class="girl img-responsive" alt="<?php echo $slide->title ?>" />
+                        <div style="margin: 0 auto" class="item <?php echo ($key==0)?'active' : ''; ?>">
+                            <div class="col-sm-11">
+                                <img style="width: 930px; height: 300px;" src="<?php echo base_url('uploads/sliders/'.$slide->image) ?>" class="girl img-responsive" alt="<?php echo $slide->title ?>" />
                             </div>
                         </div>
                         <?php } ?>

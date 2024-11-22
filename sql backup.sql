@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 10, 2024 lúc 07:27 PM
+-- Thời gian đã tạo: Th10 20, 2024 lúc 02:24 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -132,7 +132,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_code`, `status`, `form_of_payment_id`) VALUES
-(41, 'ILB715752', 4, 47);
+(53, 'RIZ835166', 1, 59),
+(54, 'THS938097', 1, 60);
 
 -- --------------------------------------------------------
 
@@ -156,8 +157,9 @@ CREATE TABLE `orders_details` (
 --
 
 INSERT INTO `orders_details` (`id`, `order_code`, `product_id`, `quantity`, `subtotal`, `date_order`, `date_delivered`, `payment_status`) VALUES
-(50, 'ILB715752', 59, 10, 20000, '2024-11-11', '2024-11-11 01:17:06', 0),
-(51, 'ILB715752', 60, 10, 20000, '2024-11-11', '2024-11-11 01:17:06', 0);
+(61, 'RIZ835166', 64, 1, 2000, '2024-11-17', NULL, 0),
+(62, 'RIZ835166', 68, 1, 2000, '2024-11-17', NULL, 0),
+(63, 'THS938097', 65, 5, 10000, '2024-11-17', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -183,8 +185,28 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `title`, `description`, `selling_price`, `image`, `status`, `category_id`, `brand_id`, `slug`, `discount`) VALUES
-(59, 'Sản phẩm 1', 'Mô tả sản phẩm 1', 2000, '1731259068ctu.png', 1, 7, 7, 'san-pham-1', 0),
-(60, 'Sản phẩm 2', 'Mô tả sản phẩm 2', 2000, '1731259086cabybara.jpg', 1, 7, 7, 'san-pham-2', 0);
+(64, 'Sản phẩm 1', 'Mô tả sản phẩm 1', 2000, '1731848031ctu.png', 1, 7, 7, 'san-pham-1', 0),
+(65, 'Sản phẩm 2', 'Mô tả sản phẩm 2', 2000, '1731848041ctu.png', 1, 7, 7, 'san-pham-2', 0),
+(66, 'Sản phẩm 3', 'Mô tả sản phẩm 3', 2000, '1731848049ctu.png', 1, 7, 7, 'san-pham-3', 0),
+(67, 'Sản phẩm 4', 'Mô tả sản phẩm 4', 2000, '1731848058ctu.png', 1, 7, 7, 'san-pham-4', 0),
+(68, 'Sản phẩm 5', 'Mô tả sản phẩm 5', 2000, '1731848066ctu.png', 1, 7, 7, 'san-pham-5', 0),
+(69, 'Sản phẩm 6', 'Mô tả sản phẩm 6', 2000, '1731848074ctu.png', 1, 7, 7, 'san-pham-6', 0),
+(70, 'Sản phẩm 7', 'Mô tả sản phẩm 7', 2000, '1731848083ctu.png', 1, 7, 7, 'san-pham-7', 0),
+(71, 'Sản phẩm 8', 'Mô tả sản phẩm 8', 2000, '1731848090ctu.png', 1, 7, 7, 'san-pham-8', 0),
+(72, 'Sản phẩm 9', 'Mô tả sản phẩm 9', 2000, '1731848100ctu.png', 1, 7, 7, 'san-pham-9', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `revenue`
+--
+
+CREATE TABLE `revenue` (
+  `id` int(11) NOT NULL,
+  `order_code` varchar(20) NOT NULL,
+  `subtotal` int(11) NOT NULL,
+  `date_delivered` varchar(20) NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -226,8 +248,8 @@ CREATE TABLE `shipping` (
 --
 
 INSERT INTO `shipping` (`id`, `user_id`, `name`, `phone`, `address`, `email`, `form_of_payment`) VALUES
-(46, 21, 'Hồ Hữu Thuận', '0345492751', 'Tân Hòa, An Hiệp, Châu Thành, Đồng Tháp', 'hohuuthuan789@gmail.com', 'COD'),
-(47, 21, 'Hồ Hữu Thuận', '0345492751', 'địa chỉ của thuận', 'hohuuthuan789@gmail.com', 'COD');
+(59, 21, 'Hồ Hữu Thuận', '0774463437', 'địa chỉ của thuận', 'hohuuthuan789@gmail.com', 'COD'),
+(60, 21, 'Hồ Hữu Thuận', '03454927511', 'địa chỉ đặt hàng', 'hohuuthuan789@gmail.com', 'COD');
 
 -- --------------------------------------------------------
 
@@ -277,8 +299,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role_id`, `status`, `address`, `phone`, `avatar`, `token`, `date_created`) VALUES
-(1, 'admin', 'admin@gmail.com', '0192023a7bbd73250516f069df18b500', 1, 1, '', '0345492759', 'User-avatar.png', 'MIN688922', '2024-11-08 22:27:50'),
-(21, 'B2107182', 'hohuuthuan789@gmail.com', '$2y$10$twaTnBFtzSvzL.K9pHYp9uuOhWMnsvuUuOcE15hrg0SUCX21VQvsS', 2, 1, 'đâuuuuuuuu', '0345492751', '1731152480-cabybara.jpg', 'TIY385766', '2024-11-10 03:24:22');
+(1, 'admin', 'admin@gmail.com', '$2y$10$twaTnBFtzSvzL.K9pHYp9uuOhWMnsvuUuOcE15hrg0SUCX21VQvsS', 1, 1, '', '0345492759', 'User-avatar.png', 'MIN688922', '2024-11-08 22:27:50'),
+(21, 'B2107182', 'hohuuthuan789@gmail.com', '$2y$10$twaTnBFtzSvzL.K9pHYp9uuOhWMnsvuUuOcE15hrg0SUCX21VQvsS', 2, 1, 'đâu', '0345492751', '1731152480-cabybara.jpg', 'TIY385766', '2024-11-10 03:24:22');
 
 -- --------------------------------------------------------
 
@@ -299,8 +321,15 @@ CREATE TABLE `warehouses` (
 --
 
 INSERT INTO `warehouses` (`id`, `product_id`, `quantity`, `import_price_one_product`, `total_import_price`) VALUES
-(24, 59, 1000, 1000, 1000000),
-(25, 60, 1001, 5000, 1005000);
+(29, 64, 1000, 1000, 1000000),
+(30, 65, 1000, 1000, 1000000),
+(31, 66, 1000, 1000, 1000000),
+(32, 67, 1000, 1000, 1000000),
+(33, 68, 1000, 1000, 1000000),
+(34, 69, 1000, 1000, 1000000),
+(35, 70, 1000, 1000, 1000000),
+(36, 71, 1000, 1000, 1000000),
+(37, 72, 1000, 1000, 1000000);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -351,6 +380,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_brand` (`brand_id`),
   ADD KEY `fk_category` (`category_id`);
+
+--
+-- Chỉ mục cho bảng `revenue`
+--
+ALTER TABLE `revenue`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `role`
@@ -410,19 +445,25 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT cho bảng `orders_details`
 --
 ALTER TABLE `orders_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+
+--
+-- AUTO_INCREMENT cho bảng `revenue`
+--
+ALTER TABLE `revenue`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `role`
@@ -434,7 +475,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT cho bảng `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT cho bảng `sliders`
@@ -446,13 +487,13 @@ ALTER TABLE `sliders`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT cho bảng `warehouses`
 --
 ALTER TABLE `warehouses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

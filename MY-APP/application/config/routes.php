@@ -171,10 +171,10 @@ $route['cart/order-items']['GET'] = 'indexController/order_items';
 // Revenue
 
 $route['revenue']['GET'] = 'revenueController/index';
-$route['revenue-custom']['POST'] = 'revenueController/index';
+$route['revenue-custom']['POST'] = 'revenueController/customRevenue';
 $route['revenuee']['GET'] = 'revenueController/revenuee';
 $route['revenueee']['POST'] = 'revenueController/revenueee';
 
 
 // Phần xử lý AI
-$route['getlayoutAI']['GET'] = 'predictionController/index';
+$route['getlayoutAI']['GET'] = 'indexController/AI';
