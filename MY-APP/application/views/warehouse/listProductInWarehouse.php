@@ -49,7 +49,7 @@
                             
                             <td>
                                 <a onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm này ra khỏi kho chứ chứ?')"
-                                    href="<?php echo base_url('product/delete/' . $pro->product_id) ?>"
+                                    href="<?php echo base_url('product-in-warehouse/delete/' . $pro->product_id) ?>"
                                     class="btn btn-danger">Delete</a>
                                 <a href="<?php echo base_url('quantity/update/' . $pro->product_id) ?>" class="btn btn-warning">Nhập kho</a>
                             </td>

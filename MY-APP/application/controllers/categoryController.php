@@ -142,8 +142,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function deleteCategory($id)
 		{
 			$this->load->model('categoryModel');
-			$this->categoryModel->deleteCategory($id);
-			$this->session->set_flashdata('success', 'Đã xoá danh mục thành công');
+			$this->load->model('productModel'); // Đảm bảo có model kiểm tra sản phẩm liên kết
+	
+			// Kiểm tra xem danh mục có sản phẩm liên kết hay không
+			$categoryUsedInProducts = $this->categoryModel->checkCategoryInProducts($id);
+	
+			if ($categoryUsedInProducts) {
+				// Nếu có sản phẩm sử dụng danh mục này, không cho phép xóa
+				$this->session->set_flashdata('error', 'Không thể xóa danh mục vì có sản phẩm đang sử dụng.');
+			} else {
+				// Nếu không có sản phẩm nào liên kết, thực hiện xóa
+				if ($this->categoryModel->deleteCategory($id)) {
+					$this->session->set_flashdata('success', 'Đã xóa danh mục thành công');
+				} else {
+					$this->session->set_flashdata('error', 'Xóa danh mục thất bại');
+				}
+			}
+	
 			redirect(base_url('category/list'));
 		}
 

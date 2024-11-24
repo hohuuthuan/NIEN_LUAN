@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 20, 2024 lúc 02:24 PM
+-- Thời gian đã tạo: Th10 24, 2024 lúc 03:45 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -132,8 +132,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_code`, `status`, `form_of_payment_id`) VALUES
-(53, 'RIZ835166', 1, 59),
-(54, 'THS938097', 1, 60);
+(53, 'RIZ835166', 4, 59),
+(54, 'THS938097', 4, 60),
+(55, 'YCH942436', 4, 61);
 
 -- --------------------------------------------------------
 
@@ -157,9 +158,10 @@ CREATE TABLE `orders_details` (
 --
 
 INSERT INTO `orders_details` (`id`, `order_code`, `product_id`, `quantity`, `subtotal`, `date_order`, `date_delivered`, `payment_status`) VALUES
-(61, 'RIZ835166', 64, 1, 2000, '2024-11-17', NULL, 0),
-(62, 'RIZ835166', 68, 1, 2000, '2024-11-17', NULL, 0),
-(63, 'THS938097', 65, 5, 10000, '2024-11-17', NULL, 0);
+(61, 'RIZ835166', 64, 1, 2000, '2024-11-17', '2024-11-22 15:16:07', 0),
+(62, 'RIZ835166', 68, 1, 2000, '2024-11-17', '2024-12-11 15:16:07', 0),
+(63, 'THS938097', 65, 5, 10000, '2024-11-17', '2024-11-22 15:39:45', 0),
+(64, 'YCH942436', 64, 3, 6000, '2024-11-22', '2024-11-22 17:12:24', 0);
 
 -- --------------------------------------------------------
 
@@ -208,6 +210,15 @@ CREATE TABLE `revenue` (
   `date_delivered` varchar(20) NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `revenue`
+--
+
+INSERT INTO `revenue` (`id`, `order_code`, `subtotal`, `date_delivered`) VALUES
+(5, 'RIZ835166', 4000, '2024-12-24 15:16:07'),
+(6, 'THS938097', 10000, '2024-10-23 15:39:45'),
+(7, 'YCH942436', 60000, '2024-11-22 17:12:24');
+
 -- --------------------------------------------------------
 
 --
@@ -249,7 +260,8 @@ CREATE TABLE `shipping` (
 
 INSERT INTO `shipping` (`id`, `user_id`, `name`, `phone`, `address`, `email`, `form_of_payment`) VALUES
 (59, 21, 'Hồ Hữu Thuận', '0774463437', 'địa chỉ của thuận', 'hohuuthuan789@gmail.com', 'COD'),
-(60, 21, 'Hồ Hữu Thuận', '03454927511', 'địa chỉ đặt hàng', 'hohuuthuan789@gmail.com', 'COD');
+(60, 21, 'Hồ Hữu Thuận', '03454927511', 'địa chỉ đặt hàng', 'hohuuthuan789@gmail.com', 'COD'),
+(61, 21, 'Hồ Hữu Thuận', '0345492751', 'địa chỉ của thuận', 'hohuuthuan789@gmail.com', 'COD');
 
 -- --------------------------------------------------------
 
@@ -445,13 +457,13 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT cho bảng `orders_details`
 --
 ALTER TABLE `orders_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -463,7 +475,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `revenue`
 --
 ALTER TABLE `revenue`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `role`
@@ -475,7 +487,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT cho bảng `shipping`
 --
 ALTER TABLE `shipping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT cho bảng `sliders`

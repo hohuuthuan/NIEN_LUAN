@@ -125,7 +125,7 @@ $route['product/delete/(:any)']['GET'] = 'productController/deleteProduct/$1';
 // Warehouse
 $route['warehouse/list']['GET'] = 'warehouseController/index';
 $route['quantity/update/(:any)']['GET'] = 'warehouseController/updateQuantityProduct/$1';
-
+$route['product-in-warehouse/delete/(:any)']['GET'] = 'warehouseController/deleteProduct/$1';
 $route['warehouse/plusquantity-importpriceinwwarehouses/(:any)']['POST'] = 'warehouseController/plusQuantityWarehouses/$1';
 
 

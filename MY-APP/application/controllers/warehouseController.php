@@ -61,17 +61,31 @@ class warehouseController extends CI_Controller
 		redirect(base_url('quantity/update/' . $id));
 	}
 
-
 	public function deleteProduct($id)
 	{
 		$this->load->model('productModel');
+	
+		// Kiểm tra nếu sản phẩm liên quan đến đơn hàng
+		$orders = $this->productModel->getOrdersByProductId($id);
+		if (!empty($orders)) {
+			$order_codes = array_column($orders, 'order_code');
+			$this->session->set_flashdata(
+				'error',
+				'Không thể xóa sản phẩm vì đang được sử dụng trong các đơn hàng: ' . implode(', ', $order_codes)
+			);
+			redirect(base_url('warehouse/list')); // Quay lại danh sách kho
+		}
+	
+		// Nếu không liên quan đến đơn hàng, tiến hành xóa
 		if ($this->productModel->deleteProduct($id)) {
-			$this->session->set_flashdata('success', 'Sản phẩm đã được xóa thành công');
+			$this->session->set_flashdata('success', 'Sản phẩm đã được xóa thành công khỏi kho');
 		} else {
 			$this->session->set_flashdata('error', 'Xóa sản phẩm thất bại');
 		}
-		redirect(base_url('product/list'));
+	
+		redirect(base_url('warehouse/list'));
 	}
+	
 
 
 

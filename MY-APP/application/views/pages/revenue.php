@@ -29,7 +29,7 @@
                                 <?php } ?>
                             <?php } else { ?>
                                 <tr>
-                                    <td colspan="2" style="text-align: center;">Không có dữ liệu</td>
+                                    <td colspan="2" style="text-align: center;">Hôm nay chưa có đơn hàng nào đã thanh toán</td>
                                 </tr>
                             <?php } ?>
                         </tbody>

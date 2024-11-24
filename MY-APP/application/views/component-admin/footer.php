@@ -99,7 +99,7 @@ $(document).ready(function() {
         
         // Đảm bảo form chỉ gửi một lần
         return true;
-    };
+    };-
 </script>
 </body>
 </html>

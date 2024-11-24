@@ -105,8 +105,7 @@
         Revenue
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('revenue'); ?>">Thống kê theo tuần</a>
-          <a class="dropdown-item" href="<?php echo base_url('revenuee'); ?>">Thống kê tùy chỉnh</a>
+          <a class="dropdown-item" href="<?php echo base_url('revenue'); ?>">Xem thống kê</a>
         </div>
 
       </li>
@@ -115,9 +114,7 @@
         AI
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('getlayoutAI'); ?>">Dự đoán bệnh</a>
-          <a class="dropdown-item" href="<?php echo base_url('predict'); ?>">Thống kê theo tuần</a>
-         
+          <a class="dropdown-item" href="<?php echo base_url('getlayoutAI'); ?>">Dự đoán bệnh</a>   
         </div>
 
       </li>

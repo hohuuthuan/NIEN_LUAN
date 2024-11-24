@@ -22,6 +22,21 @@
             return $this->db->update('categories',$data, ['id'=>$id]);   
         }
 
+        public function checkCategoryInProducts($category_id)
+    {
+        $this->db->select('id');
+        $this->db->from('products');
+        $this->db->where('category_id', $category_id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            // Nếu có sản phẩm sử dụng danh mục này
+            return true;
+        } else {
+            // Nếu không có sản phẩm nào liên kết
+            return false;
+        }
+    }
         public function deleteCategory($id)
         {
             return $this->db->delete('categories',['id'=>$id]);   

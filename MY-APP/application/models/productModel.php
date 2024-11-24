@@ -21,7 +21,7 @@ class productModel extends CI_Model
             'product_id' => $product_id,
             'quantity' => $quantity,
             'import_price_one_product' => $import_price_one_product,
-            'total_import_price' => $quantity*$import_price_one_product
+            'total_import_price' => $quantity * $import_price_one_product
         );
 
         // Chèn dữ liệu vào bảng warehouses
@@ -68,15 +68,47 @@ class productModel extends CI_Model
         return $this->db->update('products', $data, ['id' => $id]);
     }
 
+
+
+
+
+    public function getOrdersByProductId($product_id)
+    {
+        $this->db->select('order_code');
+        $this->db->from('orders_details');
+        $this->db->where('product_id', $product_id);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); // Trả về danh sách các order_code
+        }
+        return [];
+    }
+
+
+
     public function deleteProduct($id)
     {
+        // Lấy danh sách các order code liên quan đến sản phẩm
+        $orders = $this->getOrdersByProductId($id);
+
+        if (!empty($orders)) {
+            $order_codes = array_column($orders, 'order_code');
+            return [
+                'status' => false,
+                'message' => 'Không thể xóa sản phẩm vì đang được sử dụng trong các đơn hàng: ' . implode(', ', $order_codes)
+            ];
+        }
+
         // Xóa các bản ghi liên quan trong bảng warehouses
         $this->db->delete('warehouses', ['product_id' => $id]);
-    
+
         // Sau đó, xóa sản phẩm trong bảng products
-        return $this->db->delete('products', ['id' => $id]);
+        $this->db->delete('products', ['id' => $id]);
+
+        return ['status' => true, 'message' => 'Đã xóa sản phẩm thành công.'];
     }
-    
+
 
 
     public function plusQuantityProduct($id, $data)
@@ -112,7 +144,7 @@ class productModel extends CI_Model
 
         if ($result) {
             // Cập nhật tổng giá mới bằng cách cộng tổng giá với giá mới được tính vào
-            $new_total_import_price = $result->total_import_price +  $total_import_price;
+            $new_total_import_price = $result->total_import_price + $total_import_price;
 
             // Cập nhật tổng giá trong bảng warehouses
             $this->db->set('total_import_price', $new_total_import_price);

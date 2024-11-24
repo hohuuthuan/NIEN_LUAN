@@ -142,9 +142,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		public function deleteBrand($id)
 		{
 			$this->load->model('brandModel');
-			$this->brandModel->deleteBrand($id);
-			$this->session->set_flashdata('success', 'Đã xoá thương hiệu thành công');
+			$this->load->model('productModel'); // Đảm bảo có model kiểm tra sản phẩm liên kết
+	
+			// Kiểm tra xem thương hiệu có sản phẩm liên kết hay không
+			$brandUsedInProducts = $this->brandModel->checkBrandInProducts($id);
+	
+			if ($brandUsedInProducts) {
+				// Nếu có sản phẩm sử dụng thương hiệu này, không cho phép xóa
+				$this->session->set_flashdata('error', 'Không thể xóa thương hiệu vì có sản phẩm đang sử dụng.');
+			} else {
+				// Nếu không có sản phẩm nào liên kết, thực hiện xóa
+				if ($this->brandModel->deleteBrand($id)) {
+					$this->session->set_flashdata('success', 'Đã xóa thương hiệu thành công');
+				} else {
+					$this->session->set_flashdata('error', 'Xóa thương hiệu thất bại');
+				}
+			}
+	
 			redirect(base_url('brand/list'));
 		}
-
 }
