@@ -29,6 +29,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
 
+
+
+	<!-- Cần có để AI chạy -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+
 	
 	<style>
 	@media (max-width: 575.98px) {
@@ -152,7 +159,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					<div class="col-sm-5">
 						<div class="search_box pull-right">
 							<form action="<?php echo base_url('search-product') ?>" method="GET">
-								<input type="text" name="keyword" placeholder="Search product..." />
+								<input type="text" name="keyword" placeholder="Search product..." id="searchKeyword"  />
 								<input type="submit" class="btn btn-default" value="Search" />
 							</form>
 						</div>

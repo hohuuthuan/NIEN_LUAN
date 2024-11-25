@@ -114,7 +114,7 @@
         AI
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('getlayoutAI'); ?>">Dự đoán bệnh</a>   
+          <a class="dropdown-item" href="<?php echo base_url('getlayoutAItest'); ?>">Dự đoán bệnh</a>   
         </div>
 
       </li>

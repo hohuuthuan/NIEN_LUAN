@@ -178,3 +178,7 @@ $route['revenueee']['POST'] = 'revenueController/revenueee';
 
 // Phần xử lý AI
 $route['getlayoutAI']['GET'] = 'indexController/AI';
+$route['search-by-disease']['POST'] = 'indexController/AI';
+
+
+$route['getlayoutAItest']['GET'] = 'predictionController/index';

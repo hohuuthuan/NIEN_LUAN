@@ -578,17 +578,18 @@ class indexController extends CI_Controller
 		$this->load->view('pages/login');
 		$this->load->view('pages/component/footer');
 	}
-	public function loginCustomer() {
+	public function loginCustomer()
+	{
 		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
 		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
-	
+
 		if ($this->form_validation->run()) {
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
-	
+
 			$this->load->model('loginModel');
 			$result = $this->loginModel->checkLoginCustomer($email);
-	
+
 			if (count($result) > 0 && password_verify($password, $result[0]->password)) {
 				$session_array = [
 					'id' => $result[0]->id,
@@ -596,10 +597,10 @@ class indexController extends CI_Controller
 					'email' => $result[0]->email,
 					'phone' => $result[0]->phone,
 				];
-	
+
 				$this->session->set_userdata('logged_in_customer', $session_array);
 				$this->session->set_flashdata('success', 'Đăng nhập thành công, mời bạn tiếp tục mua hàng');
-	
+
 				// Kiểm tra role_id và chuyển hướng
 				if ($result[0]->role_id == 1) {
 					redirect(base_url('dashboard'));
@@ -616,7 +617,7 @@ class indexController extends CI_Controller
 			$this->login();
 		}
 	}
-	
+
 
 
 	public function profile_user()
@@ -1192,22 +1193,61 @@ class indexController extends CI_Controller
 		}
 	}
 
-
-
-
-
 	// AI
-
 	public function AI()
-    {
-        // Cấu hình CORS
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+	{
+		// Cấu hình CORS
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: GET, POST');
+		header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-        // Trả về view
-        $this->load->view('pages/component/header', $this->data);
-        $this->load->view('AI/postFile');
-        $this->load->view('pages/component/footer');
-    }
+		// Kiểm tra phương thức request
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			// Lấy tên bệnh từ request POST
+			$disease_name = $this->input->post('disease_name');
+		} else {
+			$disease_name = null; // Không có POST thì để rỗng
+		}
+
+		// Tìm sản phẩm liên quan nếu có tên bệnh
+		$this->load->model('productModel');
+		$products = (!empty($disease_name)) ? $this->productModel->getProductsByDisease($disease_name) : [];
+
+		// Nếu là AJAX request, trả về kết quả dạng HTML
+		if ($this->input->is_ajax_request()) {
+			if (!empty($products)) {
+				foreach ($products as $product) {
+					echo '<h2 class="title text-center">Bạn có thể sử dụng các loại thuốc này để điều trị bệnh: '.$disease_name.'</h2>';
+					echo '<div class="col-sm-4">';
+					echo '<div class="product-image-wrapper">';
+					echo '<div class="single-products">';
+					echo '<div class="productinfo text-center">';
+					echo '<img src="' . base_url('uploads/product/' . $product->image) . '" alt="' . htmlspecialchars($product->title) . '" />';
+					echo '<h2>' . number_format($product->selling_price, 0, ',', '.') . ' VND</h2>';
+					echo '<p>' . htmlspecialchars($product->title) . '</p>';
+					echo '<a href="' . base_url('san-pham/' . $product->id . '/' . $product->slug) . '" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i> Details</a>';
+					echo '</div></div></div></div>';
+				}
+			} else {
+				echo '<p class="text-center">Không tìm thấy sản phẩm nào liên quan đến bệnh này.</p>';
+			}
+			return; // Kết thúc xử lý AJAX
+		}
+
+		// Trường hợp không phải AJAX, hiển thị giao diện chính
+		$this->data['disease_name'] = $disease_name;
+		$this->data['products_by_disease'] = $products;
+		// echo '<pre>';
+		// print_r($this->data);
+		// echo '</pre>';
+		$this->load->view('pages/component/header', $this->data);
+		$this->load->view('AI/AI_page', $this->data);
+		$this->load->view('pages/component/footer');
+	}
+
+
+
+
+
+
 }

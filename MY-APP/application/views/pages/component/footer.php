@@ -165,7 +165,9 @@
 <script src="<?php echo base_url('frontend/js/price-range.js') ?>"></script>
 <script src="<?php echo base_url('frontend/js/jquery.prettyPhoto.js') ?>"></script>
 <script src="<?php echo base_url('frontend/js/main.js') ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+	integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
 <script>
@@ -284,78 +286,96 @@
 </body>
 
 <script>
-    const DISEASE_CLASS = {
-        0: 'AlgalLeafSpot',
-        1: 'LeafBlight',
-        2: 'LeafSpot',
-        3: 'NoDisease',
-    };
+	const DISEASE_CLASS = {
+		0: 'AlgalLeafSpot',
+		1: 'LeafBlight',
+		2: 'LeafSpot',
+		3: 'NoDisease',
+	};
 
-    // Load model
-     $("document").ready (async function() {
-        // Sử dụng base_url() để lấy đường dẫn đến model
-        model = await tf.loadLayersModel('<?php echo base_url('public/static/model.json'); ?>');
+	// Load model
+	$("document").ready(async function () {
+		// Sử dụng base_url() để lấy đường dẫn đến model
+		model = await tf.loadLayersModel('<?php echo base_url('public/static/model.json'); ?>');
 
-        console.log('Load model');
-        console.log(model.summary());
-    });
+		console.log('Load model');
+		console.log(model.summary());
+	});
 
-    $("#upload_button").click(function() {
-        $("#fileinput").trigger('click');
-    });
+	$("#upload_button").click(function () {
+		$("#fileinput").trigger('click');
+	});
 
-    async function predict() {
-        // 1. Chuyển ảnh về tensor
-        let image = document.getElementById("displ  ay_image");
-        let img = tf.browser.fromPixels(image);
-        let normalizationOffset = tf.scalar(255/2); // 127.5
-        let tensor = img
-            .resizeNearestNeighbor([224, 224])
-            .toFloat()
-            .sub(normalizationOffset)
-            .div(normalizationOffset)
-            .reverse(2)
-            .expandDims();
+	async function predict() {
+		// 1. Chuyển ảnh về tensor
+		let image = document.getElementById("displ  ay_image");
+		let img = tf.browser.fromPixels(image);
+		let normalizationOffset = tf.scalar(255 / 2); // 127.5
+		let tensor = img
+			.resizeNearestNeighbor([224, 224])
+			.toFloat()
+			.sub(normalizationOffset)
+			.div(normalizationOffset)
+			.reverse(2)
+			.expandDims();
 
-        // 2. Dự đoán
-        let predictions = await model.predict(tensor);
-        predictions = predictions.dataSync();
-        console.log(predictions);
+		// 2. Dự đoán
+		let predictions = await model.predict(tensor);
+		predictions = predictions.dataSync();
+		console.log(predictions);
 
-        // 3. Hiển thị kết quả
-        let top5 = Array.from(predictions)
-            .map(function (p, i) {
-                return {
-                    probability: p,
-                    className: DISEASE_CLASS [i]
-                };
-            }).sort(function (a, b) {
-                return b.probability - a.probability;
-            });
-        console.log(top5);
-        $("#result_info").empty();
-        top5.forEach(function (p) {
-            $("#result_info").append(`<li>${p.className}: ${p.probability.toFixed(3)}</li>`);
-        });
-    };
+		// 3. Hiển thị kết quả
+		let top5 = Array.from(predictions)
+			.map(function (p, i) {
+				return {
+					probability: p,
+					className: DISEASE_CLASS[i]
+				};
+			}).sort(function (a, b) {
+				return b.probability - a.probability;
+			});
+		console.log(top5);
+		$("#result_info").empty();
+		top5.forEach(function (p) {
+			$("#result_info").append(`<li>${p.className}: ${p.probability.toFixed(3)}</li>`);
+		});
+	};
 
-    $("#fileinput").change(function () {
-        let reader = new FileReader();
-        reader.onload = function () {
-            let dataURL = reader.result;
+	$("#fileinput").change(function () {
+		let reader = new FileReader();
+		reader.onload = function () {
+			let dataURL = reader.result;
 
-            imEl = document.getElementById("display_image");
-            imEl.onload = function () {
-                predict();
-            }
-            $("#display_image").attr("src", dataURL);
-            $("#result_info").empty();
-        }
+			imEl = document.getElementById("display_image");
+			imEl.onload = function () {
+				predict();
+			}
+			$("#display_image").attr("src", dataURL);
+			$("#result_info").empty();
+		}
 
-        let file = $("#fileinput").prop("files")[0];
-        reader.readAsDataURL(file);
-    });
+		let file = $("#fileinput").prop("files")[0];
+		reader.readAsDataURL(file);
+	});
 
 </script>
+
+
+<script>
+	$.ajax({
+		url: '<?= base_url('search-by-disease') ?>',
+		method: 'POST',
+		data: { disease_name: 'Tên bệnh từ AI' },
+		success: function (response) {
+			$('#result-container').html(response);
+		},
+		error: function (err) {
+			console.error('Lỗi:', err);
+		}
+	});
+
+</script>
+
+
 
 </html>

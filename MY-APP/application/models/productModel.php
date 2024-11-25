@@ -155,6 +155,43 @@ class productModel extends CI_Model
         }
     }
 
+
+
+
+    public function getProductsByDisease($disease_name)
+    {
+        // Tìm sản phẩm liên quan đến tên bệnh
+        // $this->db->like('description', $disease_name);
+        $this->db->like('title', $disease_name);
+        $this->db->where('status', 1);
+        $query = $this->db->get('products');
+
+        return $query->result();
+    }
+
+
+  public function getProductCountByDisease($disease_name)
+    {
+        // Lọc sản phẩm theo tên bệnh, nếu có
+        if (!empty($disease_name)) {
+            $this->db->like('title', $disease_name); // Tìm kiếm sản phẩm theo tên bệnh
+        }
+        $query = $this->db->get('products'); // Lấy tất cả sản phẩm thỏa mãn điều kiện
+        return $query->num_rows(); // Trả về số lượng sản phẩm
+    }
+
+    // Lấy các sản phẩm cho từng trang
+    public function getProductsByDiseaseWithPagination($disease_name, $limit, $start)
+    {
+        // Lọc sản phẩm theo tên bệnh, nếu có
+        if (!empty($disease_name)) {
+            $this->db->like('title', $disease_name); // Tìm kiếm sản phẩm theo tên bệnh
+        }
+        $this->db->limit($limit, $start); // Giới hạn số sản phẩm theo trang
+        $query = $this->db->get('products'); // Lấy sản phẩm từ bảng
+        return $query->result(); // Trả về kết quả dưới dạng mảng đối tượng
+    }
+
 }
 
 
