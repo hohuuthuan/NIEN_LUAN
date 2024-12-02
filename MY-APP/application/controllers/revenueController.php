@@ -25,6 +25,7 @@ class revenueController extends CI_Controller
 
 
         // Load view với dữ liệu
+        $this->config->config['pageTitle'] = 'Revenue';
         $this->load->view("component-admin/header");
         $this->load->view("component-admin/navbar");
         $this->load->view('pages/revenue', $data);
@@ -35,7 +36,7 @@ class revenueController extends CI_Controller
 
     public function customRevenue()
     {
-
+        $this->config->config['pageTitle'] = 'Revenue';
         $data['daily_revenue'] = $this->revenueModel->getRevenueByDay();
         $data['monthly_revenue'] = $this->revenueModel->getRevenueByMonth();
         // Lấy dữ liệu ngày, tháng, năm từ input

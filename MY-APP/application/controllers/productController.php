@@ -12,6 +12,7 @@ class productController extends CI_Controller
 
 	public function index()
 	{
+		$this->config->config['pageTitle'] = 'List Products';
 		$this->load->view("component-admin/header");
 		$this->load->view("component-admin/navbar");
 
@@ -29,6 +30,7 @@ class productController extends CI_Controller
 
 	public function createProduct()
 	{
+		$this->config->config['pageTitle'] = 'Create Product';
 		$this->load->view("component-admin/header");
 		$this->load->view("component-admin/navbar");
 		// Load categories
@@ -54,8 +56,8 @@ class productController extends CI_Controller
 		$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);
 		$this->form_validation->set_rules('selling_price', 'Price', 'trim|required', ['required' => 'Bạn cần diền %s']);
 		$this->form_validation->set_rules('import_price_one_product', 'ImportPriceOneProduct', 'trim|required', ['required' => 'Bạn cần diền %s']);
-		$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần chọn %s']);
-
+		$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần đền %s']);
+		$this->form_validation->set_rules('unit', 'Unit', 'trim|required', ['required' => 'Bạn cần điền %s']);
 
 		if ($this->form_validation->run()) {
 
@@ -81,6 +83,8 @@ class productController extends CI_Controller
 					'slug' => $this->input->post('slug'),
 					'description' => $this->input->post('description'),
 					'selling_price' => $this->input->post('selling_price'),
+					'unit' => $this->input->post('unit'),
+					'discount' => $this->input->post('discount'),
 					'image' => $product_filename,
 					'status' => $this->input->post('status'),
 					'quantity' => $this->input->post('quantity'),
@@ -101,6 +105,7 @@ class productController extends CI_Controller
 
 	public function editProduct($id)
 	{
+		$this->config->config['pageTitle'] = 'Edit Product';
 		$this->load->view("component-admin/header");
 		$this->load->view("component-admin/navbar");
 
@@ -128,7 +133,7 @@ class productController extends CI_Controller
 		$this->form_validation->set_rules('description', 'Description', 'trim|required', ['required' => 'Bạn cần điền %s']);
 		$this->form_validation->set_rules('selling_price', 'Price', 'trim|required', ['required' => 'Bạn cần diền %s']);
 		$this->form_validation->set_rules('slug', 'Slug', 'trim|required', ['required' => 'Bạn cần chọn %s']);
-
+		$this->form_validation->set_rules('unit', 'Unit', 'trim|required', ['required' => 'Bạn cần điền %s']);
 
 
 		if ($this->form_validation->run()) {
@@ -157,9 +162,10 @@ class productController extends CI_Controller
 						'slug' => $this->input->post('slug'),
 						'description' => $this->input->post('description'),
 						'selling_price' => $this->input->post('selling_price'),
+						'unit' => $this->input->post('unit'),
+						'discount' => $this->input->post('discount'),
 						'image' => $product_filename,
 						'status' => $this->input->post('status'),
-
 						'brand_id' => $this->input->post('brand_id'),
 						'category_id' => $this->input->post('category_id'),
 					];
@@ -171,7 +177,8 @@ class productController extends CI_Controller
 					'description' => $this->input->post('description'),
 					'selling_price' => $this->input->post('selling_price'),
 					'status' => $this->input->post('status'),
-
+					'unit' => $this->input->post('unit'),
+					'discount' => $this->input->post('discount'),
 					'brand_id' => $this->input->post('brand_id'),
 					'category_id' => $this->input->post('category_id'),
 				];
@@ -197,8 +204,6 @@ class productController extends CI_Controller
 
 		redirect(base_url('product/list'));
 	}
-
-
 
 
 }

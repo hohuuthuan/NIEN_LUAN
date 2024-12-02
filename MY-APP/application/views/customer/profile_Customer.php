@@ -10,6 +10,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <!--  All snippets are MIT license http://bootdey.com/license -->
     <title><?php echo $this->config->config['pageTitle'] ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="<?php echo base_url('frontend/image/icon-logo.png') ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
         rel="stylesheet">
     <link href="<?php echo base_url('frontend/css/main.css') ?>" rel="stylesheet">

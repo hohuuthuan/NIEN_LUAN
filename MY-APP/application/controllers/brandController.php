@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index()
 		{
+			$this->config->config['pageTitle'] = 'List Brand';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			
@@ -22,6 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         public function createBrand()
 		{
+			$this->config->config['pageTitle'] = 'Create Brand';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			$this->load->view("brand/createBrand");
@@ -75,10 +77,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function editBrand($id)
 		{
+			$this->config->config['pageTitle'] = 'Edit Brand';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			
-
 			$this->load->model('brandModel');
 			$data['brand'] = $this->brandModel->selectBrandById($id);
 

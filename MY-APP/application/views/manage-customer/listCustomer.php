@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container">
     <div class="card">
         <div class="card-header">Danh sách khách hàng</div>
             <?php if($this->session->flashdata('success')) { ?>
@@ -8,7 +8,7 @@
             <?php } ?>
         <div class="card-body">
         <table class="table">
-            <thead class="thead-light">
+            <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Username</th>
@@ -39,8 +39,8 @@
                         }     
                     ?></td>
                     <td>
-                        <a onclick="return confirm('Bạn chắc chắn muốn xóa khách hàng này chứ?')" href="<?php echo base_url('manage-customer/delete/'.$cus->id) ?>" class="btn btn-danger">Delete</a>
-                        <a href="<?php echo base_url('manage-customer/edit/'.$cus->id) ?>" class="btn btn-warning">Edit</a>
+                        <a onclick="return confirm('Bạn chắc chắn muốn xóa khách hàng này chứ?')" href="<?php echo base_url('manage-customer/delete/'.$cus->id) ?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i>Delete</a>
+                        <a href="<?php echo base_url('manage-customer/edit/'.$cus->id) ?>" class="btn btn-warning"><i class="fa-solid fa-wrench"></i>Edit</a>
                     </td>
                 </tr>
                 <?php } ?>

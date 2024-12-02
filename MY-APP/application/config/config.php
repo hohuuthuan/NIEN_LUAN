@@ -35,7 +35,7 @@ $config['base_url'] = 'http://localhost:8000/';
 | variable so that it is blank.
 |
 */
-$config['pageTitle'] = 'Trang chủ -Thuoc_BVTV';
+$config['pageTitle'] = 'PESTICIDE SHOP';
 
 /*
 |--------------------------------------------------------------------------

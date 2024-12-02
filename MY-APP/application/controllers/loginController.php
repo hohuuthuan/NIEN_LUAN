@@ -10,12 +10,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index()
 		{
+			$this->config->config['pageTitle'] = 'Login';
 			$this->load->view("loginAdmin/header");
 			$this->load->view("login/indexLogin");
 			$this->load->view("loginAdmin/footer");
 		}
 		public function register_admin()
 		{
+			$this->config->config['pageTitle'] = 'Register';
 			$this->load->view("loginAdmin/header");
 			$this->load->view("register_admin/indexRegister");
 			$this->load->view("loginAdmin/footer");
@@ -30,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			if ($this->form_validation->run()) {
 				$username = $this->input->post('username');
 				$email = $this->input->post('email');
-				$password = md5($this->input->post('password'));
+				$password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
 
 				$data = [
 					'username' => $username,

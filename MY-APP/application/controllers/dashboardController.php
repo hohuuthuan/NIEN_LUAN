@@ -15,6 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 		public function index()
 		{
+			$this->config->config['pageTitle'] = 'Dashboard';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			$this->load->view("dashboard/indexDashboard");
@@ -22,6 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 		public function revenue()
 		{
+			$this->config->config['pageTitle'] = 'Revenue';
 			$this->load->model('revenueModel');
 			$data['daily_revenue'] = $this->revenueModel->getRevenueByDay();
 			$data['monthly_revenue'] = $this->revenueModel->getRevenueByMonth();

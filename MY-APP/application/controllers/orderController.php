@@ -12,6 +12,7 @@ class orderController extends CI_Controller
 
 	public function index()
 	{
+		$this->config->config['pageTitle'] = 'List Order';
 		$this->load->view("component-admin/header");
 		$this->load->view("component-admin/navbar");
 		$this->load->model('orderModel');
@@ -30,6 +31,7 @@ class orderController extends CI_Controller
 
 	public function viewOrder($order_code)
 	{
+		$this->config->config['pageTitle'] = 'View Order';
 		$this->load->view("component-admin/header");
 		$this->load->view("component-admin/navbar");
 		$this->load->model('orderModel');

@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index()
 		{
+			$this->config->config['pageTitle'] = 'Listing Categories';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			
@@ -22,6 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         public function createCategory()
 		{
+			$this->config->config['pageTitle'] = 'Create Category';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			$this->load->view("category/createCategory");
@@ -75,6 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function editcategory($id)
 		{
+			$this->config->config['pageTitle'] = 'Edit Category';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			

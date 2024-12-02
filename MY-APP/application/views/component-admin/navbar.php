@@ -109,15 +109,7 @@
         </div>
 
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        AI
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('getlayoutAItest'); ?>">Dự đoán bệnh</a>   
-        </div>
 
-      </li>
 
     
       </li>

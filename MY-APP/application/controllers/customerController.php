@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function index()
 		{
+			$this->config->config['pageTitle'] = 'List Customers';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			
@@ -23,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		public function editCustomer($id)
 		{
+			$this->config->config['pageTitle'] = 'Edit Customer';
 			$this->load->view("component-admin/header");
             $this->load->view("component-admin/navbar");
 			

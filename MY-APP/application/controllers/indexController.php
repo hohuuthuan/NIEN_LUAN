@@ -142,15 +142,12 @@ class indexController extends CI_Controller
 		$this->config->config['pageTitle'] = 'Checkout';
 		if ($this->session->userdata('logged_in_customer') && $this->cart->contents()) {
 
-
 			// Lấy nội dung giỏ hàng
 			// In ra nội dung giỏ hàng
 			// $cart_contents = $this->cart->contents();
 			// echo '<pre>';
 			// print_r($cart_contents);
 			// echo '</pre>';
-
-
 
 			$this->load->view('pages/component/header', $this->data);
 			$this->load->view('pages/checkout');
@@ -242,6 +239,7 @@ class indexController extends CI_Controller
 
 	public function listOrder()
 	{
+		$this->config->config['pageTitle'] = 'List Order';
 		$this->load->view('pages/component/header', $this->data);
 		$user_id = $this->getUserOnSession();
 		$this->load->model('orderModel');
@@ -622,6 +620,8 @@ class indexController extends CI_Controller
 
 	public function profile_user()
 	{
+
+		$this->config->config['pageTitle'] = 'Chỉnh sửa thông tin';
 		$user_id = $this->getUserOnSession();
 
 		// Kiểm tra nếu user_id hợp lệ
@@ -770,8 +770,9 @@ class indexController extends CI_Controller
 	}
 
 
-	public function dang_ky()
-	{
+
+
+	public function dang_ky(){
 		$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', ['required' => 'Bạn cần cung cấp %s', 'valid_email' => 'Địa chỉ email không hợp lệ']);
 		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
@@ -781,7 +782,7 @@ class indexController extends CI_Controller
 		if ($this->form_validation->run()) {
 			$username = $this->input->post('username');
 			$email = $this->input->post('email');
-			$password = md5($this->input->post('password'));
+			$password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
 			$phone = $this->input->post('phone');
 			$address = $this->input->post('address');
 
@@ -822,7 +823,10 @@ class indexController extends CI_Controller
 	}
 
 
-	// Lấy email trên đường dẫn 
+
+
+
+
 	public function kich_hoat_tai_khoan()
 	{
 		if (isset($_GET['email'])) {
@@ -1196,6 +1200,7 @@ class indexController extends CI_Controller
 	// AI
 	public function AI()
 	{
+		$this->config->config['pageTitle'] = 'AI Chẩn đoán bệnh';
 		// Cấu hình CORS
 		header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: GET, POST');
@@ -1217,7 +1222,7 @@ class indexController extends CI_Controller
 		if ($this->input->is_ajax_request()) {
 			if (!empty($products)) {
 				foreach ($products as $product) {
-					echo '<h2 class="title text-center">Bạn có thể sử dụng các loại thuốc này để điều trị bệnh: '.$disease_name.'</h2>';
+					echo '<h2 class="title text-center">Bạn có thể sử dụng các loại thuốc này để điều trị bệnh: ' . $disease_name . '</h2>';
 					echo '<div class="col-sm-4">';
 					echo '<div class="product-image-wrapper">';
 					echo '<div class="single-products">';

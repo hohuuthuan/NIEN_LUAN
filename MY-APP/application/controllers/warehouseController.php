@@ -12,6 +12,7 @@ class warehouseController extends CI_Controller
 
 	public function index()
 	{
+		 $this->config->config['pageTitle'] = 'Warehouse';
 		$this->load->view("component-admin/header");
 		$this->load->view("component-admin/navbar");
 
@@ -86,7 +87,5 @@ class warehouseController extends CI_Controller
 		redirect(base_url('warehouse/list'));
 	}
 	
-
-
 
 }

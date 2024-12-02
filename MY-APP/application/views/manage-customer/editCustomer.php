@@ -1,37 +1,40 @@
-<div class="container">
-    <div class="card">
-        <div class="card-header">Chỉnh sửa khách hàng</div>
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Chỉnh sửa khách hàng</h5>
+        </div>
         <div class="card-body">
-        <a href="<?php echo base_url('customer/list') ?>" class="btn btn-primary">List customer</a>
-            <?php if($this->session->flashdata('success')) { ?>
-                <div class="alert alert-success"><?php echo $this->session->flashdata('success') ?></div>
-            <?php } elseif($this->session->flashdata('error')) { ?>
-                <div class="alert alert-danger"><?php echo $this->session->flashdata('error') ?></div>
-            <?php } ?>
-       
-            <div class="form-group">
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Status</label>
-                    <form action="<?php echo base_url('manage-customer/update/'.$customers->id) ?>" method="POST" enctype="multipart/form-data" >
-                    <select name="status" class="form-control" id="exampleFormControlSelect1">
-                        <?php 
-                            if($customers->status == 1) {
-                        ?>
-                            <option selected value="1">Kích hoạt</option>
-                            <option value="0">Khóa tài khoản</option>
-                        <?php }elseif($customers->status == 0){
-                            ?>
-                            <option value="1">Kích hoạt</option>
-                            <option selected  value="0">Khóa tài koản</option>
-                        <?php }?>
+            <!-- Nút trở về danh sách khách hàng -->
+            <a href="<?php echo base_url('customer/list') ?>" class="btn btn-secondary mb-3">
+                <i class="fas fa-arrow-left"></i> Danh sách khách hàng
+            </a>
 
-                    </select>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    </form>
+   
+            <?php if($this->session->flashdata('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?php echo $this->session->flashdata('success'); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            </div>
-           
-           
+            <?php elseif($this->session->flashdata('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo $this->session->flashdata('error'); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- Form chỉnh sửa khách hàng -->
+            <form action="<?php echo base_url('manage-customer/update/'.$customers->id) ?>" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="status" class="form-label">Trạng thái tài khoản</label>
+                    <select name="status" class="form-select" id="status">
+                        <option value="1" <?php echo ($customers->status == 1) ? 'selected' : ''; ?>>Kích hoạt</option>
+                        <option value="0" <?php echo ($customers->status == 0) ? 'selected' : ''; ?>>Khóa tài khoản</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-save"></i> Cập nhật
+                </button>
+            </form>
         </div>
     </div>
 </div>
