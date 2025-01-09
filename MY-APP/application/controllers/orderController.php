@@ -89,6 +89,7 @@ class orderController extends CI_Controller
 				'subtotal' => $tong,
 				'date_delivered' => $date_delivered
 			);
+			
 			// Gọi hàm chèn dữ liệu vào bảng revenue
 			$this->orderModel->insertRevenue($data_revenue);
 			// Cập nhật dữ liệu vào bảng orders và order_details
@@ -114,73 +115,87 @@ class orderController extends CI_Controller
 
 
 	public function printOrder($order_code)
-	{
-		$this->load->library('Pdf');
+{
+    $this->load->library('Pdf');
+    $this->load->model('orderModel');
+    
+    $order_details = $this->orderModel->printOrderDetails($order_code);
+    
+    $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+    $pdf->SetTitle('Hóa đơn: ' . $order_code);
+    $pdf->SetHeaderMargin(10);
+    $pdf->SetTopMargin(15);
+    $pdf->SetFooterMargin(15);
+    $pdf->SetAutoPageBreak(true);
+    $pdf->SetAuthor('Pesticide Shop');
+    $pdf->SetDisplayMode('real', 'default');
+    $pdf->AddPage();
+    
+    // Tạo tiêu đề hóa đơn
+    $html = '
+        <h2 style="text-align: center;">HÓA ĐƠN MUA HÀNG</h2>
+        <p style="text-align: center;">Cảm ơn bạn đã mua sắm tại <strong>Pesticide Shop</strong></p>
+        <p><strong>Mã đơn hàng:</strong> ' . $order_code . '</p>
+        <p><strong>Ngày in:</strong> ' . date('d/m/Y') . '</p>
+    ';
+    
+    // Bảng chi tiết sản phẩm
+    $html .= '
+        <table border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f2f2f2; text-align: center;">
+                    <th>STT</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Chiết khấu</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+    ';
+    
+    $total = 0;
+    foreach ($order_details as $key => $product) {
+        $discounted_price = $product->selling_price * (1 - $product->discount / 100);
+        $subtotal = $product->qty * $discounted_price;
+        $total += $subtotal;
+        
+        $html .= '
+            <tr style="text-align: center;">
+                <td>' . ($key + 1) . '</td>
+                <td>' . $order_code . '</td>
+                <td style="text-align: left;">' . $product->title . '</td>
+                <td>' . number_format($product->selling_price, 0, ',', '.') . 'đ</td>
+                <td>' . $product->qty . '</td>
+                <td>' . $product->discount . '%</td>
+                <td>' . number_format($subtotal, 0, ',', '.') . 'đ</td>
+            </tr>
+        ';
+    }
+    
+    // Tổng cộng
+    $html .= '
+            <tr style="font-weight: bold; text-align: right;">
+                <td colspan="6">Tổng cộng:</td>
+                <td style="text-align: center;">' . number_format($total, 0, ',', '.') . 'đ</td>
+            </tr>
+        </tbody>
+        </table>
+    ';
+    
+    // Lời cảm ơn
+    $html .= '
+        <p style="text-align: center; margin-top: 20px;">Cảm ơn bạn đã ủng hộ. Mọi thắc mắc vui lòng liên hệ hotline: <strong>1900 1900</strong>.</p>
+    ';
+    
+    // Xuất PDF
+    $pdf->SetFont('dejavusans', '', 10);
+    $pdf->writeHTML($html, true, false, true, false, '');
+    $pdf->Output('Order_' . $order_code . '.pdf', 'I');
+}
 
-		$pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
-		$pdf->SetTitle('Print Order: ' . $order_code);
-		$pdf->SetHeaderMargin(30);
-		$pdf->SetTopMargin(20);
-		$pdf->setFooterMargin(20);
-		$pdf->SetAutoPageBreak(true);
-		$pdf->SetAuthor('Author');
-		$pdf->SetDisplayMode('real', 'default');
-		$pdf->Write(5, 'CodeIgniter TCPDF Integration');
-		$pdf->SetFont('dejavusans', '', 10);
-
-		// In đơn hàng
-		$pdf->SetFont('dejavusans', '', 10);
-		// Add a page
-		$pdf->AddPage();
-		$this->load->model('orderModel');
-
-		$data['order_details'] = $this->orderModel->printOrderDetails($order_code);
-
-		$html = '
-			<h3>Đơn hàng của bạn bao gồm các sản phẩm:</h3>    
-			<p>Cảm ơn bạn đã ủng hộ website <a href="#">abc.domain</a> của chúng tôi. Vui lòng liên hệ hotline nếu xảy ra sự cố: 19001900</p>        
-			<table border="1" cellspacing="3" cellpadding="4">
-				<thead>
-					<tr>
-						<th>STT</th>
-						<th>Mã đơn hàng</th>
-						<th>Tên sản phẩm</th>
-						<th>Giá</th>
-						<th>Số lượng</th>
-						<th>Chiết khấu</th>
-						<th>Tổng số tiền:</th>
-					</tr>
-				</thead>
-				<tbody>
-			';
-		$total = 0;
-		foreach ($data['order_details'] as $key => $product) {
-			// echo '<pre>'; 
-			// print_r($product); 
-			// echo '</pre>';
-			$discounted_price = $product->selling_price * (1 - $product->discount / 100);
-			$total += $product->qty * $discounted_price;
-			$html .= '
-					<tr>
-						<td>' . ($key + 1) . '</td>
-						<td>' . $order_code . '</td>
-						<td>' . $product->title . '</td> 
-						<td>' . number_format($product->selling_price, 0, ',', '.') . 'đ</td>
-						<td>' . $product->qty . '</td>
-						<td>' . $product->discount . '%</td>
-						<td>' . number_format($product->qty * $discounted_price, 0, ',', '.') . 'đ</td>
-					</tr>
-				';
-		}
-
-		$html .= '<tr><td colspan="7" align="right">Tổng tiền: ' . number_format($total, 0, ',', '.') . 'đ</td></tr>
-			</tbody>
-			</table>';
-
-		// Output the HTML content
-		$pdf->writeHTML($html, true, false, true, false, '');
-		$pdf->Output('Order: ' . $order_code . '.pdf', 'I');
-	}
 
 
 

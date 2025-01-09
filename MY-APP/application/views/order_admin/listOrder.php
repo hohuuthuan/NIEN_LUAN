@@ -11,7 +11,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Order code</th>
@@ -30,7 +30,7 @@
                                 <td><?php echo $ord->order_code ?></td>
                                 <td><?php echo $ord->name ?></td>
                                 <td><?php echo $ord->phone ?></td>
-                                <td><?php echo $ord->address ?></td>
+                                <td style="width: 400px;"><?php echo $ord->address ?></td>
                                 <td><?php echo $ord->form_of_payment ?></td>
                                 <td>
                                     <?php 

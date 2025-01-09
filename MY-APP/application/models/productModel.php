@@ -162,7 +162,7 @@ class productModel extends CI_Model
     {
         // Tìm sản phẩm liên quan đến tên bệnh
         // $this->db->like('description', $disease_name);
-        $this->db->like('title', $disease_name);
+        $this->db->like('description', $disease_name);
         $this->db->where('status', 1);
         $query = $this->db->get('products');
 
@@ -170,27 +170,21 @@ class productModel extends CI_Model
     }
 
 
-  public function getProductCountByDisease($disease_name)
+
+    public function getProductsPagination($limit, $start)
     {
-        // Lọc sản phẩm theo tên bệnh, nếu có
-        if (!empty($disease_name)) {
-            $this->db->like('title', $disease_name); // Tìm kiếm sản phẩm theo tên bệnh
-        }
-        $query = $this->db->get('products'); // Lấy tất cả sản phẩm thỏa mãn điều kiện
-        return $query->num_rows(); // Trả về số lượng sản phẩm
+        $this->db->limit($limit, $start);
+        $query = $this->db->get_where('products', ['status' => 1]);
+        return $query->result();
     }
 
-    // Lấy các sản phẩm cho từng trang
-    public function getProductsByDiseaseWithPagination($disease_name, $limit, $start)
+    public function countAllProduct()
     {
-        // Lọc sản phẩm theo tên bệnh, nếu có
-        if (!empty($disease_name)) {
-            $this->db->like('title', $disease_name); // Tìm kiếm sản phẩm theo tên bệnh
-        }
-        $this->db->limit($limit, $start); // Giới hạn số sản phẩm theo trang
-        $query = $this->db->get('products'); // Lấy sản phẩm từ bảng
-        return $query->result(); // Trả về kết quả dưới dạng mảng đối tượng
+        return $this->db->where(['status' => 1])->count_all_results('products');
     }
+
+
+
 
 }
 

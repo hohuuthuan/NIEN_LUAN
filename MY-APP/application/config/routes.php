@@ -7,7 +7,6 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 // Page
-
 $route['404_override'] = 'indexController/page_404';
 $route['danh-muc/(:any)/(:any)']['GET'] = 'indexController/category/$1/$2';
 $route['thuong-hieu/(:any)/(:any)']['GET'] = 'indexController/brand/$1/$2';
@@ -115,6 +114,7 @@ $route['slider/delete/(:any)']['GET'] = 'sliderController/deleteSlider/$1';
 
 
 // Product
+$route['product/list/(:num)']['GET'] = 'productController/index/$1';
 $route['product/list']['GET'] = 'productController/index';
 $route['product/create']['GET'] = 'productController/createProduct';
 $route['product/edit/(:any)']['GET'] = 'productController/editProduct/$1';
@@ -161,8 +161,10 @@ $route['send-mail'] = 'indexController/send_mail';
 
 // Comment
 $route['comment/send']['POST'] = 'indexController/comment_send';
-
-
+$route['comment']['GET'] = 'indexController/list_comment';
+$route['comment/edit/(:any)']['GET'] = 'indexController/editComment/$1';
+$route['comment/update/(:any)']['POST'] = 'indexController/updateComment/$1';
+$route['comment/delete/(:any)']['GET'] = 'indexController/deleteComment/$1';
 
 // Cart
 $route['cart/order-items']['GET'] = 'indexController/order_items';
@@ -179,6 +181,4 @@ $route['revenueee']['POST'] = 'revenueController/revenueee';
 // Phần xử lý AI
 $route['getlayoutAI']['GET'] = 'indexController/AI';
 $route['search-by-disease']['POST'] = 'indexController/AI';
-
-
-$route['getlayoutAItest']['GET'] = 'predictionController/index';
+// $route['getlayoutAItest']['GET'] = 'predictionController/index';

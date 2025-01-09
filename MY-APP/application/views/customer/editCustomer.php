@@ -98,9 +98,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <?php } ?>
         <?php if (isset($profile_user)) { ?>
             <nav class="nav nav-borders">
-                <a class="nav-link" style="color: crimson;" href="<?php echo base_url('/') ?>" target="__blank">Trở về trang chủ</a>
-                <a class="nav-link  ms-0" href="<?php echo base_url('profile-user') ?>" target="__blank">Chi tiết thông tin người dùng</a>
-                <a class="nav-link active  ms-0" href="<?php echo base_url('customer/edit/' . $profile_user->id) ?>" target="__blank">Chỉnh sửa thông tin</a>
+                <a class="nav-link" style="color: crimson;" href="<?php echo base_url('/') ?>">Trở về trang chủ</a>
+                <a class="nav-link  ms-0" href="<?php echo base_url('profile-user') ?>">Chi tiết thông tin người dùng</a>
+                <a class="nav-link active  ms-0" href="<?php echo base_url('customer/edit/' . $profile_user->id) ?>">Chỉnh sửa thông tin</a>
             </nav>  
             <hr class="mt-0 mb-4">
             <div class="row">

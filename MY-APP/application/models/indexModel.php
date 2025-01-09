@@ -52,6 +52,18 @@ class indexModel extends CI_Model
     {
         return $this->db->count_all('products');
     }
+    public function countAllCategory()
+    {
+        return $this->db->count_all('categories');
+    }
+    public function countAllBrand()
+    {
+        return $this->db->count_all('brands');
+    }
+    public function countAllUser()
+    {
+        return $this->db->count_all('users');
+    }
     public function countAllProductByCate($id)
     {
         $this->db->where('category_id', $id);
@@ -74,13 +86,24 @@ class indexModel extends CI_Model
 
     }
 
+    // public function getIndexPagination($limit, $start)
+    // {
+    //     $this->db->limit($limit, $start);
+    //     $query = $this->db->get_where('products', ['status' => 1]);
+    //     return $query->result();
+    // }
+
     public function getIndexPagination($limit, $start)
     {
-        $this->db->limit($limit, $start);
-        $query = $this->db->get_where('products', ['status' => 1]);
+        $query = $this->db->select('categories.title as tendanhmuc, products.*, warehouses.quantity, brands.title as tenthuonghieu')
+            ->from('categories')
+            ->join('products', 'products.category_id = categories.id')
+            ->join('warehouses', 'products.id = warehouses.product_id')
+            ->join('brands', 'brands.id = products.brand_id')
+            ->limit($limit, $start)
+            ->get();
         return $query->result();
     }
-
 
     public function getCategoryPagination($id, $limit, $start)
     {
@@ -93,6 +116,7 @@ class indexModel extends CI_Model
             ->get();
         return $query->result();
     }
+
     public function getCategoryKyTuPagination($id, $kytu, $limit, $start)
     {
         $this->db->limit($limit, $start);
@@ -316,11 +340,35 @@ class indexModel extends CI_Model
     public function updateCustomer($user_id, $data)
     {
         $this->db->where('id', $user_id);
-        return $this->db->update('customers', $data);
+        return $this->db->update('users', $data);
     }
 
 
+    // Comment
+    public function getAllComment()
+    {
+        $this->db->select('comment.*, products.title AS product_name');
+        $this->db->from('comment');
+        $this->db->join('products', 'comment.product_id_comment = products.id');
+        $this->db->where('products.status', 1);  // Chỉ lấy sản phẩm có status = 1
+        $query = $this->db->get();
+        return $query->result();
+    }
 
+    public function deleteComment($cmt_id)
+    {
+        return $this->db->delete('comment', ['id' => $cmt_id]);
+    }
+    public function selectCommentById($cmt_id)
+    {
+        $query = $this->db->get_where('comment', ['id' => $cmt_id]);
+        return $query->row();
+    }
+    public function updateComment($cmt_id, $data)
+    {
+        $this->db->where('id', $cmt_id);
+        return $this->db->update('comment', $data);
+    }
 
 }
 

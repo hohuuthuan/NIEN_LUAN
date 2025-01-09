@@ -11,7 +11,8 @@
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img style="width: 300px; height: 300px" src="<?php echo base_url('uploads/product/' . $pro_det->image) ?>"
+								<img style="width: 300px; height: 300px"
+									src="<?php echo base_url('uploads/product/' . $pro_det->image) ?>"
 									alt="<?php echo $pro_det->title ?>" />
 
 							</div>
@@ -33,7 +34,6 @@
 
 
 
-
 										<?php
 										// Kiểm tra giá trị của $allPro->discount
 										if (isset($pro_det->discount) && $pro_det->discount != 0) {
@@ -42,18 +42,20 @@
 											$pro_det->selling_price = $pro_det->selling_price * (1 - $pro_det->discount / 100);
 											?>
 											<h2>
-											<span><?php echo number_format($pro_det->selling_price, 0, ',', '.') ?> VND</span>
+												<span><?php echo number_format($pro_det->selling_price, 0, ',', '.') ?>
+													VND</span>
 												<label
-													style="text-decoration: line-through;"><?php echo number_format($price_no_discount, 0, ',', '.') ?>
+													style="text-decoration: line-through; margin-top: 5px"><?php echo number_format($price_no_discount, 0, ',', '.') ?>
 													VND</label>
 												<br>
-												
+
 											</h2>
 											<?php
 										} else {
 											// Hiển thị giá gốc nếu discount bằng 0
 											?>
-											<h2><span><?php echo number_format($pro_det->selling_price, 0, ',', '.') ?> VND</span></h2>
+											<h2><span><?php echo number_format($pro_det->selling_price, 0, ',', '.') ?>
+													VND</span></h2>
 											<br>
 											<?php
 										}
@@ -67,8 +69,18 @@
 											Add to cart
 										</button>
 									</span>
-									<p><b>Availability:</b> In Stock</p>
-									<p><b>Condition:</b> New</p>
+									<p><b>Tình trạng:</b>
+										<?php
+										if ($pro_det->quantity > 0) {
+											echo "Còn hàng";
+										} else {
+											echo "Hết hàng";
+										}
+										?>
+									</p>
+
+									<p style="text-align: justify; text-justify: inter-word"><b>Mô tả:</b> <?php echo $pro_det->description ?></p>
+
 									<p><b>Brand:</b> <?php echo $pro_det->tenthuonghieu ?> </p>
 									<p><b>Category:</b> <?php echo $pro_det->tendanhmuc ?></p>
 									<a href=""><img src="images/product-details/share.png" class="share img-responsive"
@@ -82,7 +94,7 @@
 				<div class="category-tab shop-details-tab"><!--category-tab-->
 					<div class="col-sm-12">
 						<ul class="nav nav-tabs">
-							
+
 							<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
 						</ul>
 					</div>
@@ -124,9 +136,9 @@
 					</div>
 				</div><!--/category-tab-->
 
-				
-					
-				</div>
+
+
 			</div>
 		</div>
-	</section>
+	</div>
+</section>

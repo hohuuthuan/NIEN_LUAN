@@ -21,79 +21,79 @@
 
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('logout'); ?>">logout</a>
+          <a class="dropdown-item" href="<?php echo base_url('logout'); ?>">Đăng xuất</a>
          
         </div>
       </li>
 
       <li class="nav-item active">
-        <a class="nav-link" href="<?php echo base_url('dashboard');?>">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="<?php echo base_url('dashboard');?>">Home<span class="sr-only">(current)</span></a>
       </li>
 
       
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Brand
+          Thương hiệu
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('brand/create'); ?>">Add brand</a>
-          <a class="dropdown-item" href="<?php echo base_url('brand/list'); ?>">List brand</a>
+          <a class="dropdown-item" href="<?php echo base_url('brand/create'); ?>">Thêm thương hiệu</a>
+          <a class="dropdown-item" href="<?php echo base_url('brand/list'); ?>">Danh sách thương hiệu</a>
         </div>
       </li>
 
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Category
+          Danh mục
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('category/create'); ?>">Add Category</a>
-          <a class="dropdown-item" href="<?php echo base_url('category/list'); ?>">List Category</a>
+          <a class="dropdown-item" href="<?php echo base_url('category/create'); ?>">Thêm danh mục</a>
+          <a class="dropdown-item" href="<?php echo base_url('category/list'); ?>">Danh sách danh mục</a>
         </div>
       </li>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Products
+          Sản phẩm
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('product/create'); ?>">Add Product</a>
-          <a class="dropdown-item" href="<?php echo base_url('product/list'); ?>">List Product</a>
+          <a class="dropdown-item" href="<?php echo base_url('product/create'); ?>">Thêm sản phẩm</a>
+          <a class="dropdown-item" href="<?php echo base_url('product/list'); ?>">Danh sách sản phẩm</a>
         </div>
       </li>
 
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Orders
+          Đơn hàng
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('order_admin/listOrder'); ?>">List Orders</a>
+          <a class="dropdown-item" href="<?php echo base_url('order_admin/listOrder'); ?>">Danh sách đơn hàng</a>
         </div>
       </li>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          SLiders
+          Banner quảng cáo
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('slider/create'); ?>">Add Slider</a>
-          <a class="dropdown-item" href="<?php echo base_url('slider/list'); ?>">List Slider</a>
+          <a class="dropdown-item" href="<?php echo base_url('slider/create'); ?>">Thêm Slide</a>
+          <a class="dropdown-item" href="<?php echo base_url('slider/list'); ?>">Danh sách Slide</a>
         </div>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Customer
+          Khách hàng
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('customer/list'); ?>">List Customer</a>
+          <a class="dropdown-item" href="<?php echo base_url('customer/list'); ?>">Danh sách khách hàng</a>
         </div>
       </li>
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Warehouse
+          Kho hàng
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?php echo base_url('warehouse/list'); ?>">Sản phẩm trong kho</a>
@@ -102,16 +102,21 @@
 
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Revenue
+        Thống kê
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?php echo base_url('revenue'); ?>">Xem thống kê</a>
         </div>
 
       </li>
-
-
-    
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Bình luận
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="<?php echo base_url('comment'); ?>">Danh sách bình luận</a>
+        </div>
+      </li>
       </li>
 
 
@@ -122,3 +127,5 @@
     </form> -->
   </div>
 </nav>
+
+

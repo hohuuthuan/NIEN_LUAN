@@ -123,12 +123,12 @@
         <div class="card-body">
             <a href="<?php echo base_url('product/create'); ?>" class="btn btn-success mb-3">Thêm sản phẩm</a>
 
-            <?php if (empty($product)): ?>
+            <?php if (empty($products)): ?>
                 <div class="alert alert-info">Không có sản phẩm nào trong danh sách.</div>
             <?php else: ?>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <tr>
                                 <th scope="col">STT</th>
                                 <th scope="col">Tên sản phẩm</th>
@@ -139,13 +139,14 @@
                                 <th scope="col">Thương hiệu</th>
                                 <th scope="col">Danh mục</th>
                                 <th scope="col">Tồn kho</th>
+                                <th scope="col">Ngày hết hạn</th>
                                 <th scope="col">Hình ảnh</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Quản lý</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($product as $key => $pro): ?>
+                            <?php foreach ($products as $key => $pro): ?>
                                 <tr>
                                     <th scope="row"><?php echo $key + 1; ?></th>
                                     <td><?php echo htmlspecialchars($pro->title); ?></td>
@@ -183,6 +184,7 @@
                                     <td><?php echo htmlspecialchars($pro->tenthuonghieu); ?></td>
                                     <td><?php echo htmlspecialchars($pro->tendanhmuc); ?></td>
                                     <td><?php echo htmlspecialchars($pro->quantity); ?></td>
+                                    <td><?php echo date('d-m-Y', strtotime($pro->expiration_date)); ?></td>
                                     <td>
                                         <img src="<?php echo base_url('uploads/product/' . $pro->image); ?>"
                                             alt="<?php echo htmlspecialchars($pro->title); ?>"
@@ -196,16 +198,16 @@
                                         <?php endif; ?>
                                     </td>
                                     <td class="d-flex">
-                                        <a href="<?php echo base_url('product/delete/' . $pro->product_id); ?>"
+                                        <a href="<?php echo base_url('product/delete/' . $pro->id); ?>"
                                             class="btn btn-danger btn-sm mr-2"
                                             onclick="return confirm('Bạn chắc chắn muốn xóa chứ?');">
                                             <i class="fa-solid fa-trash"></i> Xóa
                                         </a>
-                                        <a href="<?php echo base_url('product/edit/' . $pro->product_id); ?>"
+                                        <a href="<?php echo base_url('product/edit/' . $pro->id); ?>"
                                             class="btn btn-warning btn-sm mr-2">
                                             <i class="fa-solid fa-wrench"></i> Sửa
                                         </a>
-                                        <a href="<?php echo base_url('quantity/update/' . $pro->product_id); ?>"
+                                        <a href="<?php echo base_url('quantity/update/' . $pro->id); ?>"
                                             class="btn btn-info btn-sm">
                                             <i class="fa-solid fa-bars-progress"></i> Quản lý kho
                                         </a>
@@ -216,9 +218,7 @@
                     </table>
                 </div>
 
-                <div class="pagination">
-                    <?php echo $pagination ?? ''; ?>
-                </div>
+                <?php echo $links; ?>
             <?php endif; ?>
         </div>
     </div>

@@ -18,7 +18,12 @@ class loginModel extends CI_Model
             return [];
         }
     }
-
+    public function checkEmailExists($email) {
+        $this->db->where('email', $email);
+        $query = $this->db->get('users');
+        return $query->num_rows() > 0;
+    }
+    
     public function newCustomer($data)
     {
         return $this->db->insert('users', $data);

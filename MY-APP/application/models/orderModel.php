@@ -78,6 +78,10 @@ class orderModel extends CI_Model
     public function insertRevenue($data) {
         $this->db->insert('revenue', $data);
     }
+    public function insertWarehouse($data) {
+        $this->db->insert('revenue', $data);
+    }
+    
     
 }
 

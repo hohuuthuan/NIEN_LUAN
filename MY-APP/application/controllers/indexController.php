@@ -576,46 +576,113 @@ class indexController extends CI_Controller
 		$this->load->view('pages/login');
 		$this->load->view('pages/component/footer');
 	}
-	public function loginCustomer()
-	{
-		$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
-		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
 
-		if ($this->form_validation->run()) {
-			$email = $this->input->post('email');
-			$password = $this->input->post('password');
+	// public function loginCustomer()
+	// {
+	// 	$this->form_validation->set_rules('email', 'Email', 'trim|required', ['required' => 'Bạn cần cung cấp email']);
+	// 	$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp mật khẩu']);
 
-			$this->load->model('loginModel');
-			$result = $this->loginModel->checkLoginCustomer($email);
+	// 	if ($this->form_validation->run()) {
+	// 		$email = $this->input->post('email');
+	// 		$password = $this->input->post('password');
 
-			if (count($result) > 0 && password_verify($password, $result[0]->password)) {
-				$session_array = [
-					'id' => $result[0]->id,
-					'username' => $result[0]->username,
-					'email' => $result[0]->email,
-					'phone' => $result[0]->phone,
-				];
+	// 		$this->load->model('loginModel');
+	// 		$result = $this->loginModel->checkLoginCustomer($email);
 
-				$this->session->set_userdata('logged_in_customer', $session_array);
-				$this->session->set_flashdata('success', 'Đăng nhập thành công, mời bạn tiếp tục mua hàng');
+	// 		if (count($result) > 0 && password_verify($password, $result[0]->password)) {
+	// 			$session_array = [
+	// 				'id' => $result[0]->id,
+	// 				'username' => $result[0]->username,
+	// 				'email' => $result[0]->email,
+	// 				'phone' => $result[0]->phone,
+	// 			];
 
-				// Kiểm tra role_id và chuyển hướng
-				if ($result[0]->role_id == 1) {
-					redirect(base_url('dashboard'));
-				} else {
-					// Xóa cờ khi mà người dùng đã thay đổi mật khẩu
-					$this->session->unset_userdata('password_updated');
-					redirect(base_url('/'));
-				}
-			} else {
-				$this->session->set_flashdata('error', 'Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu');
-				redirect(base_url('/dang-nhap'));
-			}
-		} else {
-			$this->login();
-		}
-	}
+	// 			$this->session->set_userdata('logged_in_customer', $session_array);
+	// 			$this->session->set_flashdata('success', 'Đăng nhập thành công, mời bạn tiếp tục mua hàng');
 
+	// 			// Kiểm tra role_id và chuyển hướng
+	// 			if ($result[0]->role_id == 1) {
+	// 				redirect(base_url('dashboard'));
+	// 			} else {
+	// 				// Xóa cờ khi mà người dùng đã thay đổi mật khẩu
+	// 				$this->session->unset_userdata('password_updated');
+	// 				redirect(base_url('/'));
+	// 			}
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Đăng nhập thất bại, vui lòng kiểm tra lại email hoặc mật khẩu');
+	// 			redirect(base_url('/dang-nhap'));
+	// 		}
+	// 	} else {
+	// 		$this->login();
+	// 	}
+	// }
+
+	// public function loginCustomer()
+	// {
+	// 	$max_attempts = 5;
+	// 	$lockout_time = 900;
+
+	// 	$login_attempts = $this->session->userdata('login_attempts') ?? 0;
+	// 	$last_attempt_time = $this->session->userdata('last_attempt_time') ?? 0;
+
+	// 	if ($login_attempts >= $max_attempts) {
+	// 		$time_since_last_attempt = time() - $last_attempt_time;
+	// 		if ($time_since_last_attempt < $lockout_time) {
+	// 			$remaining_time = $lockout_time - $time_since_last_attempt;
+	// 			$this->session->set_flashdata('error', 'Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau ' . ceil($remaining_time / 60) . ' phút.');
+	// 			redirect(base_url('/dang-nhap'));
+	// 			return;
+	// 		} else {
+	// 			$this->session->unset_userdata(['login_attempts', 'last_attempt_time']);
+	// 		}
+	// 	}
+
+	// 	// Ràng buộc mới cho password với min_length[6]
+	// 	$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
+	// 		'required' => 'Bạn cần cung cấp email',
+	// 		'valid_email' => 'Email không hợp lệ',
+	// 	]);
+	// 	$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]', [
+	// 		'required' => 'Bạn cần cung cấp mật khẩu',
+	// 		'min_length' => 'Mật khẩu phải có ít nhất 6 ký tự',
+	// 	]);
+
+	// 	if ($this->form_validation->run()) {
+	// 		$email = $this->input->post('email');
+	// 		$password = $this->input->post('password');
+
+	// 		$this->load->model('loginModel');
+	// 		$result = $this->loginModel->checkLoginCustomer($email);
+
+	// 		if (!empty($result) && password_verify($password, $result[0]->password)) {
+	// 			$this->session->unset_userdata(['login_attempts', 'last_attempt_time']);
+
+	// 			$session_array = [
+	// 				'id' => $result[0]->id,
+	// 				'username' => $result[0]->username,
+	// 				'email' => $result[0]->email,
+	// 				'phone' => $result[0]->phone,
+	// 			];
+	// 			$this->session->set_userdata('logged_in_customer', $session_array);
+
+	// 			if ($result[0]->role_id == 1) {
+	// 				redirect(base_url('dashboard'));
+	// 			} else {
+	// 				$this->session->unset_userdata('password_updated');
+	// 				redirect(base_url('/'));
+	// 			}
+	// 		} else {
+	// 			$login_attempts++;
+	// 			$this->session->set_userdata('login_attempts', $login_attempts);
+	// 			$this->session->set_userdata('last_attempt_time', time());
+
+	// 			$this->session->set_flashdata('error', 'Email hoặc mật khẩu không chính xác.');
+	// 			redirect(base_url('/dang-nhap'));
+	// 		}
+	// 	} else {
+	// 		$this->login();
+	// 	}
+	// }
 
 
 	public function profile_user()
@@ -769,28 +836,190 @@ class indexController extends CI_Controller
 		redirect(base_url('/'));
 	}
 
+	public function loginCustomer()
+	{
+		$max_attempts = 5;
+		$lockout_time = 900; // 15 phút
 
+		// Lấy thông tin số lần thử đăng nhập và thời gian lần thử cuối cùng
+		$login_attempts = $this->session->userdata('login_attempts') ?? 0;
+		$last_attempt_time = $this->session->userdata('last_attempt_time') ?? 0;
 
+		// Kiểm tra xem người dùng có bị khóa không
+		if ($login_attempts >= $max_attempts) {
+			$time_since_last_attempt = time() - $last_attempt_time;
+			if ($time_since_last_attempt < $lockout_time) {
+				$remaining_time = $lockout_time - $time_since_last_attempt;
+				$this->session->set_flashdata(
+					'error',
+					'Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau ' . ceil($remaining_time / 60) . ' phút.'
+				);
+				redirect(base_url('/dang-nhap'));
+				return;
+			} else {
+				// Xóa dữ liệu sau khi hết thời gian khóa
+				$this->session->unset_userdata(['login_attempts', 'last_attempt_time']);
+			}
+		}
 
-	public function dang_ky(){
-		$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', ['required' => 'Bạn cần cung cấp %s', 'valid_email' => 'Địa chỉ email không hợp lệ']);
-		$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
-		$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+		// Ràng buộc form validation
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
+			'required' => 'Bạn cần cung cấp email.',
+			'valid_email' => 'Email không hợp lệ.',
+		]);
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]', [
+			'required' => 'Bạn cần cung cấp mật khẩu.',
+			'min_length' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+		]);
 
 		if ($this->form_validation->run()) {
-			$username = $this->input->post('username');
 			$email = $this->input->post('email');
+			$password = $this->input->post('password');
+
+			$this->load->model('loginModel');
+			$result = $this->loginModel->checkLoginCustomer($email);
+
+			// Kiểm tra kết quả từ cơ sở dữ liệu và xác minh mật khẩu
+			if (!empty($result) && password_verify($password, $result[0]->password)) {
+				// Xóa dữ liệu đăng nhập không thành công trước đó
+				$this->session->unset_userdata(['login_attempts', 'last_attempt_time']);
+
+				// Tạo session đăng nhập
+				$session_array = [
+					'id' => $result[0]->id,
+					'username' => $result[0]->username,
+					'email' => $result[0]->email,
+					'phone' => $result[0]->phone,
+				];
+				$this->session->set_userdata('logged_in_customer', $session_array);
+
+				// Chuyển hướng dựa trên quyền
+				if ($result[0]->role_id == 1) {
+					redirect(base_url('dashboard'));
+				} else {
+					$this->session->unset_userdata('password_updated');
+					redirect(base_url('/'));
+				}
+			} else {
+				// Tăng số lần thử đăng nhập và cập nhật thời gian
+				$login_attempts++;
+				$this->session->set_userdata('login_attempts', $login_attempts);
+				$this->session->set_userdata('last_attempt_time', time());
+
+				$this->session->set_flashdata('error', 'Email hoặc mật khẩu không chính xác.');
+				redirect(base_url('/dang-nhap'));
+			}
+		} else {
+			// Hiển thị lỗi form validation nếu có
+			$validation_errors = validation_errors('<div>', '</div>');
+			$this->session->set_flashdata('error', $validation_errors);
+			redirect(base_url('/dang-nhap'));
+		}
+	}
+
+	// public function dang_ky()
+	// {
+	// 	$this->form_validation->set_rules('username', 'Username', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+	// 	$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', ['required' => 'Bạn cần cung cấp %s', 'valid_email' => 'Địa chỉ email không hợp lệ']);
+	// 	$this->form_validation->set_rules('password', 'Password', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+	// 	$this->form_validation->set_rules('phone', 'Phone', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+	// 	$this->form_validation->set_rules('address', 'Address', 'trim|required', ['required' => 'Bạn cần cung cấp %s']);
+
+	// 	if ($this->form_validation->run()) {
+	// 		$username = $this->input->post('username');
+	// 		$email = $this->input->post('email');
+	// 		$password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
+	// 		$phone = $this->input->post('phone');
+	// 		$address = $this->input->post('address');
+
+	// 		$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
+	// 		$numbers = sprintf("%06d", rand(0, 999999));
+	// 		$token = $letters . $numbers;
+	// 		$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinute(10);
+
+	// 		$data = [
+	// 			'username' => $username,
+	// 			'email' => $email,
+	// 			'password' => $password,
+	// 			'phone' => $phone,
+	// 			'address' => $address,
+	// 			'avatar' => 'User-avatar.png',
+	// 			'token' => $token,
+	// 			'role_id' => 2,
+	// 			'date_created' => $date_created
+	// 		];
+
+	// 		$this->load->model('loginModel');
+	// 		$result = $this->loginModel->newCustomer($data);
+
+	// 		if ($result) {
+	// 			$fullURL = base_url() . 'kich-hoat-tai-khoan/?email=' . $email;
+	// 			$to_mail = $email;
+	// 			$subject = 'Thông báo đăng ký tài khoản thành công';
+	// 			$message = 'Click vào đường link để kích hoạt tài khoản: ' . $fullURL . '.<br>Nhập mã xác thực sau: <strong>' . $token . '</strong>';
+	// 			$this->send_mail($to_mail, $subject, $message);
+	// 			$this->session->set_flashdata('success', 'Đăng ký tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.');
+	// 		} else {
+	// 			$this->session->set_flashdata('error', 'Đăng ký tài khoản thất bại. Vui lòng thử lại.');
+	// 		}
+	// 		redirect(base_url('dang-nhap'));
+	// 	} else {
+	// 		$this->login();
+	// 	}
+	// }
+
+
+
+	public function dang_ky()
+	{
+		// Tạo quy tắc ràng buộc cho các trường
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[3]', [
+			'required' => 'Bạn cần cung cấp %s',
+			'min_length' => 'Tên người dùng phải có ít nhất 3 ký tự',
+		]);
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
+			'required' => 'Bạn cần cung cấp %s',
+			'valid_email' => 'Địa chỉ email không hợp lệ',
+		]);
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|min_length[10]|max_length[11]', [
+			'required' => 'Bạn cần cung cấp %s',
+			'numeric' => 'Số điện thoại chỉ được chứa chữ số',
+			'min_length' => 'Số điện thoại phải có ít nhất 10 chữ số',
+			'max_length' => 'Số điện thoại không được quá 11 chữ số',
+		]);
+		$this->form_validation->set_rules('address', 'Address', 'trim|required', [
+			'required' => 'Bạn cần cung cấp %s',
+		]);
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]', [
+			'required' => 'Bạn cần cung cấp %s',
+			'min_length' => 'Mật khẩu phải có ít nhất 6 ký tự',
+		]);
+
+		if ($this->form_validation->run()) {
+			// Lấy giá trị email từ form
+			$email = $this->input->post('email');
+
+			$this->load->model('loginModel');
+			$email_exists = $this->loginModel->checkEmailExists($email);
+			echo $email_exists;
+			if ($email_exists) {
+				$this->session->set_flashdata('error', 'Email đã được sử dụng. Vui lòng sử dụng email khác.');
+				redirect(base_url('dang-nhap'));
+			}
+
+			// Các phần còn lại của mã xử lý như trước...
+			$username = $this->input->post('username');
 			$password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
 			$phone = $this->input->post('phone');
 			$address = $this->input->post('address');
 
+			// Tạo mã token và thời gian hết hạn
 			$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
 			$numbers = sprintf("%06d", rand(0, 999999));
 			$token = $letters . $numbers;
-			$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinute(10);
+			$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinutes(10);
 
+			// Dữ liệu để lưu vào cơ sở dữ liệu
 			$data = [
 				'username' => $username,
 				'email' => $email,
@@ -803,26 +1032,28 @@ class indexController extends CI_Controller
 				'date_created' => $date_created
 			];
 
-			$this->load->model('loginModel');
+			// Lưu dữ liệu vào cơ sở dữ liệu
 			$result = $this->loginModel->newCustomer($data);
 
 			if ($result) {
+				// Gửi email kích hoạt tài khoản
 				$fullURL = base_url() . 'kich-hoat-tai-khoan/?email=' . $email;
 				$to_mail = $email;
 				$subject = 'Thông báo đăng ký tài khoản thành công';
-				$message = 'Click vào đường link để kích hoạt tài khoản: ' . $fullURL . '.<br>Nhập mã xác thực sau: <strong>' . $token . '</strong>';
+				$message = 'Click vào đường link để kích hoạt tài khoản: ' . $fullURL . '
+				Nhập mã xác thực sau: ' . $token;
 				$this->send_mail($to_mail, $subject, $message);
 				$this->session->set_flashdata('success', 'Đăng ký tài khoản thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.');
 			} else {
 				$this->session->set_flashdata('error', 'Đăng ký tài khoản thất bại. Vui lòng thử lại.');
 			}
+
 			redirect(base_url('dang-nhap'));
 		} else {
-			$this->login();
+			$this->session->set_flashdata('error', validation_errors('<div>', '</div>'));
+			redirect(base_url('dang-nhap'));
 		}
 	}
-
-
 
 
 
@@ -876,19 +1107,7 @@ class indexController extends CI_Controller
 		redirect(base_url('dang-nhap'));
 	}
 
-	public function comment_send()
-	{
-		$data = [
-			'name' => $this->input->post('name_comment'),
-			'email' => $this->input->post('email_comment'),
-			'comment' => $this->input->post('comment'),
-			'product_id_comment' => $this->input->post('pro_id_cmt'),
-			'status' => 0,
-			'date_cmt' => Carbon\Carbon::now('Asia/Ho_Chi_Minh')
-		];
-		$result = $this->indexModel->commentSend($data);
 
-	}
 
 	// Quên mật khẩu
 	public function forgot_password_layout()
@@ -898,48 +1117,51 @@ class indexController extends CI_Controller
 		$this->load->view('pages/component/footer');
 	}
 
-	// Hàm này kiểm tra xem có người dùng với email và phone đó không, nếu có thì thực hiện gửi mail và token
+
 	public function confirm_forgot_password()
 	{
-
 		$email = $this->input->post('email');
 		$phone = $this->input->post('phone');
 		$this->load->model('customerModel');
 		$data['get_customer'] = $this->customerModel->getCustomerByEmailAndPhone($email, $phone);
 
-		if ($data['get_customer']->email == $email && $data['get_customer']->phone == $phone) {
-			$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
-			$numbers = sprintf("%06d", rand(0, 999999));
-			$new_token = $letters . $numbers;
-			$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinute(10);
-			$update_data = [
-				'token' => $new_token,
-				'date_created' => $date_created
-			];
-			$this->load->model('customerModel');
-			$result = $this->customerModel->updateTokenCustomer($update_data, $email, $phone);
-			if ($result) {
-				$fullURL = base_url() . 'lay-lai-mat-khau/?email=' . $email . '&phone=' . $phone;
-				$to_mail = $email;
-				$subject = 'Lấy lại mật khẩu';
-				$message = 'Click vào đường link để xác thực lấy lại mật khẩu: ' . $fullURL . '. Nhập mã xác thực sau: <b>' . $new_token . '</b>';
+		if (!empty($data['get_customer'])) {
+			if ($data['get_customer']->email == $email && $data['get_customer']->phone == $phone) {
+				$letters = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3);
+				$numbers = sprintf("%06d", rand(0, 999999));
+				$new_token = $letters . $numbers;
+				$date_created = Carbon\Carbon::now('Asia/Ho_Chi_Minh')->addMinute(10);
+				$update_data = [
+					'token' => $new_token,
+					'date_created' => $date_created
+				];
+				$result = $this->customerModel->updateTokenCustomer($update_data, $email, $phone);
+				if ($result) {
+					$fullURL = base_url() . 'lay-lai-mat-khau/?email=' . $email . '&phone=' . $phone;
+					$to_mail = $email;
+					$subject = 'Lấy lại mật khẩu';
+					$message = 'Click vào đường link để xác thực lấy lại mật khẩu: ' . $fullURL . '. Nhập mã xác thực sau: <b>' . $new_token . '</b>';
 
-				$this->send_mail($to_mail, $subject, $message);
-				$this->session->set_flashdata('success', 'Vui lòng kiểm tra email: <b>' . $email . '</b> và làm theo hướng dẫn');
+					$this->send_mail($to_mail, $subject, $message);
+					$this->session->set_flashdata('success', 'Vui lòng kiểm tra email: <b>' . $email . '</b> và làm theo hướng dẫn');
 
-				redirect(base_url('forgot-password-layout'));
-				;
+					redirect(base_url('forgot-password-layout'));
+				} else {
+					$this->session->set_flashdata('error', 'Không thể gửi mã xác thực. Vui lòng thử lại');
+					redirect(base_url('forgot-password-layout'));
+				}
 			} else {
-				$this->session->set_flashdata('error', 'Không thể gửi mã xác thực. Vui lòng thử lại');
+				$this->session->set_flashdata('error', 'Thông tin email hoặc số điện thoại không khớp.');
 				redirect(base_url('forgot-password-layout'));
 			}
 		} else {
-			$this->session->setFlash('error', 'Xin lỗi không có người dùng với email:' . $email . ' và số điện thoại:' . $phone);
+			$this->session->set_flashdata('error', 'Không tìm thấy khách hàng với thông tin cung cấp.');
 			redirect(base_url('forgot-password-layout'));
 		}
 	}
 
-	// Hiển thị trang nhập token
+
+
 	public function lay_lai_mat_khau()
 	{
 		if (isset($_GET['email']) && $_GET['phone']) {
@@ -992,9 +1214,16 @@ class indexController extends CI_Controller
 
 		if (!$is_valid) {
 			$this->session->set_flashdata('error', 'Mã xác thực hoặc đường dẫn không đúng. Vui lòng thực hiện lại.');
+			redirect(base_url('forgot-password-layout'));
 		}
 		redirect(base_url('dang-nhap'));
 	}
+
+
+
+
+
+
 
 	public function nhap_mat_khau_moi()
 	{
@@ -1089,7 +1318,7 @@ class indexController extends CI_Controller
 			$message = 'Mã xác thực của bạn là: ' . $new_token;
 
 			$this->send_mail($to_mail, $subject, $message);
-			$this->session->set_flashdata('success', 'Mã xác thực đã được gửi về email của bạn, vui lòng kiểm tra email: <b>' . $email . '</b>');
+			$this->session->set_flashdata('success', 'Mã xác thực đã được gửi về email của bạn, vui lòng kiểm tra email:' . $email . '');
 
 			// Chuyển đến trang nhập mã xác thực
 			redirect(base_url('nhap-ma-xac-thuc'));
@@ -1200,57 +1429,145 @@ class indexController extends CI_Controller
 	// AI
 	public function AI()
 	{
+		// Cấu hình tiêu đề trang
 		$this->config->config['pageTitle'] = 'AI Chẩn đoán bệnh';
-		// Cấu hình CORS
+
+		// Cấu hình CORS (nên thực hiện ở middleware)
 		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: GET, POST');
+		header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 		header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 		// Kiểm tra phương thức request
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-			// Lấy tên bệnh từ request POST
-			$disease_name = $this->input->post('disease_name');
-		} else {
-			$disease_name = null; // Không có POST thì để rỗng
-		}
+		$disease_name = $this->input->post('disease_name') ?: null;
 
-		// Tìm sản phẩm liên quan nếu có tên bệnh
+		// Tải model sản phẩm và tìm sản phẩm theo tên bệnh
 		$this->load->model('productModel');
-		$products = (!empty($disease_name)) ? $this->productModel->getProductsByDisease($disease_name) : [];
+		$products = $disease_name ? $this->productModel->getProductsByDisease($disease_name) : [];
 
-		// Nếu là AJAX request, trả về kết quả dạng HTML
 		if ($this->input->is_ajax_request()) {
+			// AJAX request: trả về danh sách sản phẩm dưới dạng HTML
 			if (!empty($products)) {
+				echo '<h2 class="title text-center">Bạn có thể sử dụng các loại thuốc này để điều trị bệnh: ' . htmlspecialchars($disease_name) . '</h2>';
 				foreach ($products as $product) {
-					echo '<h2 class="title text-center">Bạn có thể sử dụng các loại thuốc này để điều trị bệnh: ' . $disease_name . '</h2>';
-					echo '<div class="col-sm-4">';
-					echo '<div class="product-image-wrapper">';
-					echo '<div class="single-products">';
-					echo '<div class="productinfo text-center">';
-					echo '<img src="' . base_url('uploads/product/' . $product->image) . '" alt="' . htmlspecialchars($product->title) . '" />';
-					echo '<h2>' . number_format($product->selling_price, 0, ',', '.') . ' VND</h2>';
-					echo '<p>' . htmlspecialchars($product->title) . '</p>';
-					echo '<a href="' . base_url('san-pham/' . $product->id . '/' . $product->slug) . '" class="btn btn-default add-to-cart"><i class="fa fa-eye"></i> Details</a>';
-					echo '</div></div></div></div>';
+					?>
+					<form action="<?= base_url('add-to-cart') ?>" method="POST">
+						<input type="hidden" value="<?php echo $product->id ?>" name="product_id">
+						<input type="hidden" value="1" name="quantity">
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img src="<?= base_url('uploads/product/' . htmlspecialchars($product->image)) ?>"
+											alt="<?= htmlspecialchars($product->title) ?>" />
+										<h2><?= number_format($product->selling_price, 0, ',', '.') ?> VND</h2>
+										<p><?= htmlspecialchars($product->title) ?></p>
+										<a href="<?= base_url('san-pham/' . $product->id . '/' . $product->slug) ?>"
+											class="btn btn-default add-to-cart">
+											<i class="fa fa-eye"></i> Details
+										</a>
+										<button type="submit" class="btn btn-fefault cart">
+											<i class="fa fa-shopping-cart"></i>
+											Add to cart
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<?php
 				}
 			} else {
 				echo '<p class="text-center">Không tìm thấy sản phẩm nào liên quan đến bệnh này.</p>';
 			}
-			return; // Kết thúc xử lý AJAX
+			return;
 		}
 
-		// Trường hợp không phải AJAX, hiển thị giao diện chính
+
 		$this->data['disease_name'] = $disease_name;
 		$this->data['products_by_disease'] = $products;
-		// echo '<pre>';
-		// print_r($this->data);
-		// echo '</pre>';
+
+		// Load các view
 		$this->load->view('pages/component/header', $this->data);
 		$this->load->view('AI/AI_page', $this->data);
 		$this->load->view('pages/component/footer');
 	}
 
 
+
+	public function comment_send()
+	{
+		$data = [
+			'name' => $this->input->post('name_comment'),
+			'email' => $this->input->post('email_comment'),
+			'comment' => $this->input->post('comment'),
+			'product_id_comment' => $this->input->post('pro_id_cmt'),
+			'status' => 0,
+			'date_cmt' => Carbon\Carbon::now('Asia/Ho_Chi_Minh')
+		];
+		$result = $this->indexModel->commentSend($data);
+
+	}
+
+
+
+	public function list_comment()
+	{
+		$this->config->config['pageTitle'] = 'List Comments';
+		$this->load->view("component-admin/header");
+		$this->load->view("component-admin/navbar");
+		$data['comments'] = $this->indexModel->getAllComment();
+		// echo '</pre>';
+		// print_r($data['comments']);
+		// echo '</pre>';
+		$this->load->view('comment/list_comment', $data);
+		$this->load->view('component-admin/footer');
+	}
+
+	public function deleteComment($cmt_id)
+	{
+		$this->load->model('indexModel');
+		$del = $this->indexModel->deleteComment($cmt_id);
+		$del_comment_details = $this->indexModel->deleteComment($cmt_id);
+		if ($del && $del_comment_details) {
+			$this->session->set_flashdata('success', 'Xóa bình luận thành công');
+			redirect(base_url('comment'));
+		} else {
+			$this->session->set_flashdata('error', 'Xóa bình luận thất bại');
+			redirect(base_url('comment'));
+		}
+	}
+
+	public function editComment($cmt_id)
+	{
+		$this->config->config['pageTitle'] = 'Edit Customer';
+		$this->load->view("component-admin/header");
+		$this->load->view("component-admin/navbar");
+
+
+		$this->load->model('indexModel');
+		$data['comments'] = $this->indexModel->selectCommentById($cmt_id);
+
+		// echo '<pre>';
+		// print_r($data);
+		// echo '</pre>';
+		$this->load->view("comment/update_comment", $data);
+		$this->load->view("component-admin/footer");
+	}
+
+
+	public function updateComment($cmt_id)
+	{
+
+		$data = [
+			'status' => $this->input->post('status'),
+		];
+
+		$this->load->model('indexModel');
+		$this->indexModel->updateComment($cmt_id, $data);
+		$this->session->set_flashdata('success', 'Đã chỉnh sửa trạng thái bình luận thành công');
+		redirect(base_url('comment'));
+
+	}
 
 
 

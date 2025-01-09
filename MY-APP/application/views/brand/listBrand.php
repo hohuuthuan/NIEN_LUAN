@@ -13,7 +13,7 @@
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
-                    <thead class="thead-dark">
+                    <thead class="thead-light">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Title</th>

@@ -8,7 +8,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				redirect(base_url('login'));
 			}
 		}
-
 		public function index()
 		{
 			$this->config->config['pageTitle'] = 'Listing Categories';

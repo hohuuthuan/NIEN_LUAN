@@ -32,6 +32,9 @@
                     alt="Hiện chưa có ảnh nào được tải lên">
             </div>
 
+
+
+            <!-- Phần xử lý AI -->
             <script>
                 const DISEASE_CLASS = {
                     0: 'Đốm rong',
@@ -42,7 +45,6 @@
 
                 // Load model
                 $("document").ready(async function () {
-                    // Sử dụng base_url() để lấy đường dẫn đến model
                     model = await tf.loadLayersModel('<?php echo base_url('public/static/model.json'); ?>');
 
                     console.log('Load model');
@@ -136,6 +138,9 @@
 
                 <?php if (!empty($products_by_disease)) { ?>
                     <?php foreach ($products_by_disease as $product) { ?>
+                        <form action="<?php echo base_url('add-to-cart') ?>" method="POST">
+                        <input type="hidden" value="<?php echo $product->id ?>" name="product_id">
+                        <input type="hidden" value="1" name="quantity">
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
@@ -148,10 +153,15 @@
                                             class="btn btn-default add-to-cart">
                                             <i class="fa fa-eye"></i> Details
                                         </a>
+                                        <button type="submit" class="btn btn-fefault cart">
+												<i class="fa fa-shopping-cart"></i>
+												Add to cart
+										</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        </form>
                     <?php } ?>
                 <?php } else { ?>
                     <p class="text-center">Hiện chưa có sản phẩm.</p>
